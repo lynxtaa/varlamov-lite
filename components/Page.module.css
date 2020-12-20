@@ -1,5 +1,12 @@
+.Page {
+	max-width: 500px;
+	margin: 0 auto;
+	position: relative;
+}
+
 .article {
 	font-weight: normal;
+	margin-top: 0;
 }
 
 .article a {
@@ -9,4 +16,13 @@
 
 .article a:hover {
 	text-decoration: underline;
+}
+
+.arrows {
+	padding-top: 1rem;
+	top: 0;
+	margin: 0 -2rem;
+	display: flex;
+	position: sticky;
+	justify-content: space-between;
 }

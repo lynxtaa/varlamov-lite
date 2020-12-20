@@ -1,4 +1,4 @@
-import { URL } from 'url'
+import { URL, URLSearchParams } from 'url'
 
 import cheerio from 'cheerio'
 import imageSize from 'image-size'
@@ -14,10 +14,12 @@ export type ArticleWithText = Article & { text: string }
 
 class VarlamovClient {
 	endpoint: URL
+	pageSize: number
 	queue: PQueue
 
-	constructor(endpoint: string) {
+	constructor({ endpoint, pageSize = 19 }: { endpoint: string; pageSize?: number }) {
 		this.endpoint = new URL(endpoint)
+		this.pageSize = pageSize
 		this.queue = new PQueue({ interval: 1000, intervalCap: 3 })
 	}
 
@@ -48,8 +50,15 @@ class VarlamovClient {
 		})
 	}
 
-	async getArticles(): Promise<Article[]> {
-		const html = await this.getHtml('/')
+	async getArticles({ pageNum }: { pageNum: number }): Promise<Article[]> {
+		const qs =
+			pageNum > 1
+				? `?${new URLSearchParams({
+						skip: String((pageNum - 1) * this.pageSize),
+				  })}`
+				: ''
+
+		const html = await this.getHtml(`/${qs}`)
 
 		const $ = cheerio.load(html)
 
@@ -105,4 +114,4 @@ class VarlamovClient {
 	}
 }
 
-export const varlamovClient = new VarlamovClient('https://varlamov.ru')
+export const varlamovClient = new VarlamovClient({ endpoint: 'https://varlamov.ru' })

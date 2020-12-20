@@ -38,9 +38,11 @@ export default function Article({ title, text }: Props) {
 
 	return (
 		<article className={styles.Article}>
-			<Link href="/">
-				<ArrowLeft />
-			</Link>
+			<div className={styles.backArrow}>
+				<Link href="/">
+					<ArrowLeft />
+				</Link>
+			</div>
 			<Head>
 				<title>{title}</title>
 			</Head>
