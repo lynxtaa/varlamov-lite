@@ -1,7 +1,8 @@
-.Article {
-	white-space: pre-wrap;
-}
-
 .Image {
 	margin-top: 0.4em !important;
+}
+
+.text {
+	white-space: pre-wrap;
+	line-height: 1.5;
 }

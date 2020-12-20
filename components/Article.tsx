@@ -45,7 +45,7 @@ export default function Article({ title, text }: Props) {
 				<title>{title}</title>
 			</Head>
 			<h1>{title}</h1>
-			{textWithImages}
+			<div className={styles.text}>{textWithImages}</div>
 		</article>
 	)
 }
