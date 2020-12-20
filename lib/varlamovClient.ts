@@ -3,6 +3,7 @@ import { URL } from 'url'
 import cheerio from 'cheerio'
 import imageSize from 'image-size'
 import fetch from 'node-fetch'
+import PQueue from 'p-queue'
 
 export type Article = {
 	id: number
@@ -13,9 +14,11 @@ export type ArticleWithText = Article & { text: string }
 
 class VarlamovClient {
 	endpoint: URL
+	queue: PQueue
 
 	constructor(endpoint: string) {
 		this.endpoint = new URL(endpoint)
+		this.queue = new PQueue({ interval: 1000, intervalCap: 3 })
 	}
 
 	private async getHtml(path: string) {
@@ -28,6 +31,21 @@ class VarlamovClient {
 		const html = await response.text()
 
 		return html
+	}
+
+	private async getImageSize(url: string) {
+		return this.queue.add(async () => {
+			const response = await fetch(url)
+
+			if (!response.ok) {
+				return null
+			}
+
+			const buffer = await response.buffer()
+			const { width, height } = imageSize(buffer)
+
+			return width !== undefined && height !== undefined ? { width, height } : null
+		})
 	}
 
 	async getArticles(): Promise<Article[]> {
@@ -63,21 +81,22 @@ class VarlamovClient {
 
 		const images = textEl.find('img').toArray()
 
-		for (const image of images) {
-			const img = $(image)
-			const src = img.attr('src')
+		await Promise.all(
+			images.map(async image => {
+				const img = $(image)
+				const src = img.attr('src')
 
-			if (src) {
-				const response = await fetch(src)
-				if (response.ok) {
-					const buffer = await response.buffer()
-					const dimensions = imageSize(buffer)
-					img.replaceWith(() =>
-						$(`<span>![${dimensions.width}x${dimensions.height}](${src})</span>`),
-					)
+				if (src) {
+					const dimensions = await this.getImageSize(src)
+
+					if (dimensions) {
+						img.replaceWith(() =>
+							$(`<span>![${dimensions.width}x${dimensions.height}](${src})</span>`),
+						)
+					}
 				}
-			}
-		}
+			}),
+		)
 
 		const text = textEl.text().trim()
 		const title = $('.j-e-title').text()
