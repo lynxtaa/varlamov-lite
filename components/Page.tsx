@@ -12,7 +12,7 @@ export default function Page({ initialData }: Props) {
 		<div className={styles.page}>
 			{initialData.map(article => (
 				<h3 key={article.id} className={styles.article}>
-					<Link href={`/blog/${encodeURIComponent(article.id)}`}>{article.title}</Link>
+					<Link href={`/blog/${article.id}`}>{article.title}</Link>
 				</h3>
 			))}
 		</div>

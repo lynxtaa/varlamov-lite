@@ -1,0 +1,20 @@
+@keyframes spinZ {
+	from {
+		transform: rotateZ(0deg);
+	}
+	to {
+		transform: rotateZ(360deg);
+	}
+}
+
+.Spinner {
+	display: flex;
+}
+
+.Spinner svg {
+	animation: spinZ 10s infinite linear;
+	min-height: calc(100vh - 40px);
+	align-self: center;
+	justify-self: center;
+	margin: auto;
+}

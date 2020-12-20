@@ -6,4 +6,13 @@ module.exports = {
 	images: {
 		domains: ['varlamov.me'],
 	},
+	async redirects() {
+		return [
+			{
+				source: '/:id.html',
+				destination: '/blog/:id',
+				permanent: true,
+			},
+		]
+	},
 }

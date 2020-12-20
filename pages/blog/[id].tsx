@@ -1,6 +1,8 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { useRouter } from 'next/router'
 
 import Article from '../../components/Article'
+import Spinner from '../../components/Spinner'
 import { varlamovClient, ArticleWithText } from '../../lib/varlamovClient'
 
 type Props = {
@@ -8,13 +10,19 @@ type Props = {
 }
 
 export default function Post({ article }: Props) {
+	const router = useRouter()
+
+	if (router.isFallback) {
+		return <Spinner />
+	}
+
 	return <Article {...article} />
 }
 
 export const getStaticPaths: GetStaticPaths = async function () {
 	const articles = await varlamovClient.getArticles()
 	const paths = articles.map(article => ({ params: { id: String(article.id) } }))
-	return { paths, fallback: false }
+	return { paths, fallback: true }
 }
 
 export const getStaticProps: GetStaticProps<Props> = async function ({ params }) {
