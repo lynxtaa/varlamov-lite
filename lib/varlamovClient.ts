@@ -59,8 +59,17 @@ class VarlamovClient {
 
 		const textEl = $('#entrytext')
 		textEl.find('br').replaceWith('\n')
+		textEl.find('img').replaceWith(function () {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			const el = $(this) as cheerio.Cheerio
+			const src = el.attr('src')
+			const alt = el.attr('alt')
 
-		const text = textEl.text()
+			return src ? $(`<span>![${alt || ''}](${src})</span>`) : el
+		})
+
+		const text = textEl.text().trim()
 		const title = $('.j-e-title').text()
 
 		return { id, title, text }
