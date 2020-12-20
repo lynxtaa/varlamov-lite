@@ -1,6 +1,7 @@
 import { URL } from 'url'
 
 import cheerio from 'cheerio'
+import imageSize from 'image-size'
 import fetch from 'node-fetch'
 
 export type Article = {
@@ -59,15 +60,24 @@ class VarlamovClient {
 
 		const textEl = $('#entrytext')
 		textEl.find('br').replaceWith('\n')
-		textEl.find('img').replaceWith(function () {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			const el = $(this) as cheerio.Cheerio
-			const src = el.attr('src')
-			const alt = el.attr('alt')
 
-			return src ? $(`<span>![${alt || ''}](${src})</span>`) : el
-		})
+		const images = textEl.find('img').toArray()
+
+		for (const image of images) {
+			const img = $(image)
+			const src = img.attr('src')
+
+			if (src) {
+				const response = await fetch(src)
+				if (response.ok) {
+					const buffer = await response.buffer()
+					const dimensions = imageSize(buffer)
+					img.replaceWith(() =>
+						$(`<span>![${dimensions.width}x${dimensions.height}](${src})</span>`),
+					)
+				}
+			}
+		}
 
 		const text = textEl.text().trim()
 		const title = $('.j-e-title').text()

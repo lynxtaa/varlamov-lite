@@ -16,7 +16,7 @@ export default function Article({ title, text }: Props) {
 		const pattern = /(!\[.*\]\(http.+\))/g
 
 		return text.split(pattern).map((part, index) => {
-			const linkPattern = /!\[(?<alt>.*)\]\((?<src>http.+)\)/
+			const linkPattern = /!\[(?<width>\d+)x(?<height>\d+)\]\((?<src>http.+)\)/
 			const match = part.match(linkPattern)
 
 			if (match?.groups) {
@@ -24,9 +24,9 @@ export default function Article({ title, text }: Props) {
 					<Image
 						key={index}
 						src={match.groups.src}
-						alt={match.groups.alt}
-						width={1000}
-						height={600}
+						alt=""
+						width={match.groups.width}
+						height={match.groups.height}
 						className={styles.Image}
 					/>
 				)
