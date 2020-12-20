@@ -1,7 +1,6 @@
-import Link from 'next/link'
-
 import { Article } from '../lib/varlamovClient'
 
+import Link from './Link'
 import styles from './Page.module.css'
 
 type Props = {
@@ -13,9 +12,7 @@ export default function Page({ initialData }: Props) {
 		<div className={styles.page}>
 			{initialData.map(article => (
 				<h3 key={article.id} className={styles.article}>
-					<Link href={`/blog/${encodeURIComponent(article.id)}`}>
-						<a>{article.title}</a>
-					</Link>
+					<Link href={`/blog/${encodeURIComponent(article.id)}`}>{article.title}</Link>
 				</h3>
 			))}
 		</div>

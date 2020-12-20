@@ -1,3 +1,7 @@
 .Article {
 	white-space: pre-wrap;
 }
+
+.Image {
+	margin-top: 0.4em !important;
+}

@@ -1,8 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useMemo, Fragment } from 'react'
+import { ArrowLeft } from 'react-feather'
 
 import styles from './Article.module.css'
+import Link from './Link'
 
 type Props = {
 	title: string
@@ -14,7 +16,7 @@ export default function Article({ title, text }: Props) {
 		const pattern = /(!\[.*\]\(http.+\))/g
 
 		return text.split(pattern).map((part, index) => {
-			const linkPattern = /!(?<alt>\[.*\])\((?<src>http.+)\)/
+			const linkPattern = /!\[(?<alt>.*)\]\((?<src>http.+)\)/
 			const match = part.match(linkPattern)
 
 			if (match?.groups) {
@@ -25,6 +27,7 @@ export default function Article({ title, text }: Props) {
 						alt={match.groups.alt}
 						width={1000}
 						height={600}
+						className={styles.Image}
 					/>
 				)
 			}
@@ -35,9 +38,13 @@ export default function Article({ title, text }: Props) {
 
 	return (
 		<article className={styles.Article}>
+			<Link href="/">
+				<ArrowLeft />
+			</Link>
 			<Head>
 				<title>{title}</title>
 			</Head>
+			<h1>{title}</h1>
 			{textWithImages}
 		</article>
 	)
