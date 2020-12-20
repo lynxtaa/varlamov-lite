@@ -1,0 +1,12 @@
+.article {
+	font-weight: normal;
+}
+
+.article a {
+	color: var(--textColor);
+	text-decoration: none;
+}
+
+.article a:hover {
+	text-decoration: underline;
+}

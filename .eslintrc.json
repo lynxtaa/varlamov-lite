@@ -1,0 +1,18 @@
+{
+	"extends": [
+		"react-app",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript"
+	],
+	"rules": {
+		"react/react-in-jsx-scope": "off",
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"import/order": [
+			"warn",
+			{ "alphabetize": { "order": "asc" }, "newlines-between": "always" }
+		],
+		"import/newline-after-import": "warn"
+	}
+}
