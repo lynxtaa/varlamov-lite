@@ -1,3 +1,5 @@
+import { format as formatDate, parseISO } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useMemo } from 'react'
@@ -12,7 +14,7 @@ import Link from './Link'
 
 type Props = ArticleFull
 
-export default function Article({ tags, title, text }: Props) {
+export default function Article({ createdAt, tags, title, text }: Props) {
 	const textWithImagesAndLinks = useMemo(() => {
 		const renderers: { [nodeType: string]: React.ElementType } = {
 			image({ alt, src }) {
@@ -68,6 +70,9 @@ export default function Article({ tags, title, text }: Props) {
 			<Head>
 				<title>{title}</title>
 			</Head>
+			{createdAt && (
+				<time>{formatDate(parseISO(createdAt), 'd MMMM yyyy', { locale: ru })}</time>
+			)}
 			<h1>{title}</h1>
 			<div className={styles.text}>{textWithImagesAndLinks}</div>
 			<div className={styles.tags}>

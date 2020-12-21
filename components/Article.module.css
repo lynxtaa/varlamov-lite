@@ -6,6 +6,11 @@
 	margin-top: 0;
 }
 
+.Article time {
+	display: block;
+	margin-bottom: 0.2rem;
+}
+
 .imageWrap {
 	margin: 0.3rem 0;
 }

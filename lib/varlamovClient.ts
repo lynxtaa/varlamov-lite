@@ -1,6 +1,8 @@
 import { URL, URLSearchParams } from 'url'
 
 import cheerio from 'cheerio'
+import { parse as parseDate, isValid } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import fetch from 'node-fetch'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
@@ -8,6 +10,7 @@ import probeImageSize from 'probe-image-size'
 export type Article = {
 	id: number
 	title: string
+	createdAt: string | null
 }
 
 export type ArticleFull = Article & { text: string; tags: string[] }
@@ -46,6 +49,20 @@ class VarlamovClient {
 		)
 	}
 
+	private parseDate(el: cheerio.Cheerio): Date | null {
+		const text = el.text().trim()
+
+		for (const format of ['d MMMM yyyy, HH:mm', 'd MMMM yyyy']) {
+			const date = parseDate(text, format, new Date(), { locale: ru })
+
+			if (isValid(date)) {
+				return date
+			}
+		}
+
+		return null
+	}
+
 	async getArticles({
 		pageNum,
 		tag,
@@ -76,9 +93,19 @@ class VarlamovClient {
 					titleLink.attr('href') || '',
 				)
 
-				return match?.groups
-					? [{ id: Number(match.groups.id), title: titleLink.text() }]
-					: []
+				if (!match?.groups) {
+					return []
+				}
+
+				const createdAt = this.parseDate($('time[itemprop="dateCreated"]', el))
+
+				return [
+					{
+						id: Number(match.groups.id),
+						createdAt: createdAt ? createdAt.toISOString() : null,
+						title: titleLink.text(),
+					},
+				]
 			})
 
 		return articles
@@ -129,13 +156,20 @@ class VarlamovClient {
 		}
 
 		const text = textEl.text().trim()
-		const title = $('.j-e-title').text()
+		const title = $('.j-e-title').text().trim()
+		const createdAt = this.parseDate($('time[itemprop="dateCreated"]').first())
 
 		const tags = $('.j-e-tags-item')
 			.toArray()
 			.map(el => $(el).text().trim())
 
-		return { id, title, tags, text }
+		return {
+			id,
+			title,
+			tags,
+			text,
+			createdAt: createdAt ? createdAt.toISOString() : null,
+		}
 	}
 }
 
