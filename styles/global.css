@@ -43,3 +43,27 @@ body {
 	outline: none;
 	box-shadow: none;
 }
+
+#nprogress {
+	pointer-events: none;
+}
+
+#nprogress .bar {
+	position: fixed;
+	z-index: 2000;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: var(--textColor);
+}
+
+#nprogress::after {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: transparent;
+}
