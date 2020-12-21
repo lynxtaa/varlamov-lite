@@ -1,9 +1,9 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
-import Page from '../components/Page'
-import Spinner from '../components/Spinner'
-import { Article, varlamovClient } from '../lib/varlamovClient'
+import Page from '../../components/Page'
+import Spinner from '../../components/Spinner'
+import { Article, varlamovClient } from '../../lib/varlamovClient'
 
 type Props = {
 	initialData: Article[]

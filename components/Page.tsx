@@ -18,11 +18,14 @@ export default function Page({ initialData }: Props) {
 	return (
 		<div className={styles.Page}>
 			<div className={styles.arrows}>
-				<Link href={`/${pageNum + 1}`} title="Предыдущие статьи">
+				<Link href={`/page/${pageNum + 1}`} title="Предыдущие статьи">
 					<ArrowLeft />
 				</Link>
 				{pageNum > 1 ? (
-					<Link href={pageNum > 2 ? `/${pageNum - 1}` : '/'} title="Следующие статьи">
+					<Link
+						href={pageNum > 2 ? `/page/${pageNum - 1}` : '/'}
+						title="Следующие статьи"
+					>
 						<ArrowRight />
 					</Link>
 				) : (
