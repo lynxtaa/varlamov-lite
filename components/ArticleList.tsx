@@ -3,14 +3,14 @@ import { ArrowLeft, ArrowRight } from 'react-feather'
 
 import { Article } from '../lib/varlamovClient'
 
+import styles from './ArticleList.module.css'
 import Link from './Link'
-import styles from './Page.module.css'
 
 type Props = {
 	initialData: Article[]
 }
 
-export default function Page({ initialData }: Props) {
+export default function ArticleList({ initialData }: Props) {
 	const router = useRouter()
 
 	const pageNum = Number(router.query.pageNum) || 1
@@ -23,7 +23,7 @@ export default function Page({ initialData }: Props) {
 		pageNum > 1 ? (pageNum > 2 ? `${pathname}page/${pageNum - 1}` : pathname) : null
 
 	return (
-		<div className={styles.Page}>
+		<div className={styles.ArticleList}>
 			{tag && <h1 className={styles.tag}>{tag}</h1>}
 			<div className={styles.arrows}>
 				<Link href={prevPage} title="Предыдущие статьи">

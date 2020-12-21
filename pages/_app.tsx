@@ -3,7 +3,6 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Router } from 'next/router'
 import nprogress from 'nprogress'
-import { StrictMode } from 'react'
 
 import 'focus-visible'
 
@@ -27,7 +26,7 @@ Router.events.on('routeChangeError', () => {
 })
 
 const App = ({ Component, pageProps }: AppProps) => (
-	<StrictMode>
+	<>
 		<Head>
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,7 +46,7 @@ const App = ({ Component, pageProps }: AppProps) => (
 			<title>Varlamov</title>
 		</Head>
 		<Component {...pageProps} />
-	</StrictMode>
+	</>
 )
 
 export default App

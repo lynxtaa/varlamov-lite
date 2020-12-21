@@ -40,7 +40,8 @@ export default function Article({ tags, title, text }: Props) {
 		<article className={styles.Article}>
 			<div className={styles.backArrow}>
 				<Link href="/">
-					<ArrowLeft /> <span style={{ verticalAlign: 'top' }}>на главную</span>
+					<ArrowLeft />
+					<span>на главную</span>
 				</Link>
 			</div>
 			<Head>

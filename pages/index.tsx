@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next'
 
-import Page from '../components/Page'
+import ArticleList from '../components/ArticleList'
 import { Article, varlamovClient } from '../lib/varlamovClient'
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 }
 
 export default function Home({ initialData }: Props) {
-	return <Page initialData={initialData} />
+	return <ArticleList initialData={initialData} />
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {

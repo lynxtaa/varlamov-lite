@@ -20,6 +20,24 @@
 	padding: 1rem 0;
 }
 
+.backArrow a {
+	display: flex;
+	align-items: center;
+}
+
+.backArrow svg {
+	width: 24px;
+	height: 24px;
+	margin-right: 0.4rem;
+}
+
+@media (min-width: 576px) {
+	.backArrow svg {
+		width: 27px;
+		height: 27px;
+	}
+}
+
 .tags {
 	display: flex;
 	flex-wrap: wrap;

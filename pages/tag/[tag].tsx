@@ -1,7 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
-import Page from '../../components/Page'
+import ArticleList from '../../components/ArticleList'
 import Spinner from '../../components/Spinner'
 import { assert } from '../../lib/assert'
 import { Article, varlamovClient } from '../../lib/varlamovClient'
@@ -17,7 +17,7 @@ export default function Tag({ initialData }: Props) {
 		return <Spinner />
 	}
 
-	return <Page initialData={initialData} />
+	return <ArticleList initialData={initialData} />
 }
 
 export const getStaticPaths: GetStaticPaths = async () => ({

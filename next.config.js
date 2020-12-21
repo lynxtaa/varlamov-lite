@@ -9,4 +9,5 @@ module.exports = {
 	async redirects() {
 		return [{ source: '/:id.html', destination: '/blog/:id', permanent: true }]
 	},
+	reactStrictMode: true,
 }
