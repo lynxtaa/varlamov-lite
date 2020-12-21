@@ -10,7 +10,7 @@ type Props = {
 	initialData: Article[]
 }
 
-export default function PageNum({ initialData }: Props) {
+export default function Tag({ initialData }: Props) {
 	const router = useRouter()
 
 	if (router.isFallback) {
@@ -21,7 +21,7 @@ export default function PageNum({ initialData }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => ({
-	paths: [{ params: { pageNum: '2' } }],
+	paths: [],
 	fallback: true,
 })
 
@@ -29,11 +29,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 	assert(params, 'params must be defined')
 
 	const initialData = await varlamovClient.getArticles({
-		pageNum: Number(params.pageNum),
+		pageNum: 1,
+		tag: String(params.tag),
 	})
 
 	return {
 		props: { initialData },
-		revalidate: 30 * 60, // every 30 minutes
+		revalidate: 6 * 60 * 60, // every 6 hours
 	}
 }

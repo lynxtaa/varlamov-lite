@@ -10,7 +10,7 @@ export type Article = {
 	title: string
 }
 
-export type ArticleWithText = Article & { text: string }
+export type ArticleFull = Article & { text: string; tags: string[] }
 
 class VarlamovClient {
 	endpoint: URL
@@ -46,15 +46,23 @@ class VarlamovClient {
 		)
 	}
 
-	async getArticles({ pageNum }: { pageNum: number }): Promise<Article[]> {
-		const qs =
-			pageNum > 1
-				? `?${new URLSearchParams({
-						skip: String((pageNum - 1) * this.pageSize),
-				  })}`
-				: ''
+	async getArticles({
+		pageNum,
+		tag,
+	}: {
+		pageNum: number
+		tag?: string
+	}): Promise<Article[]> {
+		const qs = new URLSearchParams()
 
-		const html = await this.getHtml(`/${qs}`)
+		if (tag) {
+			qs.append('tag', tag)
+		}
+		if (pageNum > 1) {
+			qs.append('skip', String((pageNum - 1) * this.pageSize))
+		}
+
+		const html = await this.getHtml(`/?${qs.toString()}`)
 
 		const $ = cheerio.load(html)
 
@@ -76,7 +84,7 @@ class VarlamovClient {
 		return articles
 	}
 
-	async getArticle(id: number): Promise<ArticleWithText> {
+	async getArticle(id: number): Promise<ArticleFull> {
 		const html = await this.getHtml(`/${id}.html`)
 
 		const $ = cheerio.load(html)
@@ -106,7 +114,11 @@ class VarlamovClient {
 		const text = textEl.text().trim()
 		const title = $('.j-e-title').text()
 
-		return { id, title, text }
+		const tags = $('.j-e-tags-item')
+			.toArray()
+			.map(el => $(el).text().trim())
+
+		return { id, title, tags, text }
 	}
 }
 

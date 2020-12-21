@@ -3,15 +3,14 @@ import Image from 'next/image'
 import { useMemo, Fragment } from 'react'
 import { ArrowLeft } from 'react-feather'
 
+import { ArticleFull } from '../lib/varlamovClient'
+
 import styles from './Article.module.css'
 import Link from './Link'
 
-type Props = {
-	title: string
-	text: string
-}
+type Props = ArticleFull
 
-export default function Article({ title, text }: Props) {
+export default function Article({ tags, title, text }: Props) {
 	const textWithImages: JSX.Element[] = useMemo(() => {
 		const pattern = /(!\[.*\]\(http.+\))/g
 
@@ -48,6 +47,13 @@ export default function Article({ title, text }: Props) {
 			</Head>
 			<h1>{title}</h1>
 			<div className={styles.text}>{textWithImages}</div>
+			<div className={styles.tags}>
+				{tags.map(tag => (
+					<Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}>
+						{tag}
+					</Link>
+				))}
+			</div>
 		</article>
 	)
 }

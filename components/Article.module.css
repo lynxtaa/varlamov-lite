@@ -13,8 +13,29 @@
 .text {
 	white-space: pre-wrap;
 	line-height: 1.5;
+	margin-bottom: 1rem;
 }
 
 .backArrow {
 	padding: 1rem 0;
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.tags a {
+	font-size: 0.9rem;
+	background: var(--bg);
+	color: var(--textColor);
+	padding: 0.5rem 0.75rem;
+	border-radius: 0.25rem;
+	border: thin solid #3b3b3b;
+	margin-bottom: 0.8rem;
+}
+
+.tags a:not(:last-child) {
+	margin-right: 1rem;
+	display: inline-block;
 }

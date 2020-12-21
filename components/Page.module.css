@@ -5,6 +5,10 @@
 	padding: 1rem;
 }
 
+.tag {
+	padding-left: 1rem;
+}
+
 .article {
 	font-weight: normal;
 	margin-top: 0;

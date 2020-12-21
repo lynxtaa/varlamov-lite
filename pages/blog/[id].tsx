@@ -3,10 +3,11 @@ import { useRouter } from 'next/router'
 
 import Article from '../../components/Article'
 import Spinner from '../../components/Spinner'
-import { varlamovClient, ArticleWithText } from '../../lib/varlamovClient'
+import { assert } from '../../lib/assert'
+import { varlamovClient, ArticleFull } from '../../lib/varlamovClient'
 
 type Props = {
-	article: ArticleWithText
+	article: ArticleFull
 }
 
 export default function Post({ article }: Props) {
@@ -32,8 +33,8 @@ export const getStaticPaths: GetStaticPaths = async function () {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async function ({ params }) {
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	const articleWithText = await varlamovClient.getArticle(Number(params!.id))
+	assert(params, 'params must be defined')
+	const ArticleFull = await varlamovClient.getArticle(Number(params.id))
 
-	return { props: { article: articleWithText } }
+	return { props: { article: ArticleFull } }
 }
