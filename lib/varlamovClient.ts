@@ -20,7 +20,7 @@ class VarlamovClient {
 	constructor({ endpoint, pageSize = 19 }: { endpoint: string; pageSize?: number }) {
 		this.endpoint = new URL(endpoint)
 		this.pageSize = pageSize
-		this.queue = new PQueue({ interval: 1000, intervalCap: 3 })
+		this.queue = new PQueue({ concurrency: 5 })
 	}
 
 	private async getHtml(path: string) {
@@ -35,7 +35,7 @@ class VarlamovClient {
 		return html
 	}
 
-	private async getImageSize(url: string) {
+	private getImageSize(url: string) {
 		return this.queue.add(async () => {
 			const response = await fetch(url)
 
