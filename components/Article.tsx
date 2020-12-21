@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useMemo, Fragment } from 'react'
-import { Home } from 'react-feather'
+import { ArrowLeft } from 'react-feather'
 
 import styles from './Article.module.css'
 import Link from './Link'
@@ -40,7 +40,7 @@ export default function Article({ title, text }: Props) {
 		<article className={styles.Article}>
 			<div className={styles.backArrow}>
 				<Link href="/">
-					<Home />
+					<ArrowLeft /> <span style={{ verticalAlign: 'top' }}>на главную</span>
 				</Link>
 			</div>
 			<Head>
