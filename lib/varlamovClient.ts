@@ -36,7 +36,14 @@ class VarlamovClient {
 	}
 
 	private getImageSize(url: string) {
-		return this.queue.add(() => probeImageSize(url).catch(() => null))
+		return this.queue.add(() =>
+			probeImageSize(encodeURI(url)).catch(err => {
+				if (process.env.NODE_ENV === 'development') {
+					console.warn(err)
+				}
+				return null
+			}),
+		)
 	}
 
 	async getArticles({ pageNum }: { pageNum: number }): Promise<Article[]> {
