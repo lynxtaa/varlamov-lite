@@ -20,18 +20,19 @@ export default function Article({ tags, title, text }: Props) {
 
 			if (match?.groups) {
 				return (
-					<Image
-						key={index}
-						src={match.groups.src}
-						alt=""
-						width={match.groups.width}
-						height={match.groups.height}
-						className={styles.Image}
-					/>
+					<div key={index} className={styles.imageWrap}>
+						<Image
+							src={match.groups.src}
+							alt=""
+							width={match.groups.width}
+							height={match.groups.height}
+							className={styles.Image}
+						/>
+					</div>
 				)
 			}
 
-			return <Fragment key={index}>{part}</Fragment>
+			return <Fragment key={index}>{part.trim()}</Fragment>
 		})
 	}, [text])
 
