@@ -1,9 +1,9 @@
 import { URL, URLSearchParams } from 'url'
 
 import cheerio from 'cheerio'
-import imageSize from 'image-size'
 import fetch from 'node-fetch'
 import PQueue from 'p-queue'
+import probeImageSize from 'probe-image-size'
 
 export type Article = {
 	id: number
@@ -36,18 +36,7 @@ class VarlamovClient {
 	}
 
 	private getImageSize(url: string) {
-		return this.queue.add(async () => {
-			const response = await fetch(url)
-
-			if (!response.ok) {
-				return null
-			}
-
-			const buffer = await response.buffer()
-			const { width, height } = imageSize(buffer)
-
-			return width !== undefined && height !== undefined ? { width, height } : null
-		})
+		return this.queue.add(() => probeImageSize(url).catch(() => null))
 	}
 
 	async getArticles({ pageNum }: { pageNum: number }): Promise<Article[]> {
