@@ -19,9 +19,15 @@ export default function Post({ article }: Props) {
 	return <Article {...article} />
 }
 
+const NUM_ARTICLES_TO_PRERENDER = 5
+
 export const getStaticPaths: GetStaticPaths = async function () {
 	const articles = await varlamovClient.getArticles({ pageNum: 1 })
-	const paths = articles.map(article => ({ params: { id: String(article.id) } }))
+
+	const paths = articles
+		.slice(0, NUM_ARTICLES_TO_PRERENDER)
+		.map(article => ({ params: { id: String(article.id) } }))
+
 	return { paths, fallback: true }
 }
 
