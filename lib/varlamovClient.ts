@@ -96,10 +96,8 @@ class VarlamovClient {
 		// поэтому переносы строк после img не нужны
 		textEl.find('img + br').remove()
 
-		// Удалим странные пустые ссылки
-		textEl.find('a:not(a[href])').remove()
-
-		textEl.find('br + br + br').remove()
+		// Удалим странные пустые ссылки, фреймы
+		textEl.find('a:not(a[href]), iframe').remove()
 
 		textEl.find('br').replaceWith('\n')
 
