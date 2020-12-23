@@ -85,11 +85,22 @@ class VarlamovClient {
 	}
 
 	async getArticle(id: number): Promise<ArticleFull> {
-		const html = await this.getHtml(`/${id}.html`)
+		let html = await this.getHtml(`/${id}.html`)
+		html = html.replace(/\n/g, '')
 
 		const $ = cheerio.load(html)
 
 		const textEl = $('#entrytext')
+
+		// На фронте img будет завёрнут в div и станет блочным элементом,
+		// поэтому переносы строк после img не нужны
+		textEl.find('img + br').remove()
+
+		// Удалим странные пустые ссылки
+		textEl.find('a:not(a[href])').remove()
+
+		textEl.find('br + br + br').remove()
+
 		textEl.find('br').replaceWith('\n')
 
 		const images = textEl.find('img').toArray()
@@ -110,6 +121,14 @@ class VarlamovClient {
 				}
 			}),
 		)
+
+		for (const link of textEl.find('a').toArray()) {
+			const linkEl = $(link)
+			const href = linkEl.attr('href')
+			if (href) {
+				linkEl.replaceWith(`<span>[${linkEl.text()}](${href})</span>`)
+			}
+		}
 
 		const text = textEl.text().trim()
 		const title = $('.j-e-title').text()
