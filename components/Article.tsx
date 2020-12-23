@@ -6,6 +6,7 @@ import { ArrowLeft } from 'react-feather'
 import { ArticleFull } from '../lib/varlamovClient'
 
 import styles from './Article.module.css'
+import Icon from './Icon'
 import Link from './Link'
 
 type Props = ArticleFull
@@ -40,7 +41,7 @@ export default function Article({ tags, title, text }: Props) {
 		<article className={styles.Article}>
 			<div className={styles.backArrow}>
 				<Link href="/">
-					<ArrowLeft />
+					<Icon icon={<ArrowLeft />} size={2} />
 					<span>на главную</span>
 				</Link>
 			</div>

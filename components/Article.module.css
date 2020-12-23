@@ -21,21 +21,12 @@
 }
 
 .backArrow a {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 }
 
-.backArrow svg {
-	width: 24px;
-	height: 24px;
-	margin-right: 0.4rem;
-}
-
-@media (min-width: 576px) {
-	.backArrow svg {
-		width: 27px;
-		height: 27px;
-	}
+.backArrow span {
+	margin-left: 0.4rem;
 }
 
 .tags {

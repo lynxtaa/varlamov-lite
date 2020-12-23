@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from 'react-feather'
 import { Article } from '../lib/varlamovClient'
 
 import styles from './ArticleList.module.css'
+import Icon from './Icon'
 import Link from './Link'
 
 type Props = {
@@ -27,11 +28,11 @@ export default function ArticleList({ initialData }: Props) {
 			{tag && <h1 className={styles.tag}>{tag}</h1>}
 			<div className={styles.arrows}>
 				<Link href={prevPage} title="Предыдущие статьи">
-					<ArrowLeft />
+					<Icon icon={<ArrowLeft />} size={1.7} />
 				</Link>
 				{nextPage ? (
 					<Link href={nextPage} title="Следующие статьи">
-						<ArrowRight />
+						<Icon icon={<ArrowRight />} size={1.7} />
 					</Link>
 				) : (
 					<span style={{ opacity: 0.5 }}>
