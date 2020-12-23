@@ -43,6 +43,15 @@ export default function Article({ tags, title, text }: Props) {
 					</Link>
 				)
 			},
+			list: ({ children }) => children,
+			listItem: ({ children, ordered, index }) =>
+				ordered && typeof index === 'number' ? (
+					<>
+						{index + 1}. {children}
+					</>
+				) : (
+					children
+				),
 		}
 
 		return <ReactMarkdown renderers={renderers}>{text}</ReactMarkdown>
