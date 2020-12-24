@@ -1,11 +1,16 @@
 .ArticleList {
-	max-width: 28rem;
+	max-width: 30rem;
 	padding-top: 1.5rem;
 }
 
 .article {
 	font-weight: normal;
 	margin-bottom: 1.5rem;
+	padding: 0 1rem;
+}
+
+.tag {
+	padding: 0 1rem;
 }
 
 .article a {
@@ -25,5 +30,5 @@
 
 .arrows a:first-child,
 .arrows > span {
-	margin-right: 1.5rem;
+	margin-right: 1.7rem;
 }
