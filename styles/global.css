@@ -26,10 +26,17 @@ body,
 	margin: 0 auto;
 }
 
-body {
+:root {
 	--bg: #0d1117;
 	--textColor: #c9d1d9;
+}
 
+:root.light {
+	--bg: #f3f3f3;
+	--textColor: #333333;
+}
+
+body {
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue',
 		Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 	-webkit-font-smoothing: antialiased;

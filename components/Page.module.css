@@ -1,0 +1,15 @@
+.Page {
+	margin: 0 auto;
+	padding: 1rem;
+}
+
+.themeButton {
+	z-index: 1;
+	background: none;
+	color: var(--textColor);
+	border: none;
+	position: fixed;
+	right: 1rem;
+	top: 1rem;
+	padding: 0;
+}

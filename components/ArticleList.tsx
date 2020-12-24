@@ -6,6 +6,7 @@ import { Article } from '../lib/varlamovClient'
 import styles from './ArticleList.module.css'
 import Icon from './Icon'
 import Link from './Link'
+import Page from './Page'
 
 type Props = {
 	initialData: Article[]
@@ -24,27 +25,28 @@ export default function ArticleList({ initialData }: Props) {
 		pageNum > 1 ? (pageNum > 2 ? `${pathname}page/${pageNum - 1}` : pathname) : null
 
 	return (
-		<div className={styles.ArticleList}>
+		<Page className={styles.ArticleList}>
 			{tag && <h1 className={styles.tag}>{tag}</h1>}
+			{initialData.map(article => (
+				<h3 key={article.id} className={styles.article}>
+					<Link href={`/blog/${article.id}`}>{article.title}</Link>
+				</h3>
+			))}
 			<div className={styles.arrows}>
 				<Link href={prevPage} title="Предыдущие статьи">
 					<Icon icon={<ArrowLeft />} size={1.7} />
 				</Link>
+				<span>{pageNum}</span>
 				{nextPage ? (
 					<Link href={nextPage} title="Следующие статьи">
 						<Icon icon={<ArrowRight />} size={1.7} />
 					</Link>
 				) : (
 					<span style={{ opacity: 0.5 }}>
-						<ArrowRight />
+						<Icon icon={<ArrowRight />} size={1.7} />
 					</span>
 				)}
 			</div>
-			{initialData.map(article => (
-				<h3 key={article.id} className={styles.article}>
-					<Link href={`/blog/${article.id}`}>{article.title}</Link>
-				</h3>
-			))}
-		</div>
+		</Page>
 	)
 }

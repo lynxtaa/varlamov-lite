@@ -1,6 +1,5 @@
 import { format as formatDate, parseISO } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import Head from 'next/head'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { ArrowLeft } from 'react-feather'
@@ -11,6 +10,7 @@ import { ArticleFull } from '../lib/varlamovClient'
 import styles from './Article.module.css'
 import Icon from './Icon'
 import Link from './Link'
+import Page from './Page'
 
 type Props = ArticleFull
 
@@ -60,16 +60,13 @@ export default function Article({ createdAt, tags, title, text }: Props) {
 	}, [text])
 
 	return (
-		<article className={styles.Article}>
+		<Page className={styles.Article} title={title}>
 			<div className={styles.backArrow}>
 				<Link href="/">
 					<Icon icon={<ArrowLeft />} size={2} />
 					<span>на главную</span>
 				</Link>
 			</div>
-			<Head>
-				<title>{title}</title>
-			</Head>
 			{createdAt && (
 				<time>{formatDate(parseISO(createdAt), 'd MMMM yyyy', { locale: ru })}</time>
 			)}
@@ -82,6 +79,6 @@ export default function Article({ createdAt, tags, title, text }: Props) {
 					</Link>
 				))}
 			</div>
-		</article>
+		</Page>
 	)
 }
