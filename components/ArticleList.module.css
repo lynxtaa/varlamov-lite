@@ -1,6 +1,9 @@
 .ArticleList {
 	max-width: 30rem;
-	padding-top: 1.5rem;
+}
+
+div.ArticleList {
+	padding-bottom: 0;
 }
 
 .article {
@@ -23,12 +26,19 @@
 }
 
 .arrows {
-	margin-top: 2rem;
 	display: flex;
 	align-items: center;
+	position: sticky;
+	bottom: 0;
+	background: var(--bg);
+	padding: 1rem 0;
 }
 
-.arrows a:first-child,
-.arrows > span {
+.arrows a:first-child {
+	margin-left: auto;
+	margin-right: 1.7rem;
+}
+
+.pageNum {
 	margin-right: 1.7rem;
 }

@@ -24,6 +24,9 @@ export default function ArticleList({ initialData }: Props) {
 	const nextPage =
 		pageNum > 1 ? (pageNum > 2 ? `${pathname}page/${pageNum - 1}` : pathname) : null
 
+	const rightIcon = <Icon icon={<ArrowRight />} size={1.7} />
+	const leftIcon = <Icon icon={<ArrowLeft />} size={1.7} />
+
 	return (
 		<Page className={styles.ArticleList}>
 			{tag && <h1 className={styles.tag}>{tag}</h1>}
@@ -39,20 +42,18 @@ export default function ArticleList({ initialData }: Props) {
 			<div className={styles.arrows}>
 				{prevPage ? (
 					<Link href={prevPage} title="Предыдущая страница">
-						<Icon icon={<ArrowLeft />} size={1.7} />
+						{leftIcon}
 					</Link>
 				) : (
-					<span style={{ opacity: 0.5 }}>
-						<Icon icon={<ArrowLeft />} size={1.7} />
-					</span>
+					<span style={{ opacity: 0.5 }}>{leftIcon}</span>
 				)}
-				{nextPage && (
-					<>
-						<span>{pageNum}</span>
-						<Link href={nextPage} title="Следующая страница">
-							<Icon icon={<ArrowRight />} size={1.7} />
-						</Link>
-					</>
+				<span className={styles.pageNum}>{pageNum}</span>
+				{nextPage ? (
+					<Link href={nextPage} title="Следующая страница">
+						{rightIcon}
+					</Link>
+				) : (
+					<span style={{ opacity: 0.5 }}>{rightIcon}</span>
 				)}
 			</div>
 		</Page>
