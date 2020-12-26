@@ -24,6 +24,8 @@ export default function Article({
 }: Props) {
 	const textWithImagesAndLinks = useMemo(() => {
 		const renderers: { [nodeType: string]: React.ElementType } = {
+			code: ({ value }) => <pre>{value.trim()}</pre>,
+
 			image({ alt, src }) {
 				const [width, height] = alt.split('x')
 
@@ -39,6 +41,7 @@ export default function Article({
 					</div>
 				)
 			},
+
 			link({ href, children }) {
 				const matchHref = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/)
 
@@ -52,7 +55,9 @@ export default function Article({
 					</Link>
 				)
 			},
+
 			list: ({ children }) => children,
+
 			listItem: ({ children, ordered, index }) =>
 				ordered && typeof index === 'number' ? (
 					<>

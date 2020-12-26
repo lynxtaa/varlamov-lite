@@ -16,6 +16,10 @@
 	margin-bottom: 1rem;
 }
 
+.text pre {
+	white-space: pre-wrap;
+}
+
 .backArrow {
 	padding: 1rem 0;
 }
