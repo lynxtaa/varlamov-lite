@@ -3,17 +3,23 @@ import { URL, URLSearchParams } from 'url'
 import cheerio from 'cheerio'
 import { parse as parseDate, isValid } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import truncate from 'lodash.truncate'
 import fetch from 'node-fetch'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
 
-export type Article = {
+export interface Article {
 	id: number
 	title: string
 	createdAt: string | null
 }
 
-export type ArticleFull = Article & { text: string; tags: string[] }
+export interface ArticleFull extends Article {
+	previewImageUrl: string | null
+	excerpt: string
+	text: string
+	tags: string[]
+}
 
 class VarlamovClient {
 	endpoint: URL
@@ -119,6 +125,8 @@ class VarlamovClient {
 
 		const textEl = $('#entrytext')
 
+		const excerpt = truncate(textEl.text().trim(), { length: 100 })
+
 		// На фронте img будет завёрнут в div и станет блочным элементом,
 		// поэтому переносы строк после img не нужны
 		textEl.find('img + br').remove()
@@ -129,6 +137,10 @@ class VarlamovClient {
 		textEl.find('br').replaceWith('\n')
 
 		const images = textEl.find('img').toArray()
+
+		const [firstImage] = images
+
+		const previewImageUrl = firstImage ? $(firstImage).attr('src') : undefined
 
 		await Promise.all(
 			images.map(async image => {
@@ -165,6 +177,8 @@ class VarlamovClient {
 
 		return {
 			id,
+			excerpt,
+			previewImageUrl: previewImageUrl || null,
 			title,
 			tags,
 			text,

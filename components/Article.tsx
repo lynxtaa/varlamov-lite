@@ -14,7 +14,14 @@ import Page from './Page'
 
 type Props = ArticleFull
 
-export default function Article({ createdAt, tags, title, text }: Props) {
+export default function Article({
+	createdAt,
+	excerpt,
+	tags,
+	title,
+	text,
+	previewImageUrl,
+}: Props) {
 	const textWithImagesAndLinks = useMemo(() => {
 		const renderers: { [nodeType: string]: React.ElementType } = {
 			image({ alt, src }) {
@@ -60,7 +67,12 @@ export default function Article({ createdAt, tags, title, text }: Props) {
 	}, [text])
 
 	return (
-		<Page className={styles.Article} title={title}>
+		<Page
+			className={styles.Article}
+			title={title}
+			ogDescription={excerpt}
+			ogImage={previewImageUrl || undefined}
+		>
 			<div className={styles.backArrow}>
 				<Link href="/">
 					<Icon icon={<ArrowLeft />} size={2} />
