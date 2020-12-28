@@ -14,6 +14,8 @@
 	align-items: center;
 }
 
-.Spinner svg {
+.Spinner img {
 	animation: spinZ 10s infinite linear;
+	max-width: 200px;
+	max-height: 200px;
 }
