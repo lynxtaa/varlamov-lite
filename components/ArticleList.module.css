@@ -7,9 +7,17 @@ div.ArticleList {
 }
 
 .article {
-	font-weight: normal;
 	margin-bottom: 1.7rem;
+}
+
+.article h3 {
+	font-weight: normal;
 	margin-top: 0;
+	margin-bottom: 0.5rem;
+}
+
+.article time {
+	opacity: 0.7;
 }
 
 .tag {

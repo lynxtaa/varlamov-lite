@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { ArrowLeft, ArrowRight } from 'react-feather'
 
+import { formatDate } from '../lib/formatDate'
 import { Article } from '../lib/varlamovClient'
 
 import styles from './ArticleList.module.css'
@@ -32,9 +33,12 @@ export default function ArticleList({ initialData }: Props) {
 			{tag && <h1 className={styles.tag}>{tag}</h1>}
 			{initialData.length > 0 ? (
 				initialData.map(article => (
-					<h3 key={article.id} className={styles.article}>
-						<Link href={`/blog/${article.id}`}>{article.title}</Link>
-					</h3>
+					<header key={article.id} className={styles.article}>
+						<h3>
+							<Link href={`/blog/${article.id}`}>{article.title}</Link>
+						</h3>
+						{article.createdAt && <time>{formatDate(article.createdAt)}</time>}
+					</header>
 				))
 			) : (
 				<h3 className={styles.article}>Ничего не найдено</h3>

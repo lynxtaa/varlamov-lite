@@ -1,9 +1,8 @@
-import { format as formatDate, parseISO } from 'date-fns'
-import { ru } from 'date-fns/locale'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 
+import { formatDate } from '../lib/formatDate'
 import { ArticleFull } from '../lib/varlamovClient'
 
 import styles from './Article.module.css'
@@ -76,9 +75,7 @@ export default function Article({
 			ogDescription={excerpt}
 			ogImage={previewImageUrl || undefined}
 		>
-			{createdAt && (
-				<time>{formatDate(parseISO(createdAt), 'd MMMM yyyy', { locale: ru })}</time>
-			)}
+			{createdAt && <time>{formatDate(createdAt)}</time>}
 			<h1>{title}</h1>
 			<div className={styles.text}>{textWithImagesAndLinks}</div>
 			<div className={styles.tags}>
