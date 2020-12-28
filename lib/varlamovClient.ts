@@ -8,6 +8,8 @@ import fetch from 'node-fetch'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
 
+type Cheerio = ReturnType<typeof cheerio>
+
 export interface Article {
 	id: number
 	title: string
@@ -55,7 +57,7 @@ class VarlamovClient {
 		)
 	}
 
-	private parseDate(el: cheerio.Cheerio): Date | null {
+	private parseDate(el: Cheerio): Date | null {
 		const text = el.text().trim()
 
 		for (const format of ['d MMMM yyyy, HH:mm', 'd MMMM yyyy']) {
