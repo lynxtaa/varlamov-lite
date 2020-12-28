@@ -2,6 +2,7 @@ import { URL, URLSearchParams } from 'url'
 
 import cheerio from 'cheerio'
 import { parse as parseDate, isValid } from 'date-fns'
+import { zonedTimeToUtc } from 'date-fns-tz'
 import { ru } from 'date-fns/locale'
 import truncate from 'lodash.truncate'
 import fetch from 'node-fetch'
@@ -64,7 +65,7 @@ class VarlamovClient {
 			const date = parseDate(text, format, new Date(), { locale: ru })
 
 			if (isValid(date)) {
-				return date
+				return zonedTimeToUtc(date, 'Europe/Moscow')
 			}
 		}
 
