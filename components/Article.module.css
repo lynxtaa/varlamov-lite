@@ -20,19 +20,6 @@
 	white-space: pre-wrap;
 }
 
-.backArrow {
-	padding: 1rem 0;
-}
-
-.backArrow a {
-	display: inline-flex;
-	align-items: center;
-}
-
-.backArrow span {
-	margin-left: 0.4rem;
-}
-
 .tags {
 	display: flex;
 	flex-wrap: wrap;

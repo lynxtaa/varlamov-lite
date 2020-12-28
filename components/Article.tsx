@@ -2,13 +2,11 @@ import { format as formatDate, parseISO } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import Image from 'next/image'
 import { useMemo } from 'react'
-import { ArrowLeft } from 'react-feather'
 import ReactMarkdown from 'react-markdown'
 
 import { ArticleFull } from '../lib/varlamovClient'
 
 import styles from './Article.module.css'
-import Icon from './Icon'
 import Link from './Link'
 import Page from './Page'
 
@@ -78,12 +76,6 @@ export default function Article({
 			ogDescription={excerpt}
 			ogImage={previewImageUrl || undefined}
 		>
-			<div className={styles.backArrow}>
-				<Link href="/">
-					<Icon icon={<ArrowLeft />} size={2} />
-					<span>на главную</span>
-				</Link>
-			</div>
 			{createdAt && (
 				<time>{formatDate(parseISO(createdAt), 'd MMMM yyyy', { locale: ru })}</time>
 			)}

@@ -3,13 +3,24 @@
 	padding: 1rem;
 }
 
-.themeButton {
-	z-index: 1;
+.header {
+	display: flex;
+	align-items: center;
+	margin-bottom: 2rem;
+	margin-top: 1rem;
+}
+
+.header h1,
+.header h3 {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-right: 0.5rem;
+}
+
+.header button {
 	background: none;
 	color: var(--textColor);
 	border: none;
-	position: fixed;
-	right: 1rem;
-	top: 1rem;
 	padding: 0;
+	margin-left: auto;
 }

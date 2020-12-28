@@ -1,5 +1,5 @@
 .ArticleList {
-	max-width: 30rem;
+	max-width: 32rem;
 }
 
 div.ArticleList {
@@ -8,12 +8,12 @@ div.ArticleList {
 
 .article {
 	font-weight: normal;
-	margin-bottom: 1.5rem;
-	padding: 0 1rem;
+	margin-bottom: 1.7rem;
+	margin-top: 0;
 }
 
 .tag {
-	padding: 0 1rem;
+	margin-bottom: 2rem;
 }
 
 .article a {
