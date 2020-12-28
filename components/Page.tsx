@@ -24,15 +24,17 @@ export default function Page({
 }: Props) {
 	const { theme, toggle } = useTheme()
 
+	const fullTitle = title ? `${title} • Блог Ильи Варламова` : null
+
 	return (
 		<div className={cn(styles.Page, className)}>
 			<Head>
 				{ogDescription && <meta property="og:description" content={ogDescription} />}
 				{ogImage && <meta property="og:image" content={ogImage} />}
-				{title && (
+				{fullTitle && (
 					<>
-						<meta property="og:title" content={title} />
-						<title>{title}</title>
+						<meta property="og:title" content={fullTitle} />
+						<title>{fullTitle}</title>
 					</>
 				)}
 			</Head>
