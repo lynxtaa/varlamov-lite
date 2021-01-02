@@ -1,6 +1,7 @@
+import { Element as DomHandlerElement } from 'domhandler'
 import Image from 'next/image'
 import { useMemo } from 'react'
-import ReactMarkdown from 'react-markdown'
+import ReactHtmlParser, { processNodes } from 'react-html-parser'
 
 import { formatDate } from '../lib/formatDate'
 import { ArticleFull } from '../lib/varlamovClient'
@@ -20,52 +21,38 @@ export default function Article({
 	previewImageUrl,
 }: Props) {
 	const textWithImagesAndLinks = useMemo(() => {
-		const renderers: { [nodeType: string]: React.ElementType } = {
-			code: ({ value }) => <pre>{value.trim()}</pre>,
-
-			image({ alt, src }) {
-				const [width, height] = alt.split('x')
-
+		function transform(node: DomHandlerElement, index: number) {
+			if (node.name === 'img') {
 				return (
-					<div className={styles.imageWrap}>
-						<Image
-							src={src}
-							alt=""
-							width={Number(width)}
-							height={Number(height)}
-							className={styles.Image}
-						/>
-					</div>
+					<Image
+						key={index}
+						src={node.attribs.src}
+						alt=""
+						width={Number(node.attribs.width)}
+						height={Number(node.attribs.height)}
+					/>
 				)
-			},
+			}
+			if (node.name === 'a') {
+				const matchHref = node.attribs.href.match(
+					/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/,
+				)
 
-			link({ href, children }) {
-				const matchHref = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/)
+				const children = processNodes(node.children, transform)
 
 				return matchHref?.groups ? (
-					<Link href={`/blog/${matchHref.groups.postId}`} underline>
+					<Link key={index} href={`/blog/${matchHref.groups.postId}`} underline>
 						{children}
 					</Link>
 				) : (
-					<Link href={href} isExternal underline>
+					<Link key={index} href={node.attribs.href} isExternal underline>
 						{children}
 					</Link>
 				)
-			},
-
-			list: ({ children }) => children,
-
-			listItem: ({ children, ordered, index }) =>
-				ordered && typeof index === 'number' ? (
-					<>
-						{index + 1}. {children}
-					</>
-				) : (
-					children
-				),
+			}
 		}
 
-		return <ReactMarkdown renderers={renderers}>{text}</ReactMarkdown>
+		return ReactHtmlParser(text, { transform })
 	}, [text])
 
 	return (

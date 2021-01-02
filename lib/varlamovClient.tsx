@@ -130,14 +130,9 @@ class VarlamovClient {
 
 		const excerpt = truncate(textEl.text().trim(), { length: 100 })
 
-		// На фронте img будет завёрнут в div и станет блочным элементом,
-		// поэтому переносы строк после img не нужны
-		textEl.find('img + br').remove()
+		const allowedTags = ['br', 'a[href]', 'p', 'img', 'i', 'b', 'em', 'strong', 'span']
 
-		// Удалим странные пустые ссылки, фреймы
-		textEl.find('a:not(a[href]), iframe').remove()
-
-		textEl.find('br').replaceWith('\n')
+		textEl.find(`*:not(${allowedTags.join(', ')})`).remove()
 
 		const images = textEl.find('img').toArray()
 
@@ -150,27 +145,26 @@ class VarlamovClient {
 				const img = $(image)
 				const src = img.attr('src')
 
-				if (src) {
-					const dimensions = await this.getImageSize(src)
+				const dimensions = src ? await this.getImageSize(src) : null
 
-					if (dimensions) {
-						img.replaceWith(() =>
-							$(`<span>![${dimensions.width}x${dimensions.height}](${src})</span>`),
-						)
-					}
+				if (dimensions && src) {
+					image.attribs = {}
+					img.attr('src', src)
+					img.attr('width', String(dimensions.width))
+					img.attr('height', String(dimensions.height))
+				} else {
+					img.remove()
 				}
 			}),
 		)
 
 		for (const link of textEl.find('a').toArray()) {
 			const linkEl = $(link)
-			const href = linkEl.attr('href')
-			if (href) {
-				linkEl.replaceWith(`<span>[${linkEl.text()}](${href})</span>`)
-			}
+			const href = linkEl.attr('href')!
+			link.attribs = {}
+			linkEl.attr('href', href)
 		}
 
-		const text = textEl.text().trim()
 		const title = $('.j-e-title').text().trim()
 		const createdAt = this.parseDate($('time[itemprop="dateCreated"]').first())
 
@@ -184,7 +178,7 @@ class VarlamovClient {
 			previewImageUrl: previewImageUrl || null,
 			title,
 			tags,
-			text,
+			text: textEl.html() || '',
 			createdAt: createdAt ? createdAt.toISOString() : null,
 		}
 	}
