@@ -34,14 +34,25 @@ export default function Article({
 				)
 			}
 			if (node.name === 'a') {
-				const matchHref = node.attribs.href.match(
+				const matchPost = node.attribs.href.match(
 					/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/,
+				)
+				const matchTag = node.attribs.href.match(
+					/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/,
 				)
 
 				const children = processNodes(node.children, transform)
 
-				return matchHref?.groups ? (
-					<Link key={index} href={`/blog/${matchHref.groups.postId}`} underline>
+				return matchPost?.groups ? (
+					<Link key={index} href={`/blog/${matchPost.groups.postId}`} underline>
+						{children}
+					</Link>
+				) : matchTag?.groups ? (
+					<Link
+						key={index}
+						href={`/tag/${encodeURIComponent(matchTag.groups.tag)}`}
+						underline
+					>
 						{children}
 					</Link>
 				) : (
