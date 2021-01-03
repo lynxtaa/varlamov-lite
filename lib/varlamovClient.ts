@@ -43,6 +43,7 @@ class VarlamovClient {
 			'br': [],
 			'em': [],
 			'i': [],
+			'iframe': ['src'],
 			'img': ['src', 'width', 'height', 'alt'],
 			'p': [],
 			'span': [],
@@ -135,6 +136,28 @@ class VarlamovClient {
 		return articles
 	}
 
+	private getFrameAttribsFromSrc(src: string) {
+		try {
+			const url = new URL(src)
+			const source = url.searchParams.get('source')
+			const vid = url.searchParams.get('vid')
+
+			if (source === 'youtube' && vid) {
+				return {
+					src: `https://www.youtube.com/embed/${vid}`,
+					frameborder: '0',
+					allow:
+						'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+					allowfullscreen: '',
+				}
+			}
+		} catch (err) {
+			console.log(err)
+		}
+
+		return null
+	}
+
 	async getArticle(id: number): Promise<ArticleFull> {
 		const html = await this.getHtml(`/${id}.html`)
 
@@ -182,6 +205,19 @@ class VarlamovClient {
 			const href = linkEl.attr('href')!
 			link.attribs = {}
 			linkEl.attr('href', href)
+		}
+
+		for (const iframe of textEl.find('iframe').toArray()) {
+			const iframeEl = $(iframe)
+			const src = iframeEl.attr('src')
+
+			const attribs = src ? this.getFrameAttribsFromSrc(src) : null
+
+			if (attribs) {
+				iframe.attribs = attribs
+			} else {
+				iframeEl.remove()
+			}
 		}
 
 		const title = $('.j-e-title').text().trim()
