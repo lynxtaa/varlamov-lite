@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce'
+import debounce from 'lodash/debounce'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Router } from 'next/router'

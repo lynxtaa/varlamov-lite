@@ -4,7 +4,8 @@ import cheerio from 'cheerio'
 import { parse as parseDate, isValid } from 'date-fns'
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { ru } from 'date-fns/locale'
-import truncate from 'lodash.truncate'
+import pick from 'lodash/pick'
+import truncate from 'lodash/truncate'
 import fetch from 'node-fetch'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
@@ -28,11 +29,24 @@ class VarlamovClient {
 	endpoint: URL
 	pageSize: number
 	queue: PQueue
+	supportTagsWithAttrs: Record<string, string[]>
 
 	constructor({ endpoint, pageSize = 19 }: { endpoint: string; pageSize?: number }) {
 		this.endpoint = new URL(endpoint)
 		this.pageSize = pageSize
 		this.queue = new PQueue({ concurrency: 5 })
+
+		this.supportTagsWithAttrs = {
+			br: [],
+			'a[href]': ['href'],
+			p: [],
+			img: ['src', 'width', 'height', 'alt'],
+			i: [],
+			b: [],
+			em: [],
+			strong: [],
+			span: [],
+		}
 	}
 
 	private async getHtml(path: string) {
@@ -130,9 +144,14 @@ class VarlamovClient {
 
 		const excerpt = truncate(textEl.text().trim(), { length: 100 })
 
-		const allowedTags = ['br', 'a[href]', 'p', 'img', 'i', 'b', 'em', 'strong', 'span']
+		textEl.find(`*:not(${Object.keys(this.supportTagsWithAttrs).join(', ')})`).remove()
 
-		textEl.find(`*:not(${allowedTags.join(', ')})`).remove()
+		for (const [selector, attrList] of Object.entries(this.supportTagsWithAttrs)) {
+			const foundElements = textEl.find(selector).toArray()
+			for (const element of foundElements) {
+				element.attribs = pick(element.attribs, attrList)
+			}
+		}
 
 		const images = textEl.find('img').toArray()
 
