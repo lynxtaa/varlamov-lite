@@ -29,7 +29,7 @@ export default function ArticleList({ initialData }: Props) {
 	const leftIcon = <Icon icon={<ArrowLeft />} size={1.7} />
 
 	return (
-		<Page className={styles.ArticleList}>
+		<Page title={tag ? String(tag) : undefined} className={styles.ArticleList}>
 			{tag && <h1 className={styles.tag}>{tag}</h1>}
 			{initialData.length > 0 ? (
 				initialData.map(article => (
@@ -41,7 +41,9 @@ export default function ArticleList({ initialData }: Props) {
 					</header>
 				))
 			) : (
-				<h3 className={styles.article}>Ничего не найдено</h3>
+				<header className={styles.article}>
+					<h3>Ничего не найдено</h3>
+				</header>
 			)}
 			<div className={styles.arrows}>
 				{prevPage ? (

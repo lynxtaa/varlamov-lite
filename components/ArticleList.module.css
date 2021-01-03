@@ -42,7 +42,8 @@ div.ArticleList {
 	padding: 1rem 0;
 }
 
-.arrows a:first-child {
+.arrows > a:first-child,
+.arrows > span:first-child {
 	margin-left: auto;
 	margin-right: 1.7rem;
 }
