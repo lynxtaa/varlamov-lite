@@ -142,7 +142,7 @@ class VarlamovClient {
 
 		const textEl = $('#entrytext')
 
-		const excerpt = truncate(textEl.text().trim(), { length: 100 })
+		const excerpt = truncate(textEl.text().trim(), { length: 200 })
 
 		textEl.find(`*:not(${Object.keys(this.supportTagsWithAttrs).join(', ')})`).remove()
 
