@@ -70,7 +70,7 @@ export default function Article({
 		<Page
 			className={styles.Article}
 			title={title}
-			ogDescription={excerpt}
+			description={excerpt}
 			ogImage={previewImageUrl || undefined}
 		>
 			{createdAt && <time>{formatDate(createdAt)}</time>}

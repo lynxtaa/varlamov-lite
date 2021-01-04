@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import Head from 'next/head'
+import { DefaultSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { Sun, Moon } from 'react-feather'
 
@@ -12,7 +12,7 @@ import styles from './Page.module.css'
 type Props = {
 	children?: React.ReactNode
 	className?: string
-	ogDescription?: string
+	description?: string
 	ogImage?: string
 	title?: string
 }
@@ -20,7 +20,7 @@ type Props = {
 export default function Page({
 	children,
 	className,
-	ogDescription,
+	description,
 	ogImage,
 	title,
 }: Props) {
@@ -28,20 +28,22 @@ export default function Page({
 
 	const router = useRouter()
 
-	const fullTitle = title ? `${title} • Блог Ильи Варламова` : null
+	const fullTitle = title ? `${title} • Блог Ильи Варламова` : 'Блог Ильи Варламова'
 
 	return (
 		<div className={cn(styles.Page, className)}>
-			<Head>
-				{ogDescription && <meta property="og:description" content={ogDescription} />}
-				{ogImage && <meta property="og:image" content={ogImage} />}
-				{fullTitle && (
-					<>
-						<meta property="og:title" content={fullTitle} />
-						<title>{fullTitle}</title>
-					</>
-				)}
-			</Head>
+			{/* <Head> */}
+			<DefaultSeo
+				title={fullTitle}
+				description={description}
+				openGraph={{
+					title,
+					description,
+					images: ogImage ? [{ url: ogImage }] : [],
+				}}
+			/>
+			{/* <title>{fullTitle}</title> */}
+			{/* </Head> */}
 			<header className={styles.header}>
 				{router.pathname === '/' ? (
 					<h1>Блог Ильи Варламова</h1>
