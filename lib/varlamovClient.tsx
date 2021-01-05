@@ -135,8 +135,7 @@ class VarlamovClient {
 	}
 
 	async getArticle(id: number): Promise<ArticleFull> {
-		let html = await this.getHtml(`/${id}.html`)
-		html = html.replace(/\n/g, '')
+		const html = await this.getHtml(`/${id}.html`)
 
 		const $ = cheerio.load(html)
 
