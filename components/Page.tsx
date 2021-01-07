@@ -32,7 +32,6 @@ export default function Page({
 
 	return (
 		<div className={cn(styles.Page, className)}>
-			{/* <Head> */}
 			<DefaultSeo
 				title={fullTitle}
 				description={description}
@@ -42,8 +41,6 @@ export default function Page({
 					images: ogImage ? [{ url: ogImage }] : [],
 				}}
 			/>
-			{/* <title>{fullTitle}</title> */}
-			{/* </Head> */}
 			<header className={styles.header}>
 				{router.pathname === '/' ? (
 					<h1>Блог Ильи Варламова</h1>

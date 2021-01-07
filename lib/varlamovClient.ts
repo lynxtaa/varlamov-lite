@@ -37,15 +37,15 @@ class VarlamovClient {
 		this.queue = new PQueue({ concurrency: 5 })
 
 		this.supportTagsWithAttrs = {
-			br: [],
+			'br': [],
 			'a[href]': ['href'],
-			p: [],
-			img: ['src', 'width', 'height', 'alt'],
-			i: [],
-			b: [],
-			em: [],
-			strong: [],
-			span: [],
+			'p': [],
+			'img': ['src', 'width', 'height', 'alt'],
+			'i': [],
+			'b': [],
+			'em': [],
+			'strong': [],
+			'span': [],
 		}
 	}
 
@@ -141,7 +141,7 @@ class VarlamovClient {
 
 		const textEl = $('#entrytext')
 
-		const excerpt = truncate(textEl.text().trim(), { length: 200 })
+		const excerpt = truncate(textEl.text().trim(), { length: 150 })
 
 		textEl.find(`*:not(${Object.keys(this.supportTagsWithAttrs).join(', ')})`).remove()
 
