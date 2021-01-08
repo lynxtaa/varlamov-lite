@@ -37,15 +37,16 @@ class VarlamovClient {
 		this.queue = new PQueue({ concurrency: 5 })
 
 		this.supportTagsWithAttrs = {
-			'br': [],
 			'a[href]': ['href'],
-			'p': [],
-			'img': ['src', 'width', 'height', 'alt'],
-			'i': [],
 			'b': [],
+			'blockquote': [],
+			'br': [],
 			'em': [],
-			'strong': [],
+			'i': [],
+			'img': ['src', 'width', 'height', 'alt'],
+			'p': [],
 			'span': [],
+			'strong': [],
 		}
 	}
 
