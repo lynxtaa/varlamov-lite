@@ -40,6 +40,8 @@ const App = ({ Component, pageProps }: AppProps) => (
 			<meta name="msapplication-TileColor" content="#da532c" />
 			<meta name="theme-color" content="#ffffff" />
 
+			<link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
+
 			<title>Блог Ильи Варламова</title>
 		</Head>
 		<Component {...pageProps} />

@@ -5,5 +5,8 @@ module.exports = {
 	async redirects() {
 		return [{ source: '/:id.html', destination: '/blog/:id', permanent: true }]
 	},
+	async rewrites() {
+		return [{ source: '/feed.xml', destination: '/api/feed.xml' }]
+	},
 	reactStrictMode: true,
 }
