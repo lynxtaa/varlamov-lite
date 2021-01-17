@@ -20,8 +20,8 @@ type Props = {
 export default function Page({
 	children,
 	className,
-	description,
-	ogImage,
+	description = 'Быстрая и лёгкая версия блога Ильи Варламова',
+	ogImage = '/android-chrome-512x512.png',
 	title,
 }: Props) {
 	const { theme, toggle } = useTheme()
