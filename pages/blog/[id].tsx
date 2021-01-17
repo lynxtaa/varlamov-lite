@@ -36,5 +36,8 @@ export const getStaticProps: GetStaticProps<Props> = async function ({ params })
 	assert(params, 'params must be defined')
 	const ArticleFull = await varlamovClient.getArticle(Number(params.id))
 
-	return { props: { article: ArticleFull } }
+	return {
+		props: { article: ArticleFull },
+		revalidate: 60 * 60, // every hour
+	}
 }
