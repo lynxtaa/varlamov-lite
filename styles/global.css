@@ -22,7 +22,7 @@ body,
 	--textColor: #c9d1d9;
 }
 
-:root.light {
+[data-theme='light'] {
 	--bg: #f3f3f3;
 	--textColor: #333333;
 }

@@ -1,10 +1,12 @@
+import 'focus-visible'
 import debounce from 'lodash/debounce'
+import { ThemeProvider } from 'next-themes'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Router } from 'next/router'
 import nprogress from 'nprogress'
 
-import 'focus-visible'
+import { Theme } from '../lib/Theme'
 
 import '../styles/global.css'
 
@@ -26,7 +28,7 @@ Router.events.on('routeChangeError', () => {
 })
 
 const App = ({ Component, pageProps }: AppProps) => (
-	<>
+	<ThemeProvider defaultTheme={Theme.Dark} themes={Object.values(Theme)}>
 		<Head>
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -45,7 +47,7 @@ const App = ({ Component, pageProps }: AppProps) => (
 			<title>Блог Ильи Варламова</title>
 		</Head>
 		<Component {...pageProps} />
-	</>
+	</ThemeProvider>
 )
 
 export default App

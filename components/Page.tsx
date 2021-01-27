@@ -1,9 +1,10 @@
 import cn from 'classnames'
 import { DefaultSeo } from 'next-seo'
+import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { Sun, Moon } from 'react-feather'
 
-import { useTheme, Theme } from '../lib/theme'
+import { Theme } from '../lib/Theme'
 
 import Icon from './Icon'
 import Link from './Link'
@@ -24,7 +25,7 @@ export default function Page({
 	ogImage = '/android-chrome-512x512.png',
 	title,
 }: Props) {
-	const { theme, toggle } = useTheme()
+	const { theme, setTheme } = useTheme()
 
 	const router = useRouter()
 
@@ -49,8 +50,12 @@ export default function Page({
 						<Link href="/">Блог Ильи Варламова</Link>
 					</h3>
 				)}
-				<button type="button" onClick={toggle} title="Переключить тему">
-					<Icon icon={theme === Theme.Dark ? <Moon /> : <Sun />} size={1.7} />
+				<button
+					type="button"
+					onClick={() => setTheme(theme === Theme.Dark ? Theme.Light : Theme.Dark)}
+					title="Переключить тему"
+				>
+					<Icon icon={theme === Theme.Light ? <Sun /> : <Moon />} size={1.7} />
 				</button>
 			</header>
 			{children}
