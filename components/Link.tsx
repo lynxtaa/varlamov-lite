@@ -26,7 +26,7 @@ export default function Link({
 			className={cn(styles.Link, underline && styles.underline, className)}
 			title={title}
 			target="_blank"
-			rel="noreferrer"
+			rel="noopener noreferrer"
 		>
 			{children}
 		</a>

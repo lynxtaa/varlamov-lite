@@ -26,22 +26,21 @@ export default function Article({
 				return (
 					<Image
 						key={index}
-						src={node.attribs.src}
-						alt=""
-						width={Number(node.attribs.width)}
-						height={Number(node.attribs.height)}
+						src={node.attribs.src!}
+						alt={node.attribs.alt || ''}
+						width={Number(node.attribs.width!)}
+						height={Number(node.attribs.height!)}
 					/>
 				)
 			}
-			if (node.name === 'a') {
-				const matchPost = node.attribs.href.match(
-					/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/,
-				)
-				const matchTag = node.attribs.href.match(
-					/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/,
-				)
 
+			if (node.name === 'a') {
 				const children = processNodes(node.children, transform)
+
+				const href = node.attribs.href!
+
+				const matchPost = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/)
+				const matchTag = href.match(/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/)
 
 				return matchPost?.groups ? (
 					<Link key={index} href={`/blog/${matchPost.groups.postId}`} underline>
@@ -50,13 +49,13 @@ export default function Article({
 				) : matchTag?.groups ? (
 					<Link
 						key={index}
-						href={`/tag/${encodeURIComponent(matchTag.groups.tag)}`}
+						href={`/tag/${encodeURIComponent(matchTag.groups.tag!)}`}
 						underline
 					>
 						{children}
 					</Link>
 				) : (
-					<Link key={index} href={node.attribs.href} isExternal underline>
+					<Link key={index} href={href} isExternal underline>
 						{children}
 					</Link>
 				)
