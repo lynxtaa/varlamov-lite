@@ -9,6 +9,7 @@ import truncate from 'lodash/truncate'
 import fetch from 'node-fetch'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
+import readingTime from 'reading-time'
 
 type Cheerio = ReturnType<typeof cheerio>
 
@@ -21,6 +22,7 @@ export interface Article {
 export interface ArticleFull extends Article {
 	previewImageUrl: string | null
 	excerpt: string
+	readingTime: number
 	text: string
 	tags: string[]
 }
@@ -227,14 +229,17 @@ class VarlamovClient {
 			.toArray()
 			.map(el => $(el).text().trim())
 
+		const text = textEl.html() || ''
+
 		return {
 			id,
 			excerpt,
 			previewImageUrl: previewImageUrl || null,
 			title,
 			tags,
-			text: textEl.html() || '',
+			text,
 			createdAt: createdAt ? createdAt.toISOString() : null,
+			readingTime: readingTime(text).time,
 		}
 	}
 }

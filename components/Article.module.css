@@ -3,8 +3,19 @@
 }
 
 .Article time {
-	display: block;
+	display: flex;
 	margin-bottom: 0.2rem;
+}
+
+.stats {
+	opacity: 0.7;
+	display: inline-flex;
+	align-items: center;
+	margin-left: 1rem;
+}
+
+.clock {
+	margin-right: 0.5rem;
 }
 
 .text iframe {
