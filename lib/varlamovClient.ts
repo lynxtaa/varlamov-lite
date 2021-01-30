@@ -9,7 +9,6 @@ import truncate from 'lodash/truncate'
 import fetch from 'node-fetch'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
-import readingTime from 'reading-time'
 
 type Cheerio = ReturnType<typeof cheerio>
 
@@ -231,6 +230,13 @@ class VarlamovClient {
 
 		const text = textEl.html() || ''
 
+		const words = text.match(/\S+/g)
+		const WORDS_PER_MINUTE = 200
+
+		const readingTime = words
+			? Math.round((words.length / WORDS_PER_MINUTE) * 60 * 1000)
+			: 0
+
 		return {
 			id,
 			excerpt,
@@ -239,7 +245,7 @@ class VarlamovClient {
 			tags,
 			text,
 			createdAt: createdAt ? createdAt.toISOString() : null,
-			readingTime: readingTime(text).time,
+			readingTime,
 		}
 	}
 }
