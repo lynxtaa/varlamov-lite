@@ -8,6 +8,7 @@ import nprogress from 'nprogress'
 
 import { Theme } from '../lib/Theme'
 
+import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
 
 // Only show nprogress after 500ms (slow loading)
@@ -28,7 +29,11 @@ Router.events.on('routeChangeError', () => {
 })
 
 const App = ({ Component, pageProps }: AppProps) => (
-	<ThemeProvider defaultTheme={Theme.Dark} themes={Object.values(Theme)}>
+	<ThemeProvider
+		defaultTheme={Theme.Dark}
+		themes={Object.values(Theme)}
+		attribute="class"
+	>
 		<Head>
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />

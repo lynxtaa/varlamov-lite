@@ -1,21 +1,19 @@
-import cn from 'classnames'
+import { cloneElement } from 'react'
 import { IconProps } from 'react-feather'
-
-import styles from './Icon.module.css'
 
 type Props = {
 	className?: string
 	icon: React.ReactElement<IconProps> | null
-	size?: number
 }
 
-export default function Icon({ className, icon, size = 2 }: Props) {
+export default function Icon({ className, icon }: Props) {
 	return (
-		<div
-			className={cn(styles.Icon, className)}
-			style={{ width: `${size}rem`, height: `${size}rem` }}
-		>
-			{icon}
+		<div className={className}>
+			{icon === null
+				? null
+				: cloneElement(icon, {
+						style: { width: '100%', height: '100%' },
+				  })}
 		</div>
 	)
 }
