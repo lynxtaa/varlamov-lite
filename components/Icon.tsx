@@ -5,7 +5,7 @@ import styles from './Icon.module.css'
 
 type Props = {
 	className?: string
-	icon: React.ReactElement<IconProps>
+	icon: React.ReactElement<IconProps> | null
 	size?: number
 }
 

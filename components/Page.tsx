@@ -9,6 +9,7 @@ import { Theme } from '../lib/Theme'
 import Icon from './Icon'
 import Link from './Link'
 import styles from './Page.module.css'
+import { useIsMounted } from './hooks/useIsMounted'
 
 type Props = {
 	children?: React.ReactNode
@@ -25,6 +26,8 @@ export default function Page({
 	ogImage = '/android-chrome-512x512.png',
 	title,
 }: Props) {
+	const isMounted = useIsMounted()
+
 	const { theme, setTheme } = useTheme()
 
 	const router = useRouter()
@@ -55,7 +58,10 @@ export default function Page({
 					onClick={() => setTheme(theme === Theme.Dark ? Theme.Light : Theme.Dark)}
 					title="Переключить тему"
 				>
-					<Icon icon={theme === Theme.Light ? <Sun /> : <Moon />} size={1.7} />
+					<Icon
+						icon={isMounted ? theme === Theme.Light ? <Sun /> : <Moon /> : null}
+						size={1.7}
+					/>
 				</button>
 			</header>
 			{children}
