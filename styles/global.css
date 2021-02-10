@@ -35,3 +35,7 @@ h5,
 h6 {
 	@apply cursor-default;
 }
+
+::selection {
+	@apply text-gray-50 dark:text-gray-900 bg-gray-900 dark:bg-gray-200;
+}
