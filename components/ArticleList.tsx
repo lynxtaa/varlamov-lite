@@ -33,9 +33,9 @@ export default function ArticleList({ initialData }: Props) {
 			{initialData.length > 0 ? (
 				initialData.map(article => (
 					<header key={article.id} className="mb-8">
-						<h3 className="mb-1 text-xl">
+						<h2 className="mb-1 text-xl">
 							<Link href={`/blog/${article.id}`}>{article.title}</Link>
-						</h3>
+						</h2>
 						{article.createdAt && (
 							<time className="opacity-70">{formatDate(article.createdAt)}</time>
 						)}
@@ -43,7 +43,7 @@ export default function ArticleList({ initialData }: Props) {
 				))
 			) : (
 				<header className="mb-8">
-					<h3 className="mb-1 text-xl">Ничего не найдено</h3>
+					<h2 className="mb-1 text-xl">Ничего не найдено</h2>
 				</header>
 			)}
 			<div className="flex items-center sticky bottom-0 py-4 space-x-6 justify-end bg-gray-50 dark:bg-gray-900">
