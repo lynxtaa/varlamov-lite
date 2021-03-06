@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 import { ArrowLeft, ArrowRight } from 'react-feather'
 
+import Page from '../layouts/Page'
 import { formatDate } from '../lib/formatDate'
 import { Article } from '../lib/varlamovClient'
 
 import Icon from './Icon'
 import Link from './Link'
-import Page from './Page'
 
 type Props = {
 	initialData: Article[]

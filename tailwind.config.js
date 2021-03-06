@@ -1,6 +1,6 @@
 module.exports = {
 	purge: {
-		content: ['./pages/**/*.tsx', './components/**/*.tsx'],
+		content: ['./components/**/*.tsx', './layouts/**/*.tsx', './pages/**/*.tsx'],
 		options: {
 			safelist: ['dark'],
 		},

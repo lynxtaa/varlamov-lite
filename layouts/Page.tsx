@@ -3,12 +3,11 @@ import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { Sun, Moon } from 'react-feather'
 
+import Icon from '../components/Icon'
+import Link from '../components/Link'
+import { useIsMounted } from '../hooks/useIsMounted'
 import { Theme } from '../lib/Theme'
 import { cn } from '../lib/cn'
-
-import Icon from './Icon'
-import Link from './Link'
-import { useIsMounted } from './hooks/useIsMounted'
 
 type Props = {
 	children?: React.ReactNode

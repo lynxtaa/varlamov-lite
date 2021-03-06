@@ -6,12 +6,12 @@ import { useMemo } from 'react'
 import { Clock } from 'react-feather'
 import ReactHtmlParser, { processNodes, Transform } from 'react-html-parser'
 
+import Page from '../layouts/Page'
 import { formatDate } from '../lib/formatDate'
 import { ArticleFull } from '../lib/varlamovClient'
 
 import Icon from './Icon'
 import Link from './Link'
-import Page from './Page'
 
 type Props = ArticleFull
 
