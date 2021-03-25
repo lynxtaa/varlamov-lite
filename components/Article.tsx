@@ -1,10 +1,10 @@
 import cn from 'classnames'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import parse, { domToReact, HTMLReactParserOptions } from 'html-react-parser'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { Clock } from 'react-feather'
-import ReactHtmlParser, { processNodes, Transform } from 'react-html-parser'
 
 import Page from '../layouts/Page'
 import { formatDate } from '../lib/formatDate'
@@ -25,73 +25,68 @@ export default function Article({
 	readingTime,
 }: Props) {
 	const textWithImagesAndLinks = useMemo(() => {
-		const transform: Transform = (node, index: number) => {
-			switch (node.name) {
-				case 'img':
-					return (
-						<Image
-							key={index}
-							src={node.attribs.src!}
-							alt={node.attribs.alt || ''}
-							width={Number(node.attribs.width!)}
-							height={Number(node.attribs.height!)}
-						/>
-					)
-				case 'a': {
-					const children = processNodes(node.children, transform)
+		const options: HTMLReactParserOptions = {
+			replace(node: any) {
+				switch (node.name) {
+					case 'img':
+						return (
+							<Image
+								src={node.attribs.src!}
+								alt={node.attribs.alt || ''}
+								width={Number(node.attribs.width!)}
+								height={Number(node.attribs.height!)}
+							/>
+						)
+					case 'a': {
+						const children = domToReact(node.children, options)
 
-					const href = node.attribs.href!
+						const href = node.attribs.href!
 
-					const matchPost = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/)
-					const matchTag = href.match(/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/)
+						const matchPost = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/)
+						const matchTag = href.match(/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/)
 
-					return matchPost?.groups ? (
-						<Link key={index} href={`/blog/${matchPost.groups.postId}`} underline>
-							{children}
-						</Link>
-					) : matchTag?.groups ? (
-						<Link
-							key={index}
-							href={`/tag/${encodeURIComponent(matchTag.groups.tag!)}`}
-							underline
-						>
-							{children}
-						</Link>
-					) : (
-						<Link key={index} href={href} isExternal underline>
-							{children}
-						</Link>
-					)
+						return matchPost?.groups ? (
+							<Link href={`/blog/${matchPost.groups.postId}`} underline>
+								{children}
+							</Link>
+						) : matchTag?.groups ? (
+							<Link href={`/tag/${encodeURIComponent(matchTag.groups.tag!)}`} underline>
+								{children}
+							</Link>
+						) : (
+							<Link href={href} isExternal underline>
+								{children}
+							</Link>
+						)
+					}
+					case 'pre':
+						return (
+							<pre {...node.attribs} className="whitespace-pre-wrap">
+								{domToReact(node.children, options)}
+							</pre>
+						)
+					case 'blockquote':
+						return (
+							<blockquote
+								{...node.attribs}
+								className="pl-4 italic border-l-4 border-gray-900 dark:border-gray-200"
+							>
+								{domToReact(node.children, options)}
+							</blockquote>
+						)
+					case 'iframe':
+						return (
+							<iframe
+								{...node.attribs}
+								className="w-full h-60 sm:h-96"
+								title="Youtube видео"
+							/>
+						)
 				}
-				case 'pre':
-					return (
-						<pre {...node.attribs} className="whitespace-pre-wrap" key={index}>
-							{processNodes(node.children, transform)}
-						</pre>
-					)
-				case 'blockquote':
-					return (
-						<blockquote
-							{...node.attribs}
-							className="pl-4 italic border-l-4 border-gray-900 dark:border-gray-200"
-							key={index}
-						>
-							{processNodes(node.children, transform)}
-						</blockquote>
-					)
-				case 'iframe':
-					return (
-						<iframe
-							{...node.attribs}
-							className="w-full h-60 sm:h-96"
-							key={index}
-							title="Youtube видео"
-						/>
-					)
-			}
+			},
 		}
 
-		return ReactHtmlParser(text, { transform })
+		return parse(text, options)
 	}, [text])
 
 	return (
