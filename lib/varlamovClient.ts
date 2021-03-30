@@ -53,7 +53,7 @@ class VarlamovClient {
 	}
 
 	private async getHtml(path: string) {
-		const response = await fetch(`${this.endpoint.toString()}${path}`)
+		const response = await fetch(`${this.endpoint.toString()}${path.replace(/^\//, '')}`)
 
 		if (!response.ok) {
 			throw new Error(`Error loading ${response.url}: ${response.status}`)
@@ -68,6 +68,7 @@ class VarlamovClient {
 		return this.queue.add(() =>
 			probeImageSize(encodeURI(url)).catch(err => {
 				if (process.env.NODE_ENV === 'development') {
+					// eslint-disable-next-line no-console
 					console.warn(err)
 				}
 				return null
@@ -129,7 +130,7 @@ class VarlamovClient {
 					{
 						id: Number(match.groups.id),
 						createdAt: createdAt ? createdAt.toISOString() : null,
-						title: titleLink.text(),
+						title: titleLink.text().trim(),
 					},
 				]
 			})
@@ -153,6 +154,7 @@ class VarlamovClient {
 				}
 			}
 		} catch (err) {
+			// eslint-disable-next-line no-console
 			console.log(err)
 		}
 
