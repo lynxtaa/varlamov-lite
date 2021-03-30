@@ -34,10 +34,11 @@ export const getStaticPaths: GetStaticPaths = async function () {
 
 export const getStaticProps: GetStaticProps<Props> = async function ({ params }) {
 	assert(params, 'params must be defined')
-	const ArticleFull = await varlamovClient.getArticle(Number(params.id))
+
+	const article = await varlamovClient.getArticle(Number(params.id))
 
 	return {
-		props: { article: ArticleFull },
+		props: { article },
 		revalidate: 60 * 60, // every hour
 	}
 }
