@@ -9,4 +9,8 @@ module.exports = {
 		return [{ source: '/feed.xml', destination: '/api/feed.xml' }]
 	},
 	reactStrictMode: true,
+	future: {
+		strictPostcssConfiguration: true,
+		webpack5: true,
+	},
 }
