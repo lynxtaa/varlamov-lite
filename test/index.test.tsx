@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react'
-import { subDays, subHours, subMinutes, parseISO } from 'date-fns'
-import { utcToZonedTime } from 'date-fns-tz'
+import { subDays, subHours, subMinutes } from 'date-fns'
 import { advanceTo } from 'jest-date-mock'
 import { NextRouter, useRouter } from 'next/router'
 
@@ -14,7 +13,7 @@ beforeEach(() => {
 })
 
 it('shows blog posts', () => {
-	const now = utcToZonedTime(parseISO('2020-03-20'), 'Europe/Moscow')
+	const now = new Date('2020-03-20')
 	advanceTo(now)
 
 	const container = render(

@@ -59,7 +59,7 @@ Object {
           <time
             class="opacity-70"
           >
-            вчера в 23:58
+            сегодня в 2:58
           </time>
         </header>
         <header
@@ -78,7 +78,7 @@ Object {
           <time
             class="opacity-70"
           >
-            вчера в 22:00
+            сегодня в 1:00
           </time>
         </header>
         <header
@@ -227,7 +227,7 @@ Object {
         <time
           class="opacity-70"
         >
-          вчера в 23:58
+          сегодня в 2:58
         </time>
       </header>
       <header
@@ -246,7 +246,7 @@ Object {
         <time
           class="opacity-70"
         >
-          вчера в 22:00
+          сегодня в 1:00
         </time>
       </header>
       <header
