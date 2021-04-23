@@ -32,6 +32,7 @@ const App = ({ Component, pageProps }: AppProps) => (
 	<ThemeProvider
 		defaultTheme={Theme.Dark}
 		themes={Object.values(Theme)}
+		enableSystem={false}
 		attribute="class"
 	>
 		<Head>
