@@ -59,6 +59,12 @@ export default function Article({
 							</Link>
 						)
 					}
+					case 'ul':
+						return (
+							<ul {...node.attribs} className="list-disc list-inside">
+								{domToReact(node.children, options)}
+							</ul>
+						)
 					case 'pre':
 						return (
 							<pre {...node.attribs} className="whitespace-pre-wrap">

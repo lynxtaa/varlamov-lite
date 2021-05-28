@@ -46,9 +46,11 @@ class VarlamovClient {
 			'i': [],
 			'iframe': ['src'],
 			'img': ['src', 'width', 'height', 'alt'],
+			'li': [],
 			'p': [],
 			'span': [],
 			'strong': [],
+			'ul': [],
 		}
 	}
 
