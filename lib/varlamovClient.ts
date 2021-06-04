@@ -6,7 +6,6 @@ import { zonedTimeToUtc } from 'date-fns-tz'
 import { ru } from 'date-fns/locale'
 import pick from 'lodash/pick'
 import truncate from 'lodash/truncate'
-import fetch from 'node-fetch'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
 
