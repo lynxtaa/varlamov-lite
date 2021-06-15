@@ -17,6 +17,5 @@ module.exports = {
 	reactStrictMode: true,
 	future: {
 		strictPostcssConfiguration: true,
-		webpack5: true,
 	},
 }
