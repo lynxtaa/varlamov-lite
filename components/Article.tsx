@@ -50,7 +50,7 @@ export default function Article({
 								{children}
 							</Link>
 						) : matchTag?.groups ? (
-							<Link href={`/tag/${encodeURIComponent(matchTag.groups.tag!)}`} underline>
+							<Link href={`/tag/${matchTag.groups.tag!}`} underline>
 								{children}
 							</Link>
 						) : (
@@ -112,7 +112,7 @@ export default function Article({
 				{tags.map((tag, i) => (
 					<Link
 						key={tag}
-						href={`/tag/${encodeURIComponent(tag)}`}
+						href={`/tag/${tag}`}
 						className={cn(
 							'text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline',
 							i < tags.length && 'mr-3',

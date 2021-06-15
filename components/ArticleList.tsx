@@ -18,7 +18,7 @@ export default function ArticleList({ initialData }: Props) {
 	const pageNum = Number(router.query.pageNum) || 1
 	const tag = router.query.tag
 
-	const pathname = tag ? `/tag/${encodeURIComponent(String(tag))}/` : '/'
+	const pathname = tag ? `/tag/${String(tag)}/` : '/'
 
 	const prevPage = initialData.length > 0 ? `${pathname}page/${pageNum + 1}` : null
 	const nextPage =
