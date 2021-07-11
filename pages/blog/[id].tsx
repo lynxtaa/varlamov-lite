@@ -1,24 +1,10 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { useRouter } from 'next/router'
 
-import Article from '../../components/Article'
-import Spinner from '../../components/Spinner'
 import { assert } from '../../lib/assert'
-import { varlamovClient, ArticleFull } from '../../lib/varlamovClient'
+import { varlamovClient } from '../../lib/varlamovClient'
+import Article, { Props } from '../../routes/Article'
 
-type Props = {
-	article: ArticleFull
-}
-
-export default function Post({ article }: Props) {
-	const router = useRouter()
-
-	if (router.isFallback) {
-		return <Spinner />
-	}
-
-	return <Article {...article} />
-}
+export default Article
 
 const NUM_ARTICLES_TO_PRERENDER = 5
 
@@ -41,7 +27,7 @@ export const getStaticProps: GetStaticProps<Props> = async function ({ params })
 	const article = await varlamovClient.getArticle(id)
 
 	return {
-		props: { article },
+		props: article,
 		revalidate: 60 * 60, // every hour
 	}
 }

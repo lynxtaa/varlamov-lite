@@ -1,26 +1,30 @@
 import { useRouter } from 'next/router'
 import { ArrowLeft, ArrowRight } from 'react-feather'
 
+import ArticleListItem from '../components/ArticleListItem'
+import Icon from '../components/Icon'
+import Link from '../components/Link'
+import Spinner from '../components/Spinner'
 import Page from '../layouts/Page'
-import { formatDate } from '../lib/formatDate'
 import { Article } from '../lib/varlamovClient'
 
-import Icon from './Icon'
-import Link from './Link'
-
-type Props = {
+export type Props = {
 	initialData: Article[]
+	pageNum: number
+	tag: string
 }
 
-export default function ArticleList({ initialData }: Props) {
+export default function SearchResults({ initialData, pageNum, tag }: Props) {
 	const router = useRouter()
 
-	const pageNum = Number(router.query.pageNum) || 1
-	const tag = router.query.tag
+	if (router.isFallback) {
+		return <Spinner />
+	}
 
-	const pathname = tag ? `/tag/${String(tag)}/` : '/'
+	const pathname = `/tag/${encodeURIComponent(tag)}/`
 
 	const prevPage = initialData.length > 0 ? `${pathname}page/${pageNum + 1}` : null
+
 	const nextPage =
 		pageNum > 1 ? (pageNum > 2 ? `${pathname}page/${pageNum - 1}` : pathname) : null
 
@@ -28,19 +32,10 @@ export default function ArticleList({ initialData }: Props) {
 	const leftIcon = <Icon icon={<ArrowLeft />} className="w-7 h-7" />
 
 	return (
-		<Page title={tag ? String(tag) : undefined} className="max-w-xl pb-0">
-			{tag && <h1 className="text-3xl mb-8">{tag}</h1>}
+		<Page title={tag} className="max-w-xl pb-0">
+			<h1 className="text-3xl mb-8">{tag}</h1>
 			{initialData.length > 0 ? (
-				initialData.map(article => (
-					<header key={article.id} className="mb-8">
-						<h2 className="mb-1 text-xl">
-							<Link href={`/blog/${article.uri}`}>{article.title}</Link>
-						</h2>
-						{article.created_at && (
-							<time className="opacity-70">{formatDate(article.created_at)}</time>
-						)}
-					</header>
-				))
+				initialData.map(article => <ArticleListItem key={article.id} {...article} />)
 			) : (
 				<header className="mb-8">
 					<h2 className="mb-1 text-xl">Ничего не найдено</h2>

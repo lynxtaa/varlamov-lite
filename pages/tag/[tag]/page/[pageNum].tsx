@@ -1,38 +1,25 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { useRouter } from 'next/router'
 
-import ArticleList from '../../../../components/ArticleList'
-import Spinner from '../../../../components/Spinner'
-import { assert } from '../../../../lib/assert'
-import { Article, varlamovClient } from '../../../../lib/varlamovClient'
+import { varlamovClient } from '../../../../lib/varlamovClient'
+import SearchResults, { Props } from '../../../../routes/SearchResults'
 
-type Props = {
-	initialData: Article[]
-}
+export default SearchResults
 
-export default function PageNum({ initialData }: Props) {
-	const router = useRouter()
-
-	if (router.isFallback) {
-		return <Spinner />
-	}
-
-	return <ArticleList initialData={initialData} />
-}
-
-export const getStaticPaths: GetStaticPaths = async () => ({ paths: [], fallback: true })
+export const getStaticPaths: GetStaticPaths = async () => ({
+	paths: [],
+	fallback: true,
+})
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-	assert(params, 'params must be defined')
+	const tag = String(params!.tag)
+	const pageNum = Number(params!.pageNum)
 
-	const initialData = await varlamovClient.getArticles({
-		tag: String(params.tag),
-		// TODO: исправить пажинацию
-		// pageNum: Number(params.pageNum),
+	const initialData = await varlamovClient.searchArticles(`#${tag}`, {
+		pageNum,
 	})
 
 	return {
-		props: { initialData },
+		props: { initialData, tag, pageNum },
 		revalidate: 6 * 60 * 60, // every 6 hours
 	}
 }

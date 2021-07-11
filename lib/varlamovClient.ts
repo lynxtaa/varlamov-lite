@@ -9,6 +9,7 @@ import probeImageSize from 'probe-image-size'
 import { articleSchema, articlesSchema } from './schemas'
 
 const BLOG_ID = 500000
+const PAGE_SIZE = 7
 
 export interface Article {
 	id: number
@@ -53,21 +54,6 @@ class VarlamovClient {
 		}
 	}
 
-	private async getHtml(path: string) {
-		const response = await fetch(
-			`${this.endpoint.toString()}${path.replace(/^\//, '')}`,
-			{ headers: { 'Accept-Language': 'ru-RU,ru' } },
-		)
-
-		if (!response.ok) {
-			throw new Error(`Error loading ${response.url}: ${response.status}`)
-		}
-
-		const html = await response.text()
-
-		return html
-	}
-
 	private async fetchTeletype(url: string, options?: RequestInit) {
 		const response = await fetch(`https://teletype.in${url}`, {
 			...options,
@@ -97,30 +83,11 @@ class VarlamovClient {
 
 	async getArticles({
 		lastArticle,
-		limit = 10,
-		tag,
+		limit = PAGE_SIZE,
 	}: {
 		lastArticle?: number
 		limit?: number
-		tag?: string
 	} = {}): Promise<Article[]> {
-		if (tag) {
-			const json = await this.fetchTeletype('/api/search/articles', {
-				method: 'POST',
-				body: JSON.stringify({
-					query: `#${tag}`,
-					blog_id: BLOG_ID,
-					limit,
-					offset: 0,
-				}),
-				headers: { 'Content-Type': 'application/json' },
-			})
-
-			const { articles } = articlesSchema.parse(json)
-
-			return articles
-		}
-
 		const qs = new URLSearchParams({ limit: String(limit) })
 
 		if (lastArticle) {
@@ -130,6 +97,26 @@ class VarlamovClient {
 		const json = await this.fetchTeletype(
 			`/api/blogs/id/${BLOG_ID}/articles?${qs.toString()}`,
 		)
+
+		const { articles } = articlesSchema.parse(json)
+
+		return articles
+	}
+
+	async searchArticles(
+		query: string,
+		{ limit = PAGE_SIZE, pageNum = 1 }: { limit?: number; pageNum?: number } = {},
+	): Promise<Article[]> {
+		const json = await this.fetchTeletype('/api/search/articles', {
+			method: 'POST',
+			body: JSON.stringify({
+				query,
+				blog_id: BLOG_ID,
+				limit,
+				offset: limit * (pageNum - 1),
+			}),
+			headers: { 'Content-Type': 'application/json' },
+		})
 
 		const { articles } = articlesSchema.parse(json)
 

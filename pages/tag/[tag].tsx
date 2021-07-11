@@ -1,24 +1,9 @@
-import { GetStaticProps, GetStaticPaths } from 'next'
-import { useRouter } from 'next/router'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
-import ArticleList from '../../components/ArticleList'
-import Spinner from '../../components/Spinner'
-import { assert } from '../../lib/assert'
-import { Article, varlamovClient } from '../../lib/varlamovClient'
+import { varlamovClient } from '../../lib/varlamovClient'
+import SearchResults, { Props } from '../../routes/SearchResults'
 
-type Props = {
-	initialData: Article[]
-}
-
-export default function Tag({ initialData }: Props) {
-	const router = useRouter()
-
-	if (router.isFallback) {
-		return <Spinner />
-	}
-
-	return <ArticleList initialData={initialData} />
-}
+export default SearchResults
 
 export const getStaticPaths: GetStaticPaths = async () => ({
 	paths: [],
@@ -26,12 +11,11 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 })
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-	assert(params, 'params must be defined')
-
-	const initialData = await varlamovClient.getArticles({ tag: String(params.tag) })
+	const tag = String(params!.tag)
+	const initialData = await varlamovClient.searchArticles(`#${tag}`)
 
 	return {
-		props: { initialData },
+		props: { initialData, pageNum: 1, tag },
 		revalidate: 6 * 60 * 60, // every 6 hours
 	}
 }
