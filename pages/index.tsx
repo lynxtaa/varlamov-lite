@@ -12,7 +12,7 @@ export default function Home({ initialData }: Props) {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-	const initialData = await varlamovClient.getArticles({ pageNum: 1 })
+	const initialData = await varlamovClient.getArticles()
 
 	return {
 		props: { initialData },

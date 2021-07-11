@@ -19,9 +19,24 @@ it('shows blog posts', () => {
 	const container = render(
 		<Home
 			initialData={[
-				{ id: 1, title: 'Первая новость', createdAt: subMinutes(now, 2).toISOString() },
-				{ id: 2, title: 'Вторая новость', createdAt: subHours(now, 2).toISOString() },
-				{ id: 3, title: 'Третья новость', createdAt: subDays(now, 2).toISOString() },
+				{
+					id: 1,
+					uri: '1.html',
+					title: 'Первая новость',
+					created_at: subMinutes(now, 2).toISOString(),
+				},
+				{
+					id: 2,
+					uri: '2.html',
+					title: 'Вторая новость',
+					created_at: subHours(now, 2).toISOString(),
+				},
+				{
+					id: 3,
+					uri: '3.html',
+					title: 'Третья новость',
+					created_at: subDays(now, 2).toISOString(),
+				},
 			]}
 		/>,
 	)

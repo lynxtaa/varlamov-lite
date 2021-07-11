@@ -29,7 +29,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 	assert(params, 'params must be defined')
 
 	const initialData = await varlamovClient.getArticles({
-		pageNum: Number(params.pageNum),
+		// TODO: исправить пажинацию
+		// pageNum: Number(params.pageNum),
 	})
 
 	return {

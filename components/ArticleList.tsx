@@ -34,10 +34,10 @@ export default function ArticleList({ initialData }: Props) {
 				initialData.map(article => (
 					<header key={article.id} className="mb-8">
 						<h2 className="mb-1 text-xl">
-							<Link href={`/blog/${article.id}`}>{article.title}</Link>
+							<Link href={`/blog/${article.uri}`}>{article.title}</Link>
 						</h2>
-						{article.createdAt && (
-							<time className="opacity-70">{formatDate(article.createdAt)}</time>
+						{article.created_at && (
+							<time className="opacity-70">{formatDate(article.created_at)}</time>
 						)}
 					</header>
 				))

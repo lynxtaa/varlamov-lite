@@ -46,6 +46,7 @@
     "focus-visible": "5.2.0",
     "html-react-parser": "1.2.6",
     "lodash": "4.17.21",
+    "myzod": "^1.8.4",
     "next": "11.0.0",
     "next-seo": "4.24.0",
     "next-themes": "0.0.14",

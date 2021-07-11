@@ -51,7 +51,7 @@ Object {
           >
             <a
               class="hover:underline"
-              href="/blog/1"
+              href="/blog/1.html"
             >
               Первая новость
             </a>
@@ -70,7 +70,7 @@ Object {
           >
             <a
               class="hover:underline"
-              href="/blog/2"
+              href="/blog/2.html"
             >
               Вторая новость
             </a>
@@ -89,7 +89,7 @@ Object {
           >
             <a
               class="hover:underline"
-              href="/blog/3"
+              href="/blog/3.html"
             >
               Третья новость
             </a>
@@ -219,7 +219,7 @@ Object {
         >
           <a
             class="hover:underline"
-            href="/blog/1"
+            href="/blog/1.html"
           >
             Первая новость
           </a>
@@ -238,7 +238,7 @@ Object {
         >
           <a
             class="hover:underline"
-            href="/blog/2"
+            href="/blog/2.html"
           >
             Вторая новость
           </a>
@@ -257,7 +257,7 @@ Object {
         >
           <a
             class="hover:underline"
-            href="/blog/3"
+            href="/blog/3.html"
           >
             Третья новость
           </a>

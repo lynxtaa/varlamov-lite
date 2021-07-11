@@ -1,20 +1,20 @@
 import { URL, URLSearchParams } from 'url'
 
 import cheerio from 'cheerio'
-import { parse as parseDate, isValid } from 'date-fns'
-import { zonedTimeToUtc } from 'date-fns-tz'
-import { ru } from 'date-fns/locale'
 import pick from 'lodash/pick'
 import truncate from 'lodash/truncate'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
 
-type Cheerio = ReturnType<typeof cheerio>
+import { articleSchema, articlesSchema } from './schemas'
+
+const BLOG_ID = 500000
 
 export interface Article {
 	id: number
+	uri: string
 	title: string
-	createdAt: string | null
+	created_at: string | null
 }
 
 export interface ArticleFull extends Article {
@@ -54,7 +54,10 @@ class VarlamovClient {
 	}
 
 	private async getHtml(path: string) {
-		const response = await fetch(`${this.endpoint.toString()}${path.replace(/^\//, '')}`)
+		const response = await fetch(
+			`${this.endpoint.toString()}${path.replace(/^\//, '')}`,
+			{ headers: { 'Accept-Language': 'ru-RU,ru' } },
+		)
 
 		if (!response.ok) {
 			throw new Error(`Error loading ${response.url}: ${response.status}`)
@@ -63,6 +66,21 @@ class VarlamovClient {
 		const html = await response.text()
 
 		return html
+	}
+
+	private async fetchTeletype(url: string, options?: RequestInit) {
+		const response = await fetch(`https://teletype.in${url}`, {
+			...options,
+			headers: { Accept: 'application/json', ...options?.headers },
+		})
+
+		if (!response.ok) {
+			throw new Error(`Error loading ${response.url}: ${response.status}`)
+		}
+
+		const json = await response.json()
+
+		return json
 	}
 
 	private getImageSize(url: string) {
@@ -77,64 +95,43 @@ class VarlamovClient {
 		)
 	}
 
-	private parseDate(el: Cheerio): Date | null {
-		const text = el.text().trim()
-
-		for (const format of ['d MMMM yyyy, HH:mm', 'd MMMM yyyy']) {
-			const date = parseDate(text, format, new Date(), { locale: ru })
-
-			if (isValid(date)) {
-				return zonedTimeToUtc(date, 'Europe/Moscow')
-			}
-		}
-
-		return null
-	}
-
 	async getArticles({
-		pageNum,
+		lastArticle,
+		limit = 10,
 		tag,
 	}: {
-		pageNum: number
+		lastArticle?: number
+		limit?: number
 		tag?: string
-	}): Promise<Article[]> {
-		const qs = new URLSearchParams()
-
+	} = {}): Promise<Article[]> {
 		if (tag) {
-			qs.append('tag', tag)
-		}
-		if (pageNum > 1) {
-			qs.append('skip', String((pageNum - 1) * this.pageSize))
-		}
-
-		const html = await this.getHtml(`/?${qs.toString()}`)
-
-		const $ = cheerio.load(html)
-
-		const articles = $('article[id^="entry-varlamov.ru"]')
-			.toArray()
-			.flatMap(el => {
-				const titleLink = $('.j-e-title a', el)
-
-				const match = /(?<id>\d+)\.html$/.exec(
-					// https://varlamov.ru/4130750.html
-					titleLink.attr('href') || '',
-				)
-
-				if (!match?.groups) {
-					return []
-				}
-
-				const createdAt = this.parseDate($('time[itemprop="dateCreated"]', el))
-
-				return [
-					{
-						id: Number(match.groups.id),
-						createdAt: createdAt ? createdAt.toISOString() : null,
-						title: titleLink.text().trim(),
-					},
-				]
+			const json = await this.fetchTeletype('/api/search/articles', {
+				method: 'POST',
+				body: JSON.stringify({
+					query: `#${tag}`,
+					blog_id: BLOG_ID,
+					limit,
+					offset: 0,
+				}),
+				headers: { 'Content-Type': 'application/json' },
 			})
+
+			const { articles } = articlesSchema.parse(json)
+
+			return articles
+		}
+
+		const qs = new URLSearchParams({ limit: String(limit) })
+
+		if (lastArticle) {
+			qs.set('last_article', String(lastArticle))
+		}
+
+		const json = await this.fetchTeletype(
+			`/api/blogs/id/${BLOG_ID}/articles?${qs.toString()}`,
+		)
+
+		const { articles } = articlesSchema.parse(json)
 
 		return articles
 	}
@@ -162,14 +159,23 @@ class VarlamovClient {
 		return null
 	}
 
-	async getArticle(id: number): Promise<ArticleFull> {
-		const html = await this.getHtml(`/${id}.html`)
+	async getArticle(uri: string): Promise<ArticleFull> {
+		const json = await this.fetchTeletype(
+			`/api/blogs/domain/varlamov.ru/articles/${encodeURIComponent(uri)}`,
+		)
 
-		const $ = cheerio.load(html)
+		const article = articleSchema.parse(json)
 
-		const textEl = $('#entrytext')
+		const $ = cheerio.load(article.text)
 
-		const excerpt = truncate(textEl.text().trim(), { length: 150 })
+		const textEl = $('document')
+
+		const excerpt =
+			article.sharing_text || truncate(textEl.text().trim(), { length: 150 })
+
+		const tags = $('tag')
+			.toArray()
+			.map(el => $(el).text().trim())
 
 		textEl.find(`*:not(${Object.keys(this.supportTagsWithAttrs).join(', ')})`).remove()
 
@@ -184,7 +190,11 @@ class VarlamovClient {
 
 		const [firstImage] = images
 
-		const previewImageUrl = firstImage ? $(firstImage).attr('src') : undefined
+		const previewImageUrl = article.sharing_image
+			? article.sharing_image
+			: firstImage
+			? $(firstImage).attr('src')
+			: undefined
 
 		await Promise.all(
 			images.map(async image => {
@@ -224,14 +234,7 @@ class VarlamovClient {
 			}
 		}
 
-		const title = $('.j-e-title').text().trim()
-		const createdAt = this.parseDate($('time[itemprop="dateCreated"]').first())
-
-		const tags = $('.j-e-tags-item')
-			.toArray()
-			.map(el => $(el).text().trim())
-
-		const text = textEl.html() || ''
+		const text = textEl.html()?.trim() || ''
 
 		const words = text.match(/\S+/g)
 		const WORDS_PER_MINUTE = 200
@@ -241,13 +244,14 @@ class VarlamovClient {
 			: 0
 
 		return {
-			id,
+			id: article.id,
+			uri: article.uri,
 			excerpt,
 			previewImageUrl: previewImageUrl || null,
-			title,
+			title: article.title,
 			tags,
 			text,
-			createdAt: createdAt ? createdAt.toISOString() : null,
+			created_at: article.created_at || null,
 			readingTime,
 		}
 	}

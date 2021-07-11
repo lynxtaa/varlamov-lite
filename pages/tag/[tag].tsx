@@ -28,10 +28,7 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 	assert(params, 'params must be defined')
 
-	const initialData = await varlamovClient.getArticles({
-		pageNum: 1,
-		tag: String(params.tag),
-	})
+	const initialData = await varlamovClient.getArticles({ tag: String(params.tag) })
 
 	return {
 		props: { initialData },

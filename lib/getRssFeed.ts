@@ -10,15 +10,15 @@ export async function getRssFeed(): Promise<string> {
 		language: 'ru',
 	})
 
-	const articles = await varlamovClient.getArticles({ pageNum: 1 })
+	const articles = await varlamovClient.getArticles()
 
 	for (const article of articles) {
-		const url = `https://varlamov-lite.vercel.app/blog/${article.id}`
+		const url = `https://varlamov-lite.vercel.app/blog/${encodeURIComponent(article.uri)}`
 
 		feed.item({
 			title: article.title,
 			description: '',
-			date: article.createdAt || new Date(),
+			date: article.created_at || new Date(),
 			author: 'Илья Варламов',
 			url,
 			guid: url,

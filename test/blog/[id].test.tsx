@@ -32,6 +32,7 @@ it('shows article', () => {
 		<BlogPost
 			article={{
 				id: 1,
+				uri: '1.html',
 				excerpt: `${text.slice(0, 100)}...`,
 				previewImageUrl: 'https://varlamov.me/2021/izmajlovo/02.jpg',
 				title: 'Lorem ipsum, dolor sit amet consectetur adipisicing.',
@@ -46,7 +47,7 @@ it('shows article', () => {
 					  <span>Фото: <a href="https://www.facebook.com/tatyana.tsarenko.94/posts/1955993087875425">Татьяна Царенко / Facebook</a></span>
 					</i>
 				`,
-				createdAt: '2021-03-29T18:37:00.000Z',
+				created_at: '2021-03-29T18:37:00.000Z',
 				readingTime: 181800,
 			}}
 		/>,
