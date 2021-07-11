@@ -16,5 +16,10 @@ export default async function articles(
 		lastArticle: lastArticle ? Number(lastArticle) : undefined,
 	})
 
+	if (lastArticle) {
+		const thirtyMinutes = 30 * 60
+		res.setHeader('Cache-Control', `s-maxage=${thirtyMinutes}, stale-while-revalidate`)
+	}
+
 	res.json(articles)
 }
