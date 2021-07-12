@@ -2,7 +2,7 @@ import { DefaultSeo } from 'next-seo'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Sun, Moon, Search } from 'react-feather'
+import { Sun, Moon, Search, ChevronRight } from 'react-feather'
 
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Theme } from '../../lib/Theme'
@@ -85,15 +85,28 @@ export default function Page({
 							setSearchBarVisible(false)
 						}}
 					>
-						<input
-							className="border w-2/4 border-gray-700 px-2 py-1 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200"
-							type="text"
-							aria-label="Поиск"
-							placeholder="Поиск..."
-							autoFocus
-							value={searchQuery}
-							onChange={event => setSearchQuery(event.target.value)}
-						/>
+						<label htmlFor="search-query" className="block">
+							Поиск
+						</label>
+						<div className="flex items-center">
+							<input
+								className="border border-r-0 border-gray-700 px-2 h-10 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 flex-grow md:flex-grow-0 md:w-2/4"
+								type="text"
+								aria-label="Поиск"
+								id="search-query"
+								name="search-query"
+								autoFocus
+								value={searchQuery}
+								onChange={event => setSearchQuery(event.target.value)}
+							/>
+							<button
+								type="submit"
+								title="Отправить"
+								className="border border-gray-700 border-l-0 px-2 h-10"
+							>
+								<Icon icon={<ChevronRight />} className="w-6 h-6" />
+							</button>
+						</div>
 					</form>
 				)}
 			</header>

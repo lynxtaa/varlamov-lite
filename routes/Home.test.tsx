@@ -70,7 +70,8 @@ it('runs search with entered query', async () => {
 	await screen.findByText('Ничего не найдено')
 
 	userEvent.click(screen.getByRole('button', { name: 'Поиск' }))
-	userEvent.type(screen.getByRole('textbox', { name: 'Поиск' }), 'moscow{enter}')
+	userEvent.type(screen.getByRole('textbox', { name: 'Поиск' }), 'moscow')
+	userEvent.click(screen.getByRole('button', { name: 'Отправить' }))
 
 	await waitFor(() => {
 		expect(mockRouter.push).toHaveBeenCalledWith('/search/moscow')
