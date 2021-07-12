@@ -11,15 +11,15 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 })
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-	const tag = String(params!.tag)
+	const query = String(params!.query)
 	const pageNum = Number(params!.pageNum)
 
-	const initialData = await varlamovClient.searchArticles(`#${tag}`, {
+	const initialData = await varlamovClient.searchArticles(query, {
 		pageNum,
 	})
 
 	return {
-		props: { initialData, tag, pageNum },
+		props: { initialData, query, pageNum },
 		revalidate: 6 * 60 * 60, // every 6 hours
 	}
 }

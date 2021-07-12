@@ -1,4 +1,5 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { subDays, subHours, subMinutes } from 'date-fns'
 import { advanceTo } from 'jest-date-mock'
 import { DefaultRequestBody } from 'msw'
@@ -12,8 +13,11 @@ import Home from '../pages/index'
 
 const useRouterMock = useRouter as jest.Mock<NextRouter>
 
+let mockRouter
+
 beforeEach(() => {
-	useRouterMock.mockReturnValue(createMockRouter())
+	mockRouter = createMockRouter()
+	useRouterMock.mockReturnValue(mockRouter)
 })
 
 it('shows blog posts', async () => {
@@ -52,4 +56,23 @@ it('shows blog posts', async () => {
 	await screen.findByText('Первая новость')
 
 	expect(container).toMatchSnapshot()
+})
+
+it('runs search with entered query', async () => {
+	server.use(
+		rest.get<DefaultRequestBody, Article[]>('/api/articles', (req, res, ctx) =>
+			res(ctx.json([])),
+		),
+	)
+
+	renderWithProviders(<Home />)
+
+	await screen.findByText('Ничего не найдено')
+
+	userEvent.click(screen.getByRole('button', { name: 'Поиск' }))
+	userEvent.type(screen.getByRole('textbox', { name: 'Поиск' }), 'moscow{enter}')
+
+	await waitFor(() => {
+		expect(mockRouter.push).toHaveBeenCalledWith('/search/moscow')
+	})
 })

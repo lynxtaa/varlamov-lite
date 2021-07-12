@@ -1,12 +1,7 @@
 module.exports = {
 	mode: 'jit',
 	purge: {
-		content: [
-			'./components/**/*.tsx',
-			'./layouts/**/*.tsx',
-			'./pages/**/*.tsx',
-			'./routes/**/*.tsx',
-		],
+		content: ['./components/**/*.tsx', './pages/**/*.tsx', './routes/**/*.tsx'],
 		options: {
 			safelist: ['dark'],
 		},

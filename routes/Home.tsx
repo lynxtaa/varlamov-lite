@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from 'react-query'
 
 import ArticleListItem from '../components/ArticleListItem'
-import Page from '../layouts/Page'
+import Page from '../components/layouts/Page'
 import { Article } from '../lib/varlamovClient'
 
 async function fetchArticles({ pageParam }: { pageParam?: number }) {
