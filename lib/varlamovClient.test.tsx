@@ -18,7 +18,7 @@ it('loads articles', async () => {
 								id: 12345,
 								uri: '12345.html',
 								title: 'Первая статья',
-								created_at: '2020-09-01T16:30:00.000Z',
+								published_at: '2020-09-01T16:30:00.000Z',
 								cut: 'Администрация Суэцкого канала в четверг, 25 марта',
 							},
 						],
@@ -34,7 +34,7 @@ it('loads articles', async () => {
 			id: 12345,
 			uri: '12345.html',
 			title: 'Первая статья',
-			created_at: '2020-09-01T16:30:00.000Z',
+			published_at: '2020-09-01T16:30:00.000Z',
 			cut: 'Администрация Суэцкого канала в четверг, 25 марта',
 		},
 	])
@@ -66,7 +66,7 @@ it('loads single article', async () => {
 						id: 12345,
 						uri: '12345.html',
 						title: 'Первая статья',
-						created_at: new Date('2020-09-01').toISOString(),
+						published_at: new Date('2020-09-01').toISOString(),
 						cut: 'Администрация Суэцкого канала...',
 						text: `
 							<document>
@@ -96,7 +96,7 @@ it('loads single article', async () => {
 		id: 12345,
 		uri: '12345.html',
 		title: 'Первая статья',
-		created_at: new Date('2020-09-01').toISOString(),
+		published_at: new Date('2020-09-01').toISOString(),
 		excerpt: expect.stringContaining('Фото: FBN Raiger'),
 		previewImageUrl: 'https://varlamov.me/2021/suec/03.jpg',
 		readingTime: 18600,

@@ -6,16 +6,16 @@ type Props = {
 	id: number
 	uri: string
 	title: string
-	created_at?: string | null
+	published_at?: string | null
 }
 
-export default function ArticleListItem({ id, uri, title, created_at }: Props) {
+export default function ArticleListItem({ id, uri, title, published_at }: Props) {
 	return (
 		<header className="mb-8">
 			<h2 className="mb-1 text-xl">
 				<Link href={`/blog/${encodeURIComponent(uri)}`}>{title}</Link>
 			</h2>
-			{created_at && <time className="opacity-70">{formatDate(created_at)}</time>}
+			{published_at && <time className="opacity-70">{formatDate(published_at)}</time>}
 		</header>
 	)
 }

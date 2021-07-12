@@ -4,7 +4,7 @@ export const articleSchema = myzod.object(
 	{
 		id: myzod.number(),
 		uri: myzod.string(),
-		created_at: myzod.string(),
+		published_at: myzod.string(),
 		title: myzod.string(),
 		text: myzod.string(),
 		sharing_text: myzod.string().optional(),
@@ -21,7 +21,7 @@ export const articlesSchema = myzod.object(
 				{
 					id: myzod.number(),
 					uri: myzod.string(),
-					created_at: myzod.string(),
+					published_at: myzod.string(),
 					title: myzod.string(),
 					cut: myzod.string(),
 					sharing_text: myzod.string().optional(),

@@ -15,7 +15,7 @@ import { ArticleFull } from '../lib/varlamovClient'
 export type Props = ArticleFull
 
 export default function Article({
-	created_at,
+	published_at,
 	excerpt,
 	tags,
 	title,
@@ -31,9 +31,9 @@ export default function Article({
 
 	return (
 		<Page title={title} description={excerpt} ogImage={previewImageUrl || undefined}>
-			{created_at && (
+			{published_at && (
 				<time className="flex mb-1">
-					{formatDate(created_at)}
+					{formatDate(published_at)}
 					<span className="opacity-70 inline-flex items-center ml-4">
 						<Icon icon={<Clock />} className="mr-2 w-4 h-4" />
 						{formatDistanceToNow(Date.now() + readingTime, { locale: ru })}

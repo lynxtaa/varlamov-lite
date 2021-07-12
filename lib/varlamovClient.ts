@@ -15,7 +15,7 @@ export interface Article {
 	id: number
 	uri: string
 	title: string
-	created_at: string | null
+	published_at: string | null
 }
 
 export interface ArticleFull extends Article {
@@ -238,7 +238,7 @@ class VarlamovClient {
 			title: article.title,
 			tags,
 			text,
-			created_at: article.created_at || null,
+			published_at: article.published_at || null,
 			readingTime,
 		}
 	}

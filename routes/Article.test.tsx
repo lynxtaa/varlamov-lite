@@ -47,7 +47,7 @@ it('shows article', () => {
 					  <span>Фото: <a href="https://www.facebook.com/tatyana.tsarenko.94/posts/1955993087875425">Татьяна Царенко / Facebook</a></span>
 					</i>
 				`}
-			created_at="2021-03-29T18:37:00.000Z"
+			published_at="2021-03-29T18:37:00.000Z"
 			readingTime={181800}
 		/>,
 	)
