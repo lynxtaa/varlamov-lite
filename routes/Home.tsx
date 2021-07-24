@@ -1,28 +1,62 @@
-import { useInfiniteQuery } from 'react-query'
+import { useEffect, useRef } from 'react'
+import { useInfiniteQuery, useQueryClient } from 'react-query'
 
 import ArticleListItem from '../components/ArticleListItem'
 import Page from '../components/layouts/Page'
+import { useIsOnScreen } from '../hooks/useIsOnScreen'
 import { Article } from '../lib/varlamovClient'
 
-async function fetchArticles({ pageParam }: { pageParam?: number }) {
-	const qs = pageParam ? new URLSearchParams({ lastArticle: String(pageParam) }) : null
+async function fetchArticles(lastArticleId: number | undefined) {
+	const qs = lastArticleId
+		? new URLSearchParams({ lastArticle: String(lastArticleId) })
+		: null
 	const response = await fetch(`/api/articles${qs ? `?${qs}` : ''}`)
 	if (!response.ok) {
 		throw new Error(`Error requesting ${response.url}: ${response.status}`)
 	}
-	const articles = (await response.json()) as Article[]
-	return articles
+	const articles = await response.json()
+	return articles as Article[]
 }
 
+const staleTime = 30 * 60 * 1000
+const cacheTime = 30 * 60 * 1000
+
 export default function Home() {
+	const queryClient = useQueryClient()
+
 	const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		useInfiniteQuery<Article[], Error>('articles', fetchArticles, {
-			getNextPageParam: lastPage => lastPage[lastPage.length - 1]?.id,
-			staleTime: 30 * 60 * 1000,
-			cacheTime: 30 * 60 * 1000,
-		})
+		useInfiniteQuery<Article[], Error>(
+			'articles',
+			({ pageParam }) =>
+				queryClient.fetchQuery(
+					['next-articles', pageParam],
+					() => fetchArticles(pageParam),
+					{ staleTime, cacheTime },
+				),
+			{
+				getNextPageParam: lastPage => lastPage[lastPage.length - 1]?.id,
+				staleTime,
+				cacheTime,
+			},
+		)
+
+	const buttonRef = useRef<HTMLButtonElement>(null)
+
+	const isButtonVisible = useIsOnScreen(buttonRef.current)
 
 	const articles = data && data.pages.flat()
+
+	const lastArticleId = articles?.[articles.length - 1]?.id
+
+	useEffect(() => {
+		if (lastArticleId && !isFetchingNextPage && isButtonVisible && hasNextPage) {
+			queryClient.prefetchQuery(
+				['next-articles', lastArticleId],
+				() => fetchArticles(lastArticleId),
+				{ staleTime, cacheTime },
+			)
+		}
+	}, [hasNextPage, isButtonVisible, isFetchingNextPage, lastArticleId, queryClient])
 
 	return (
 		<Page className="max-w-xl">
@@ -42,6 +76,7 @@ export default function Home() {
 					className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
 					onClick={() => fetchNextPage()}
 					disabled={isFetchingNextPage}
+					ref={buttonRef}
 				>
 					Показать больше {isFetchingNextPage && '...'}
 				</button>
