@@ -43,8 +43,10 @@ class VarlamovClient {
 			'blockquote': [],
 			'br': [],
 			'em': [],
+			'figcaption': [],
+			'figure': [],
 			'i': [],
-			'iframe': ['src'],
+			'iframe': ['src', 'frameBorder', 'allow', 'allowFullScreen'],
 			'img': ['src', 'width', 'height', 'alt'],
 			'li': [],
 			'p': [],
@@ -123,29 +125,6 @@ class VarlamovClient {
 		return articles
 	}
 
-	private getFrameAttribsFromSrc(src: string) {
-		try {
-			const url = new URL(src)
-			const source = url.searchParams.get('source')
-			const vid = url.searchParams.get('vid')
-
-			if (source === 'youtube' && vid) {
-				return {
-					src: `https://www.youtube.com/embed/${vid}`,
-					frameBorder: '0',
-					allow:
-						'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
-					allowFullScreen: '',
-				}
-			}
-		} catch (err) {
-			// eslint-disable-next-line no-console
-			console.log(err)
-		}
-
-		return null
-	}
-
 	async getArticle(uri: string): Promise<ArticleFull> {
 		const json = await this.fetchTeletype(
 			`/api/blogs/domain/varlamov.ru/articles/${encodeURIComponent(uri)}`,
@@ -153,16 +132,52 @@ class VarlamovClient {
 
 		const article = articleSchema.parse(json)
 
-		const $ = cheerio.load(article.text)
+		const $ = cheerio.load(article.text, { xmlMode: true, decodeEntities: false })
 
 		const textEl = $('document')
-
-		const excerpt =
-			article.sharing_text || truncate(textEl.text().trim(), { length: 150 })
 
 		const tags = $('tag')
 			.toArray()
 			.map(el => $(el).text().trim())
+
+		// Заменим конструкции <image src="http://example.com"><caption>Подпись</caption></image>
+		// на <img src="http://example.com" /><caption>Подпись</caption>
+		for (const image of textEl.find('image').toArray()) {
+			const $image = $(image)
+
+			$image.after('<img />')
+			const $img = $image.next()
+			for (const [attr, value] of Object.entries(image.attribs)) {
+				$img.attr(attr, value)
+			}
+			const caption = $image.find('caption').html()
+
+			if (caption) {
+				$img.wrap('<figure></figure>')
+				$img.after(`<figcaption>${caption}</figcaption>`)
+			}
+
+			$image.remove()
+		}
+
+		// Заменим конструкции <youtube src="https://www.youtube.com/embed/fw5hbjqBiSA" />
+		// на iframe'ы
+		for (const youtube of textEl.find('youtube').toArray()) {
+			const $youtube = $(youtube)
+			const src = $youtube.attr('src')
+			if (youtube.attribs.src) {
+				$youtube.after('<iframe> </iframe>')
+				const frame = $youtube.next()
+				frame.attr('src', src)
+				frame.attr('frameBorder', '0')
+				frame.attr(
+					'allow',
+					'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+				)
+				frame.attr('allowFullScreen', '')
+			}
+			$youtube.remove()
+		}
 
 		textEl.find(`*:not(${Object.keys(this.supportTagsWithAttrs).join(', ')})`).remove()
 
@@ -188,43 +203,37 @@ class VarlamovClient {
 				const img = $(image)
 				const src = img.attr('src')
 
-				const dimensions = src ? await this.getImageSize(src) : null
-
-				if (dimensions && src) {
-					image.attribs = {}
-					img.attr('src', src)
-					img.attr('width', String(dimensions.width))
-					img.attr('height', String(dimensions.height))
-				} else {
+				if (!src) {
 					img.remove()
+					return
+				}
+
+				const width = img.attr('width')
+				const height = img.attr('height')
+
+				if (!width || !height) {
+					const dimensions = await this.getImageSize(src)
+
+					if (dimensions) {
+						image.attribs = {}
+						img.attr('src', src)
+						img.attr('width', String(dimensions.width))
+						img.attr('height', String(dimensions.height))
+					} else {
+						img.remove()
+					}
 				}
 			}),
 		)
 
-		for (const link of textEl.find('a').toArray()) {
-			const linkEl = $(link)
-			const href = linkEl.attr('href')!
-			link.attribs = {}
-			linkEl.attr('href', href)
-		}
+		const plainText = textEl.text().trim()
 
-		for (const iframe of textEl.find('iframe').toArray()) {
-			const iframeEl = $(iframe)
-			const src = iframeEl.attr('src')
+		const html = textEl.html()?.trim() || ''
 
-			const attribs = src ? this.getFrameAttribsFromSrc(src) : null
-
-			if (attribs) {
-				iframe.attribs = attribs
-			} else {
-				iframeEl.remove()
-			}
-		}
-
-		const text = textEl.html()?.trim() || ''
-
-		const words = text.match(/\S+/g)
+		const words = plainText.match(/\S+/g)
 		const WORDS_PER_MINUTE = 200
+
+		const excerpt = article.sharing_text || truncate(plainText, { length: 150 })
 
 		const readingTime = words
 			? Math.round((words.length / WORDS_PER_MINUTE) * 60 * 1000)
@@ -237,7 +246,7 @@ class VarlamovClient {
 			previewImageUrl: previewImageUrl || null,
 			title: article.title,
 			tags,
-			text,
+			text: html,
 			published_at: article.published_at || null,
 			readingTime,
 		}
