@@ -16,7 +16,7 @@ import '../styles/global.css'
 
 // Only show nprogress after 500ms (slow loading)
 // https://github.com/gaearon/whatthefuck.is/blob/24d3bfb4b6ed60d01414cb6295accd6f5d00d3b9/pages/_app.js
-const start = debounce(nprogress.start, 500)
+const start = debounce(nprogress.start.bind(nprogress), 500)
 
 Router.events.on('routeChangeStart', start)
 
@@ -31,7 +31,7 @@ Router.events.on('routeChangeError', () => {
 	nprogress.done()
 })
 
-const App = ({ Component, pageProps }: AppProps) => {
+export default function App({ Component, pageProps }: AppProps) {
 	const [queryClient] = useState(() => new QueryClient())
 
 	return (
@@ -42,7 +42,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 			attribute="class"
 		>
 			<QueryClientProvider client={queryClient}>
-				<Hydrate state={pageProps.dehydratedState}>
+				<Hydrate state={(pageProps as { dehydratedState?: unknown }).dehydratedState}>
 					<Head>
 						<meta charSet="utf-8" />
 						<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -71,5 +71,3 @@ const App = ({ Component, pageProps }: AppProps) => {
 		</ThemeProvider>
 	)
 }
-
-export default App

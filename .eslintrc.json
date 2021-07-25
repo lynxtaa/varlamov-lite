@@ -2,10 +2,14 @@
 	"extends": [
 		"react-app",
 		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"plugin:import/errors",
 		"plugin:import/warnings",
 		"plugin:import/typescript"
 	],
+	"parserOptions": {
+		"project": "./tsconfig.json"
+	},
 	"rules": {
 		"no-console": "warn",
 		"react/react-in-jsx-scope": "off",
@@ -15,7 +19,8 @@
 		],
 		"import/newline-after-import": "warn",
 		"@typescript-eslint/no-non-null-assertion": "off",
-		"@typescript-eslint/no-explicit-any": "off"
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/prefer-regexp-exec": "off"
 	},
 	"overrides": [
 		{

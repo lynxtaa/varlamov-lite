@@ -10,12 +10,12 @@ async function fetchArticles(lastArticleId: number | undefined) {
 	const qs = lastArticleId
 		? new URLSearchParams({ lastArticle: String(lastArticleId) })
 		: null
-	const response = await fetch(`/api/articles${qs ? `?${qs}` : ''}`)
+	const response = await fetch(`/api/articles${qs ? `?${qs.toString()}` : ''}`)
 	if (!response.ok) {
 		throw new Error(`Error requesting ${response.url}: ${response.status}`)
 	}
-	const articles = await response.json()
-	return articles as Article[]
+	const articles = (await response.json()) as Article[]
+	return articles
 }
 
 const staleTime = 30 * 60 * 1000
@@ -50,7 +50,7 @@ export default function Home() {
 
 	useEffect(() => {
 		if (lastArticleId && !isFetchingNextPage && isButtonVisible && hasNextPage) {
-			queryClient.prefetchQuery(
+			void queryClient.prefetchQuery(
 				['next-articles', lastArticleId],
 				() => fetchArticles(lastArticleId),
 				{ staleTime, cacheTime },

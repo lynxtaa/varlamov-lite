@@ -97,11 +97,11 @@ it('loads single article', async () => {
 		uri: '12345.html',
 		title: 'Первая статья',
 		published_at: new Date('2020-09-01').toISOString(),
-		excerpt: expect.stringContaining('Фото: FBN Raiger'),
+		excerpt: expect.stringContaining('Фото: FBN Raiger') as unknown,
 		previewImageUrl: 'https://varlamov.me/2021/suec/03.jpg',
 		readingTime: 15000,
 		tags: ['Китай', 'Пекин'],
-		text: expect.any(String),
+		text: expect.any(String) as unknown,
 	})
 
 	expect(article.text).toMatchInlineSnapshot(`
@@ -165,12 +165,14 @@ it('loads single article in new format', async () => {
 		uri: 'fESnpvxundQ',
 		title: 'ЧМ-2018 закончился, и всё развалилось',
 		published_at: new Date('2020-09-01').toISOString(),
-		excerpt: expect.stringContaining('буквально несколько часов до конца Чемпионата'),
+		excerpt: expect.stringContaining(
+			'буквально несколько часов до конца Чемпионата',
+		) as unknown,
 		previewImageUrl:
 			'https://img3.teletype.in/files/a0/99/a0994fa1-1e21-44f7-ad0a-c14ee0ba23fd.jpeg',
 		readingTime: 22200,
 		tags: ['волгоград', 'чм_2018', 'дождь', 'потоп', 'россия', 'волгоградская_область'],
-		text: expect.any(String),
+		text: expect.any(String) as unknown,
 	})
 
 	expect(article.text).toMatchInlineSnapshot(`

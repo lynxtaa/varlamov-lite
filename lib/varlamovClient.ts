@@ -66,7 +66,7 @@ class VarlamovClient {
 			throw new Error(`Error loading ${response.url}: ${response.status}`)
 		}
 
-		const json = await response.json()
+		const json = (await response.json()) as unknown
 
 		return json
 	}

@@ -13,7 +13,7 @@ import Home from '../pages/index'
 
 const useRouterMock = useRouter as jest.Mock<NextRouter>
 
-let mockRouter
+let mockRouter: NextRouter
 
 beforeEach(() => {
 	mockRouter = createMockRouter()

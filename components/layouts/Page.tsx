@@ -81,7 +81,7 @@ export default function Page({
 						className="mt-4"
 						onSubmit={event => {
 							event.preventDefault()
-							router.push(`/search/${encodeURIComponent(searchQuery)}`)
+							void router.push(`/search/${encodeURIComponent(searchQuery)}`)
 							setSearchBarVisible(false)
 						}}
 					>

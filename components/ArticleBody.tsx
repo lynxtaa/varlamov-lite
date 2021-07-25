@@ -1,3 +1,4 @@
+import { isTag } from 'domhandler'
 import parse, { domToReact, HTMLReactParserOptions } from 'html-react-parser'
 import Image from 'next/image'
 import { useMemo } from 'react'
@@ -12,7 +13,11 @@ type Props = {
 export default function Article({ className, text }: Props) {
 	const textWithImagesAndLinks = useMemo(() => {
 		const options: HTMLReactParserOptions = {
-			replace(node: any) {
+			replace(node) {
+				if (!isTag(node)) {
+					return
+				}
+
 				switch (node.name) {
 					case 'img':
 						return (
@@ -32,7 +37,7 @@ export default function Article({ className, text }: Props) {
 						const matchTag = href.match(/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/)
 
 						return matchPost?.groups ? (
-							<Link href={`/blog/${matchPost.groups.postId}`} underline>
+							<Link href={`/blog/${matchPost.groups.postId!}`} underline>
 								{children}
 							</Link>
 						) : matchTag?.groups ? (

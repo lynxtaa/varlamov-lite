@@ -14,7 +14,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
 	return {
 		// https://github.com/tannerlinsley/react-query/issues/1458#issuecomment-788447705
-		props: { dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))) },
+		props: {
+			dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))) as unknown,
+		},
 		revalidate: 30 * 60, // every 30 minutes
 	}
 }
