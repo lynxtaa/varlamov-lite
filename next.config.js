@@ -1,4 +1,8 @@
-module.exports = {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+	enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer({
 	images: {
 		domains: [
 			'varlamov.me',
@@ -25,4 +29,4 @@ module.exports = {
 	future: {
 		strictPostcssConfiguration: true,
 	},
-}
+})
