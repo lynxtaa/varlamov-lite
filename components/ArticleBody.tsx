@@ -33,15 +33,15 @@ export default function Article({ className, text }: Props) {
 
 						const href = node.attribs.href!
 
-						const matchPost = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\d+)\.html/)
+						const matchPost = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\w+)/)
 						const matchTag = href.match(/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/)
 
-						return matchPost?.groups ? (
-							<Link href={`/blog/${matchPost.groups.postId!}`} underline>
+						return matchPost?.groups?.postId ? (
+							<Link href={`/blog/${matchPost.groups.postId}`} underline>
 								{children}
 							</Link>
-						) : matchTag?.groups ? (
-							<Link href={`/tag/${matchTag.groups.tag!}`} underline>
+						) : matchTag?.groups?.tag ? (
+							<Link href={`/tag/${matchTag.groups.tag}`} underline>
 								{children}
 							</Link>
 						) : (
