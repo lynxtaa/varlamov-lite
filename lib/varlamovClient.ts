@@ -165,10 +165,14 @@ class VarlamovClient {
 		for (const youtube of textEl.find('youtube').toArray()) {
 			const $youtube = $(youtube)
 			const src = $youtube.attr('src')
-			if (youtube.attribs.src) {
+
+			if (src) {
+				// Иногда ссылки имеют вид https://www.youtube.com/watch?v=9kTpmziuEPk
+				const vidId = new URL(src).searchParams.get('v')
+
 				$youtube.after('<iframe> </iframe>')
 				const frame = $youtube.next()
-				frame.attr('src', src)
+				frame.attr('src', vidId ? `https://www.youtube.com/embed/${vidId}` : src)
 				frame.attr('frameBorder', '0')
 				frame.attr(
 					'allow',
