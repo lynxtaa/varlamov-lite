@@ -6,6 +6,7 @@ import truncate from 'lodash/truncate'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
 
+import { getYoutubeVideoId } from './getYoutubeVideoId'
 import { articleSchema, articlesSchema } from './schemas'
 
 const BLOG_ID = 500000
@@ -167,18 +168,19 @@ class VarlamovClient {
 			const src = $youtube.attr('src')
 
 			if (src) {
-				// Иногда ссылки имеют вид https://www.youtube.com/watch?v=9kTpmziuEPk
-				const vidId = new URL(src).searchParams.get('v')
+				const vidId = getYoutubeVideoId(src)
 
-				$youtube.after('<iframe> </iframe>')
-				const frame = $youtube.next()
-				frame.attr('src', vidId ? `https://www.youtube.com/embed/${vidId}` : src)
-				frame.attr('frameBorder', '0')
-				frame.attr(
-					'allow',
-					'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
-				)
-				frame.attr('allowFullScreen', '')
+				if (vidId) {
+					$youtube.after('<iframe> </iframe>')
+					const frame = $youtube.next()
+					frame.attr('src', `https://www.youtube.com/embed/${vidId}`)
+					frame.attr('frameBorder', '0')
+					frame.attr(
+						'allow',
+						'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+					)
+					frame.attr('allowFullScreen', '')
+				}
 			}
 			$youtube.remove()
 		}
