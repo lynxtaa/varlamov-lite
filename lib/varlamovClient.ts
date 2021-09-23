@@ -54,6 +54,7 @@ class VarlamovClient {
 			'span': [],
 			'strong': [],
 			'ul': [],
+			'section': [],
 		}
 	}
 
