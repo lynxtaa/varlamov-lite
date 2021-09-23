@@ -10,6 +10,16 @@ export const articleSchema = myzod.object(
 		sharing_text: myzod.string().optional(),
 		sharing_image: myzod.string().optional(),
 		cut: myzod.string(),
+		topics: myzod
+			.array(
+				myzod.object({
+					id: myzod.number(),
+					uri: myzod.string().optional(),
+					name: myzod.string(),
+				}),
+			)
+			.nullable()
+			.optional(),
 	},
 	{ allowUnknown: true },
 )

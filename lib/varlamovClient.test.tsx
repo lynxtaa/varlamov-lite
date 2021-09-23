@@ -100,6 +100,7 @@ it('loads single article', async () => {
 		excerpt: expect.stringContaining('Фото: FBN Raiger') as unknown,
 		previewImageUrl: 'https://varlamov.me/2021/suec/03.jpg',
 		readingTime: 15000,
+		topics: [],
 		tags: ['Китай', 'Пекин'],
 		text: expect.any(String) as unknown,
 	})
@@ -164,6 +165,7 @@ it('loads single article in new format', async () => {
 		id: 12345,
 		uri: 'fESnpvxundQ',
 		title: 'ЧМ-2018 закончился, и всё развалилось',
+		topics: [],
 		published_at: new Date('2020-09-01').toISOString(),
 		excerpt: expect.stringContaining(
 			'буквально несколько часов до конца Чемпионата',

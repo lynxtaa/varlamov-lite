@@ -22,6 +22,7 @@ export default function Article({
 	text,
 	previewImageUrl,
 	readingTime,
+	topics,
 }: Props) {
 	const router = useRouter()
 
@@ -31,6 +32,21 @@ export default function Article({
 
 	return (
 		<Page title={title} description={excerpt} ogImage={previewImageUrl || undefined}>
+			{topics.length > 0 && (
+				<div className="flex flex-wrap">
+					{topics.map(({ name }, i) => (
+						<div
+							key={name}
+							className={cn(
+								'py-1 px-3 border rounded-md border-gray-700 border-solid mb-3 cursor-default bg-gray-900 text-gray-50 dark:bg-gray-200 dark:text-gray-900 font-semibold',
+								i < tags.length && 'mr-3',
+							)}
+						>
+							{name}
+						</div>
+					))}
+				</div>
+			)}
 			{published_at && (
 				<time className="flex mb-1">
 					{formatDate(published_at)}

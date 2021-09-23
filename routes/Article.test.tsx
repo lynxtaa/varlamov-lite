@@ -49,6 +49,7 @@ it('shows article', () => {
 				`}
 			published_at="2021-03-29T18:37:00.000Z"
 			readingTime={181800}
+			topics={[]}
 		/>,
 	)
 

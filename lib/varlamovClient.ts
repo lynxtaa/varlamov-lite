@@ -25,6 +25,7 @@ export interface ArticleFull extends Article {
 	readingTime: number
 	text: string
 	tags: string[]
+	topics: { name: string }[]
 }
 
 class VarlamovClient {
@@ -256,6 +257,7 @@ class VarlamovClient {
 			text: html,
 			published_at: article.published_at || null,
 			readingTime,
+			topics: article.topics ?? [],
 		}
 	}
 }
