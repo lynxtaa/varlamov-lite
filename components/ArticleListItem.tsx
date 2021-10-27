@@ -9,7 +9,7 @@ type Props = {
 	published_at?: string | null
 }
 
-export default function ArticleListItem({ id, uri, title, published_at }: Props) {
+export default function ArticleListItem({ uri, title, published_at }: Props) {
 	return (
 		<header className="mb-8">
 			<h2 className="mb-1 text-xl">

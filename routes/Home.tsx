@@ -27,7 +27,7 @@ export default function Home() {
 	const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery<Article[], Error>(
 			'articles',
-			({ pageParam }) =>
+			({ pageParam }: { pageParam?: number }) =>
 				queryClient.fetchQuery(
 					['next-articles', pageParam],
 					() => fetchArticles(pageParam),

@@ -1,0 +1,22 @@
+{
+	"resetMocks": true,
+	"testEnvironment": "jsdom",
+	"roots": [
+		"<rootDir>/components",
+		"<rootDir>/hooks",
+		"<rootDir>/lib",
+		"<rootDir>/pages",
+		"<rootDir>/routes"
+	],
+	"setupFiles": ["jest-date-mock", "whatwg-fetch"],
+	"setupFilesAfterEnv": ["./jest/setupTests.ts"],
+	"transform": {
+		"\\.[jt]sx?$": [
+			"babel-jest",
+			{
+				"babelrc": false,
+				"presets": ["next/babel"]
+			}
+		]
+	}
+}

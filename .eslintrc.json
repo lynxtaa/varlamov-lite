@@ -1,6 +1,5 @@
 {
 	"extends": [
-		"react-app",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"plugin:import/errors",
@@ -13,7 +12,6 @@
 	},
 	"rules": {
 		"no-console": "warn",
-		"react/react-in-jsx-scope": "off",
 		"import/order": [
 			"warn",
 			{ "alphabetize": { "order": "asc" }, "newlines-between": "always" }
