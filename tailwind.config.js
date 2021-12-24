@@ -1,11 +1,5 @@
 module.exports = {
-	mode: 'jit',
-	purge: {
-		content: ['./components/**/*.tsx', './pages/**/*.tsx', './routes/**/*.tsx'],
-		options: {
-			safelist: ['dark'],
-		},
-	},
+	content: ['./components/**/*.tsx', './pages/**/*.tsx', './routes/**/*.tsx'],
 	darkMode: 'class',
 	theme: {
 		extend: {
@@ -33,9 +27,6 @@ module.exports = {
 				spinZ: 'spinZ 10s infinite linear',
 			},
 		},
-	},
-	variants: {
-		extend: {},
 	},
 	plugins: [],
 }

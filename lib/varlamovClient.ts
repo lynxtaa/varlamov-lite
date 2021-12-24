@@ -1,6 +1,8 @@
-import { URL, URLSearchParams } from 'url'
+import http from 'http'
+import https from 'https'
 
 import cheerio from 'cheerio'
+import got from 'got'
 import pick from 'lodash/pick'
 import truncate from 'lodash/truncate'
 import PQueue from 'p-queue'
@@ -11,6 +13,17 @@ import { articleSchema, articlesSchema } from './schemas'
 
 const BLOG_ID = 500000
 const PAGE_SIZE = 7
+
+const teletypeClient = got.extend({
+	prefixUrl: 'https://teletype.in',
+	headers: { Accept: 'application/json' },
+	timeout: { request: 20_000 },
+	retry: { limit: 3 },
+	agent: {
+		http: new http.Agent({ keepAlive: true }),
+		https: new https.Agent({ keepAlive: true }),
+	},
+})
 
 export interface Article {
 	id: number
@@ -29,13 +42,11 @@ export interface ArticleFull extends Article {
 }
 
 class VarlamovClient {
-	endpoint: URL
 	pageSize: number
 	queue: PQueue
 	supportTagsWithAttrs: Record<string, string[]>
 
-	constructor({ endpoint, pageSize = 19 }: { endpoint: string; pageSize?: number }) {
-		this.endpoint = new URL(endpoint)
+	constructor({ pageSize = 19 }: { pageSize?: number } = {}) {
 		this.pageSize = pageSize
 		this.queue = new PQueue({ concurrency: 5 })
 
@@ -59,21 +70,6 @@ class VarlamovClient {
 		}
 	}
 
-	private async fetchTeletype(url: string, options?: RequestInit) {
-		const response = await fetch(`https://teletype.in${url}`, {
-			...options,
-			headers: { Accept: 'application/json', ...options?.headers },
-		})
-
-		if (!response.ok) {
-			throw new Error(`Error loading ${response.url}: ${response.status}`)
-		}
-
-		const json = (await response.json()) as unknown
-
-		return json
-	}
-
 	private getImageSize(url: string) {
 		return this.queue.add(() =>
 			probeImageSize(encodeURI(url)).catch(err => {
@@ -93,15 +89,12 @@ class VarlamovClient {
 		lastArticle?: number
 		limit?: number
 	} = {}): Promise<Article[]> {
-		const qs = new URLSearchParams({ limit: String(limit) })
-
-		if (lastArticle) {
-			qs.set('last_article', String(lastArticle))
-		}
-
-		const json = await this.fetchTeletype(
-			`/api/blogs/id/${BLOG_ID}/articles?${qs.toString()}`,
-		)
+		const json = await teletypeClient(`api/blogs/id/${BLOG_ID}/articles`, {
+			searchParams: {
+				limit: String(limit),
+				last_article: lastArticle ? String(lastArticle) : undefined,
+			},
+		}).json()
 
 		const { articles } = articlesSchema.parse(json)
 
@@ -112,16 +105,18 @@ class VarlamovClient {
 		query: string,
 		{ limit = PAGE_SIZE, pageNum = 1 }: { limit?: number; pageNum?: number } = {},
 	): Promise<Article[]> {
-		const json = await this.fetchTeletype('/api/search/articles', {
-			method: 'POST',
-			body: JSON.stringify({
-				query,
-				blog_id: BLOG_ID,
-				limit,
-				offset: limit * (pageNum - 1),
-			}),
-			headers: { 'Content-Type': 'application/json' },
-		})
+		const json = await teletypeClient
+			.post('api/search', {
+				json: {
+					query,
+					blogs: false,
+					articles: true,
+					blog_id: BLOG_ID,
+					limit,
+					offset: limit * (pageNum - 1),
+				},
+			})
+			.json()
 
 		const { articles } = articlesSchema.parse(json)
 
@@ -129,9 +124,9 @@ class VarlamovClient {
 	}
 
 	async getArticle(uri: string): Promise<ArticleFull> {
-		const json = await this.fetchTeletype(
-			`/api/blogs/domain/varlamov.ru/articles/${encodeURIComponent(uri)}`,
-		)
+		const json = await teletypeClient(
+			`api/blogs/domain/varlamov.ru/articles/${encodeURIComponent(uri)}`,
+		).json()
 
 		const article = articleSchema.parse(json)
 
@@ -262,4 +257,4 @@ class VarlamovClient {
 	}
 }
 
-export const varlamovClient = new VarlamovClient({ endpoint: 'https://varlamov.ru' })
+export const varlamovClient = new VarlamovClient()
