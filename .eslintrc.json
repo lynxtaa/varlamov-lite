@@ -1,32 +1,7 @@
 {
-	"extends": [
-		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking",
-		"plugin:import/errors",
-		"plugin:import/warnings",
-		"plugin:import/typescript",
-		"next"
-	],
+	"extends": ["next", "@lynxtaa/eslint-config"],
+	"root": true,
 	"parserOptions": {
 		"project": "./tsconfig.json"
-	},
-	"rules": {
-		"no-console": "warn",
-		"import/order": [
-			"warn",
-			{ "alphabetize": { "order": "asc" }, "newlines-between": "always" }
-		],
-		"import/newline-after-import": "warn",
-		"@typescript-eslint/no-non-null-assertion": "off",
-		"@typescript-eslint/no-explicit-any": "off",
-		"@typescript-eslint/prefer-regexp-exec": "off"
-	},
-	"overrides": [
-		{
-			"files": ["*.tsx"],
-			"rules": {
-				"@typescript-eslint/explicit-module-boundary-types": "off"
-			}
-		}
-	]
+	}
 }

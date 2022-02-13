@@ -44,7 +44,7 @@ export default function Home() {
 
 	const isButtonVisible = useIsOnScreen(buttonRef.current)
 
-	const articles = data && data.pages.flat()
+	const articles = data?.pages.flat()
 
 	const lastArticleId = articles?.[articles.length - 1]?.id
 
