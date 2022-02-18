@@ -9,7 +9,8 @@ export default async function rssXML(
 	res: NextApiResponse<string>,
 ): Promise<void> {
 	if (req.method !== 'GET') {
-		return res.status(405).end()
+		res.status(405).end()
+		return
 	}
 
 	const rss = await getRssFeed()
