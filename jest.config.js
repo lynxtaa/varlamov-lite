@@ -15,6 +15,10 @@ module.exports = createJestConfig({
 		'<rootDir>/pages',
 		'<rootDir>/routes',
 	],
+	snapshotFormat: {
+		escapeString: false,
+		printBasicPrototype: false,
+	},
 	setupFiles: ['jest-date-mock', 'whatwg-fetch'],
 	setupFilesAfterEnv: ['./jest/setupTests.ts'],
 })

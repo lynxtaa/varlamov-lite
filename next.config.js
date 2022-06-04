@@ -22,6 +22,7 @@ const config = {
 			'img7.teletype.in',
 			'img8.teletype.in',
 			'img9.teletype.in',
+			'telegra.ph',
 		],
 	},
 	async rewrites() {

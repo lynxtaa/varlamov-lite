@@ -1,4 +1,4 @@
-import { DefaultRequestBody, PathParams } from 'msw'
+import { DefaultBodyType, PathParams } from 'msw'
 import { Infer } from 'myzod'
 
 import { server, rest } from '../jest/server'
@@ -8,7 +8,7 @@ import { varlamovClient } from './varlamovClient'
 
 it('loads articles', async () => {
 	server.use(
-		rest.get<DefaultRequestBody, PathParams, Infer<typeof articlesSchema>>(
+		rest.get<DefaultBodyType, PathParams, Infer<typeof articlesSchema>>(
 			'https://teletype.in/api/blogs/id/500000/articles',
 			(req, res, ctx) =>
 				res(
@@ -56,7 +56,7 @@ it('loads single article', async () => {
 			)
 		}),
 
-		rest.get<DefaultRequestBody, PathParams, Infer<typeof articleSchema>>(
+		rest.get<DefaultBodyType, PathParams, Infer<typeof articleSchema>>(
 			'https://teletype.in/api/blogs/domain/varlamov.ru/articles/:id',
 			(req, res, ctx) => {
 				expect(req.params.id).toBe('12345.html')
@@ -106,23 +106,23 @@ it('loads single article', async () => {
 	})
 
 	expect(article.text).toMatchInlineSnapshot(`
-"<img src=\\"https://varlamov.me/2021/suec/03.jpg\\" width=\\"50\\" height=\\"32\\"/>
-  <br/>
-  <i><span>Фото: <a href=\\"https://www.marinetraffic.com/en/photos/of/ships/shipid:5630138\\">FBN Raiger / MarineTraffic.com</a></span></i>
-  <br/>
-  <br/>
-  Администрация Суэцкого канала в четверг, 25 марта, <a href=\\"https://www.facebook.com/SuezCanalAuthorityEG/posts/415911443383226\\">сообщила</a>,
-  что навигация по каналу приостановлена до тех пор, пока не удастся \\"освободить\\" сверхбольшой контейнеровоз Ever Given.
-  <br/>
-  <br/>
-  Напомню, что огромное 400-метровое судно компании Evergreen, способное перевозить до 20 тысяч морских контейнеров,
-  <a href=\\"https://varlamov.ru/4220678.html\\">застряло в Суэцком канале</a> утром 23 марта."
-`)
+		"<img src="https://varlamov.me/2021/suec/03.jpg" width="50" height="32"/>
+		  <br/>
+		  <i><span>Фото: <a href="https://www.marinetraffic.com/en/photos/of/ships/shipid:5630138">FBN Raiger / MarineTraffic.com</a></span></i>
+		  <br/>
+		  <br/>
+		  Администрация Суэцкого канала в четверг, 25 марта, <a href="https://www.facebook.com/SuezCanalAuthorityEG/posts/415911443383226">сообщила</a>,
+		  что навигация по каналу приостановлена до тех пор, пока не удастся "освободить" сверхбольшой контейнеровоз Ever Given.
+		  <br/>
+		  <br/>
+		  Напомню, что огромное 400-метровое судно компании Evergreen, способное перевозить до 20 тысяч морских контейнеров,
+		  <a href="https://varlamov.ru/4220678.html">застряло в Суэцком канале</a> утром 23 марта."
+	`)
 })
 
 it('loads single article in new format', async () => {
 	server.use(
-		rest.get<DefaultRequestBody, PathParams, Infer<typeof articleSchema>>(
+		rest.get<DefaultBodyType, PathParams, Infer<typeof articleSchema>>(
 			'https://teletype.in/api/blogs/domain/varlamov.ru/articles/:id',
 			(req, res, ctx) => {
 				expect(req.params.id).toBe('fESnpvxundQ')
@@ -178,10 +178,10 @@ it('loads single article in new format', async () => {
 	})
 
 	expect(article.text).toMatchInlineSnapshot(`
-"<iframe src=\\"https://www.youtube.com/embed/fw5hbjqBiSA\\" frameBorder=\\"0\\" allow=\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\" allowFullScreen=\\"\\"> </iframe>
-  <p><a href=\\"https://www.youtube.com/ivarlamov?sub_confirmation=1\\"><strong>Подписывайтесь на канал!</strong></a></p>
-  <p>Не дождавшись буквально несколько часов до конца Чемпионата, стадион в Волгограде решил уплыть в Волгу. Так бывает, если строить с нарушением технологий, спешить, воровать, не думать.</p>
-  <p>Вчера <a href=\\"https://varlamov.ru/3002906.html\\">смыло</a> Нижний Новогород, сегодня смыло Волгоград, завтра будет хуже. Я объехал все города и могу поспорить, что еще много подобных картинок увидим. Хотелось бы вслед за этим увидеть уголовные дела, но, боюсь, я слишком многого хочу.</p>
-  <figure><img src=\\"https://img3.teletype.in/files/a0/99/a0994fa1-1e21-44f7-ad0a-c14ee0ba23fd.jpeg\\" width=\\"1100\\" height=\\"733\\"/><figcaption>Фото: Александр Свалухин, руководитель екатеринбургского отделения <a href=\\"https://city4people.ru\\">&quot;Городских проектов&quot;</a></figcaption></figure>"
-`)
+		"<iframe src="https://www.youtube.com/embed/fw5hbjqBiSA" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen=""> </iframe>
+		  <p><a href="https://www.youtube.com/ivarlamov?sub_confirmation=1"><strong>Подписывайтесь на канал!</strong></a></p>
+		  <p>Не дождавшись буквально несколько часов до конца Чемпионата, стадион в Волгограде решил уплыть в Волгу. Так бывает, если строить с нарушением технологий, спешить, воровать, не думать.</p>
+		  <p>Вчера <a href="https://varlamov.ru/3002906.html">смыло</a> Нижний Новогород, сегодня смыло Волгоград, завтра будет хуже. Я объехал все города и могу поспорить, что еще много подобных картинок увидим. Хотелось бы вслед за этим увидеть уголовные дела, но, боюсь, я слишком многого хочу.</p>
+		  <figure><img src="https://img3.teletype.in/files/a0/99/a0994fa1-1e21-44f7-ad0a-c14ee0ba23fd.jpeg" width="1100" height="733"/><figcaption>Фото: Александр Свалухин, руководитель екатеринбургского отделения <a href="https://city4people.ru">&quot;Городских проектов&quot;</a></figcaption></figure>"
+	`)
 })

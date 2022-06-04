@@ -1,4 +1,3 @@
-import { isTag } from 'domhandler'
 import parse, { domToReact, HTMLReactParserOptions } from 'html-react-parser'
 import Image from 'next/image'
 import { useMemo } from 'react'
@@ -14,7 +13,7 @@ export default function Article({ className, text }: Props) {
 	const textWithImagesAndLinks = useMemo(() => {
 		const options: HTMLReactParserOptions = {
 			replace(node) {
-				if (!isTag(node)) {
+				if (!('children' in node)) {
 					return
 				}
 

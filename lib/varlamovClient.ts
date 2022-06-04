@@ -1,7 +1,7 @@
 import http from 'http'
 import https from 'https'
 
-import cheerio from 'cheerio'
+import * as cheerio from 'cheerio'
 import got from 'got'
 import pick from 'lodash/pick'
 import truncate from 'lodash/truncate'
