@@ -1,5 +1,5 @@
 import { DefaultBodyType, PathParams } from 'msw'
-import { Infer } from 'myzod'
+import { z } from 'zod'
 
 import { server, rest } from '../jest/server'
 
@@ -8,7 +8,7 @@ import { varlamovClient } from './varlamovClient'
 
 it('loads articles', async () => {
 	server.use(
-		rest.get<DefaultBodyType, PathParams, Infer<typeof articlesSchema>>(
+		rest.get<DefaultBodyType, PathParams, z.infer<typeof articlesSchema>>(
 			'https://teletype.in/api/blogs/id/500000/articles',
 			(req, res, ctx) =>
 				res(
@@ -56,7 +56,7 @@ it('loads single article', async () => {
 			)
 		}),
 
-		rest.get<DefaultBodyType, PathParams, Infer<typeof articleSchema>>(
+		rest.get<DefaultBodyType, PathParams, z.infer<typeof articleSchema>>(
 			'https://teletype.in/api/blogs/domain/varlamov.ru/articles/:id',
 			(req, res, ctx) => {
 				expect(req.params.id).toBe('12345.html')
@@ -122,7 +122,7 @@ it('loads single article', async () => {
 
 it('loads single article in new format', async () => {
 	server.use(
-		rest.get<DefaultBodyType, PathParams, Infer<typeof articleSchema>>(
+		rest.get<DefaultBodyType, PathParams, z.infer<typeof articleSchema>>(
 			'https://teletype.in/api/blogs/domain/varlamov.ru/articles/:id',
 			(req, res, ctx) => {
 				expect(req.params.id).toBe('fESnpvxundQ')

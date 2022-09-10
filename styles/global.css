@@ -39,3 +39,21 @@ h6 {
 ::selection {
 	@apply text-gray-50 dark:text-gray-900 bg-gray-900 dark:bg-gray-200;
 }
+
+img,
+picture,
+video,
+canvas,
+svg {
+	@apply block max-w-full;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}

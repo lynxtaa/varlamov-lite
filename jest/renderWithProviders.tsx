@@ -1,6 +1,6 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render as _render, RenderOptions } from '@testing-library/react'
 import React, { useState } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 function Wrapper({ children }: { children?: React.ReactNode }) {
 	const [queryClient] = useState(() => new QueryClient())

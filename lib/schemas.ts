@@ -1,45 +1,36 @@
-import myzod from 'myzod'
+import { z } from 'zod'
 
-export const articleSchema = myzod.object(
-	{
-		id: myzod.number(),
-		uri: myzod.string(),
-		published_at: myzod.string(),
-		title: myzod.string(),
-		text: myzod.string(),
-		sharing_text: myzod.string().optional(),
-		sharing_image: myzod.string().optional(),
-		cut: myzod.string(),
-		topics: myzod
-			.array(
-				myzod.object({
-					id: myzod.number(),
-					uri: myzod.string().optional(),
-					name: myzod.string(),
-				}),
-			)
-			.nullable()
-			.optional(),
-	},
-	{ allowUnknown: true },
-)
+export const articleSchema = z.object({
+	id: z.number(),
+	uri: z.string(),
+	published_at: z.string(),
+	title: z.string(),
+	text: z.string(),
+	sharing_text: z.string().optional(),
+	sharing_image: z.string().optional(),
+	cut: z.string(),
+	topics: z
+		.array(
+			z.object({
+				id: z.number(),
+				uri: z.string().optional(),
+				name: z.string(),
+			}),
+		)
+		.nullable()
+		.optional(),
+})
 
-export const articlesSchema = myzod.object(
-	{
-		articles: myzod.array(
-			myzod.object(
-				{
-					id: myzod.number(),
-					uri: myzod.string(),
-					published_at: myzod.string(),
-					title: myzod.string(),
-					cut: myzod.string(),
-					sharing_text: myzod.string().optional(),
-					sharing_image: myzod.string().optional(),
-				},
-				{ allowUnknown: true },
-			),
-		),
-	},
-	{ allowUnknown: true },
-)
+export const articlesSchema = z.object({
+	articles: z.array(
+		z.object({
+			id: z.number(),
+			uri: z.string(),
+			published_at: z.string(),
+			title: z.string(),
+			cut: z.string(),
+			sharing_text: z.string().optional(),
+			sharing_image: z.string().optional(),
+		}),
+	),
+})

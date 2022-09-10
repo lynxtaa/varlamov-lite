@@ -1,4 +1,5 @@
 import 'focus-visible'
+import { QueryClient, QueryClientProvider, Hydrate } from '@tanstack/react-query'
 import debounce from 'lodash/debounce'
 import { ThemeProvider } from 'next-themes'
 import { AppProps } from 'next/app'
@@ -6,8 +7,6 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import nprogress from 'nprogress'
 import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { Hydrate } from 'react-query/hydration'
 
 import { Theme } from '../lib/Theme'
 

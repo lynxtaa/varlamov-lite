@@ -1,5 +1,5 @@
 import parse, { domToReact, HTMLReactParserOptions } from 'html-react-parser'
-import Image from 'next/image'
+import Image from 'next/future/image'
 import { useMemo } from 'react'
 
 import Link from '../components/Link'

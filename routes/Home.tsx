@@ -1,5 +1,5 @@
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
-import { useInfiniteQuery, useQueryClient } from 'react-query'
 
 import ArticleListItem from '../components/ArticleListItem'
 import Page from '../components/layouts/Page'
@@ -27,7 +27,7 @@ export default function Home() {
 
 	const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery<Article[], Error>(
-			'articles',
+			['articles'],
 			({ pageParam }: { pageParam?: number }) =>
 				queryClient.fetchQuery(
 					['next-articles', pageParam],
@@ -77,7 +77,7 @@ export default function Home() {
 			) : error ? (
 				<span>{error.message}</span>
 			) : null}
-			{hasNextPage !== true && (
+			{hasNextPage === true && (
 				<button
 					className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
 					onClick={() => {

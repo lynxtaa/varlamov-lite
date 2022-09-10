@@ -26,3 +26,13 @@ afterEach(() => {
 })
 
 afterAll(() => server.close())
+
+global.IntersectionObserver = class IntersectionObserver {
+	observe = jest.fn()
+	root = null
+	rootMargin = ''
+	disconnect = jest.fn()
+	thresholds = []
+	takeRecords = jest.fn()
+	unobserve = jest.fn()
+}

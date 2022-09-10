@@ -19,7 +19,7 @@ export const getStaticPaths: GetStaticPaths = async function () {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async function ({ params }) {
-	assert(params, 'params must be defined')
+	assert(params !== undefined, 'params must be defined')
 
 	let id = String(params.id)
 	id = /^\d+$/.test(id) ? `${id}.html` : id
