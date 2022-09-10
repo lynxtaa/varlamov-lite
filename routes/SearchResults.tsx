@@ -42,7 +42,7 @@ export default function SearchResults({ initialData, pageNum, query }: Props) {
 				</header>
 			)}
 			<div className="flex items-center sticky bottom-0 py-4 space-x-6 justify-end bg-gray-50 dark:bg-gray-900">
-				{prevPage ? (
+				{prevPage !== null ? (
 					<Link href={prevPage} title="Предыдущая страница">
 						{leftIcon}
 					</Link>
@@ -50,7 +50,7 @@ export default function SearchResults({ initialData, pageNum, query }: Props) {
 					<span className="opacity-50">{leftIcon}</span>
 				)}
 				<span>{pageNum}</span>
-				{nextPage ? (
+				{nextPage !== null ? (
 					<Link href={nextPage} title="Следующая страница">
 						{rightIcon}
 					</Link>

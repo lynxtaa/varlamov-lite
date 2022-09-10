@@ -19,8 +19,8 @@ export default function Link({
 	className,
 	title,
 	href,
-	underline,
-	isExternal,
+	underline = false,
+	isExternal = false,
 }: Props) {
 	return isExternal ? (
 		<a

@@ -18,7 +18,7 @@ export async function getRssFeed(): Promise<string> {
 		feed.item({
 			title: article.title,
 			description: '',
-			date: article.published_at || new Date(),
+			date: article.published_at ?? new Date(),
 			author: 'Илья Варламов',
 			url,
 			guid: url,

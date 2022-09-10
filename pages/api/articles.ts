@@ -14,10 +14,10 @@ export default async function articles(
 	const { lastArticle } = req.query
 
 	const articles = await varlamovClient.getArticles({
-		lastArticle: lastArticle ? Number(lastArticle) : undefined,
+		lastArticle: lastArticle !== undefined ? Number(lastArticle) : undefined,
 	})
 
-	if (lastArticle) {
+	if (lastArticle !== undefined) {
 		const thirtyMinutes = 30 * 60
 		res.setHeader('Cache-Control', `s-maxage=${thirtyMinutes}, stale-while-revalidate`)
 	}

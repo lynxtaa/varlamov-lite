@@ -22,7 +22,7 @@ export default function Article({ className, text }: Props) {
 						return (
 							<Image
 								src={node.attribs.src!}
-								alt={node.attribs.alt || ''}
+								alt={node.attribs.alt ?? ''}
 								width={Number(node.attribs.width!)}
 								height={Number(node.attribs.height!)}
 							/>
@@ -35,11 +35,11 @@ export default function Article({ className, text }: Props) {
 						const matchPost = href.match(/https?:\/\/varlamov\.ru\/(?<postId>\w+)/)
 						const matchTag = href.match(/https?:\/\/varlamov\.ru\/tag\/(?<tag>.+)$/)
 
-						return matchPost?.groups?.postId ? (
+						return matchPost?.groups?.postId !== undefined ? (
 							<Link href={`/blog/${matchPost.groups.postId}`} underline>
 								{children}
 							</Link>
-						) : matchTag?.groups?.tag ? (
+						) : matchTag?.groups?.tag !== undefined ? (
 							<Link href={`/tag/${matchTag.groups.tag}`} underline>
 								{children}
 							</Link>

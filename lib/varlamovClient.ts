@@ -92,7 +92,7 @@ class VarlamovClient {
 		const json = await teletypeClient(`api/blogs/id/${BLOG_ID}/articles`, {
 			searchParams: {
 				limit: String(limit),
-				last_article: lastArticle ? String(lastArticle) : undefined,
+				last_article: lastArticle !== undefined ? String(lastArticle) : undefined,
 			},
 		}).json()
 
@@ -150,7 +150,7 @@ class VarlamovClient {
 			}
 			const caption = $image.find('caption').html()
 
-			if (caption) {
+			if (caption !== null && caption !== '') {
 				$img.wrap('<figure></figure>')
 				$img.after(`<figcaption>${caption}</figcaption>`)
 			}
@@ -164,10 +164,10 @@ class VarlamovClient {
 			const $youtube = $(youtube)
 			const src = $youtube.attr('src')
 
-			if (src) {
+			if (src !== undefined && src !== '') {
 				const vidId = getYoutubeVideoId(src)
 
-				if (vidId) {
+				if (vidId !== null) {
 					$youtube.after('<iframe> </iframe>')
 					const frame = $youtube.next()
 					frame.attr('src', `https://www.youtube.com/embed/${vidId}`)
@@ -195,18 +195,19 @@ class VarlamovClient {
 
 		const [firstImage] = images
 
-		const previewImageUrl = article.sharing_image
-			? article.sharing_image
-			: firstImage
-			? $(firstImage).attr('src')
-			: undefined
+		const previewImageUrl =
+			article.sharing_image !== undefined
+				? article.sharing_image
+				: firstImage
+				? $(firstImage).attr('src')
+				: undefined
 
 		await Promise.all(
 			images.map(async image => {
 				const img = $(image)
 				const src = img.attr('src')
 
-				if (!src) {
+				if (src === undefined || src === '') {
 					img.remove()
 					return
 				}
@@ -214,7 +215,12 @@ class VarlamovClient {
 				const width = img.attr('width')
 				const height = img.attr('height')
 
-				if (!width || !height) {
+				if (
+					width === undefined ||
+					width === '' ||
+					height === undefined ||
+					height === ''
+				) {
 					const dimensions = await this.getImageSize(src)
 
 					if (dimensions) {
@@ -231,12 +237,12 @@ class VarlamovClient {
 
 		const plainText = textEl.text().trim()
 
-		const html = textEl.html()?.trim() || ''
+		const html = textEl.html()?.trim() ?? ''
 
 		const words = plainText.match(/\S+/g)
 		const WORDS_PER_MINUTE = 200
 
-		const excerpt = article.sharing_text || truncate(plainText, { length: 150 })
+		const excerpt = article.sharing_text ?? truncate(plainText, { length: 150 })
 
 		const readingTime = words
 			? Math.round((words.length / WORDS_PER_MINUTE) * 60 * 1000)
@@ -246,11 +252,12 @@ class VarlamovClient {
 			id: article.id,
 			uri: article.uri,
 			excerpt,
-			previewImageUrl: previewImageUrl || null,
+			previewImageUrl:
+				previewImageUrl !== undefined && previewImageUrl !== '' ? previewImageUrl : null,
 			title: article.title,
 			tags,
 			text: html,
-			published_at: article.published_at || null,
+			published_at: article.published_at ?? null,
 			readingTime,
 			topics: article.topics ?? [],
 		}

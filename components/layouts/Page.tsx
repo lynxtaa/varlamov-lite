@@ -34,7 +34,8 @@ export default function Page({
 
 	const router = useRouter()
 
-	const fullTitle = title ? `${title} • Блог Ильи Варламова` : 'Блог Ильи Варламова'
+	const fullTitle =
+		title !== undefined ? `${title} • Блог Ильи Варламова` : 'Блог Ильи Варламова'
 
 	return (
 		<div className={cn('my-0 mx-auto p-4 max-w-3xl', className)}>
@@ -44,7 +45,7 @@ export default function Page({
 				openGraph={{
 					title,
 					description,
-					images: ogImage ? [{ url: ogImage }] : [],
+					images: [{ url: ogImage }],
 				}}
 			/>
 			<header className="flex flex-col mt-4 mb-8">

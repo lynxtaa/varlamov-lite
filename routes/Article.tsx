@@ -31,7 +31,7 @@ export default function Article({
 	}
 
 	return (
-		<Page title={title} description={excerpt} ogImage={previewImageUrl || undefined}>
+		<Page title={title} description={excerpt} ogImage={previewImageUrl ?? undefined}>
 			{topics.length > 0 && (
 				<div className="flex flex-wrap">
 					{topics.map(({ name }, i) => (
@@ -47,7 +47,7 @@ export default function Article({
 					))}
 				</div>
 			)}
-			{published_at && (
+			{published_at !== null && (
 				<time className="flex mb-1">
 					{formatDate(published_at)}
 					<span className="opacity-70 inline-flex items-center ml-4">

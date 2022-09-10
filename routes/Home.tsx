@@ -7,9 +7,10 @@ import { useIsOnScreen } from '../hooks/useIsOnScreen'
 import { Article } from '../lib/varlamovClient'
 
 async function fetchArticles(lastArticleId: number | undefined) {
-	const qs = lastArticleId
-		? new URLSearchParams({ lastArticle: String(lastArticleId) })
-		: null
+	const qs =
+		lastArticleId !== undefined
+			? new URLSearchParams({ lastArticle: String(lastArticleId) })
+			: null
 	const response = await fetch(`/api/articles${qs ? `?${qs.toString()}` : ''}`)
 	if (!response.ok) {
 		throw new Error(`Error requesting ${response.url}: ${response.status}`)
@@ -49,7 +50,12 @@ export default function Home() {
 	const lastArticleId = articles?.[articles.length - 1]?.id
 
 	useEffect(() => {
-		if (lastArticleId && !isFetchingNextPage && isButtonVisible && hasNextPage) {
+		if (
+			lastArticleId !== undefined &&
+			!isFetchingNextPage &&
+			isButtonVisible &&
+			hasNextPage !== true
+		) {
 			void queryClient.prefetchQuery(
 				['next-articles', lastArticleId],
 				() => fetchArticles(lastArticleId),
@@ -71,10 +77,12 @@ export default function Home() {
 			) : error ? (
 				<span>{error.message}</span>
 			) : null}
-			{hasNextPage && (
+			{hasNextPage !== true && (
 				<button
 					className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
-					onClick={() => fetchNextPage()}
+					onClick={() => {
+						void fetchNextPage()
+					}}
 					disabled={isFetchingNextPage}
 					ref={buttonRef}
 				>

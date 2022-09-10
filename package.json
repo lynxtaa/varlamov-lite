@@ -38,7 +38,7 @@
     "tailwindcss": "3.0.24"
   },
   "devDependencies": {
-    "@lynxtaa/eslint-config": "^0.1.5",
+    "@lynxtaa/eslint-config": "^0.2.0",
     "@lynxtaa/prettier-config": "^0.1.1",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.3.0",

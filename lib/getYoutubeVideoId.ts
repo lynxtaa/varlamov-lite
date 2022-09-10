@@ -4,7 +4,7 @@ export function getYoutubeVideoId(url: string): string | null {
 	if (host === 'www.youtube.com' || host === 'youtube.com') {
 		if (pathname === '/watch') {
 			const vidId = searchParams.get('v')
-			if (vidId) {
+			if (vidId !== null && vidId !== '') {
 				// https://www.youtube.com/watch?v=9kTpmziuEPk
 				return vidId
 			}

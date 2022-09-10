@@ -15,7 +15,9 @@ export default function ArticleListItem({ uri, title, published_at }: Props) {
 			<h2 className="mb-1 text-xl">
 				<Link href={`/blog/${encodeURIComponent(uri)}`}>{title}</Link>
 			</h2>
-			{published_at && <time className="opacity-70">{formatDate(published_at)}</time>}
+			{typeof published_at === 'string' && (
+				<time className="opacity-70">{formatDate(published_at)}</time>
+			)}
 		</header>
 	)
 }
