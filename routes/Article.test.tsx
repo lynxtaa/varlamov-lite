@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react'
-import { advanceTo } from 'jest-date-mock'
 import { NextRouter, useRouter } from 'next/router'
+import { Mock } from 'vitest'
 
-import { createMockRouter } from '../jest/createMockRouter'
+import { createMockRouter } from '../test-utils/createMockRouter'
 
 import Article from './Article'
 
-const useRouterMock = useRouter as jest.Mock<NextRouter>
+const useRouterMock = useRouter as Mock<[], NextRouter>
 
 beforeEach(() => {
 	useRouterMock.mockReturnValue(createMockRouter())
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 it('shows article', () => {
 	const now = new Date(2020, 2, 20, 0, 0)
-	advanceTo(now)
+	vi.setSystemTime(now)
 
 	const text = `
 		Lorem ipsum dolor sit amet, consectetur adipisicing elit.
