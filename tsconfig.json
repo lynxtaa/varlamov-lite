@@ -16,8 +16,9 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"outDir": ".next",
-		"types": ["vitest/globals"]
+		"types": ["vitest/globals"],
+		"plugins": [{ "name": "next" }]
 	},
 	"exclude": ["node_modules"],
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

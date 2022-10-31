@@ -37,14 +37,12 @@ export default function Link({
 			/>
 		</a>
 	) : (
-		<NextLink href={href}>
-			{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-			<a
-				className={cn('hover:underline', underline && 'underline', className)}
-				title={title}
-			>
-				{children}
-			</a>
+		<NextLink
+			href={href}
+			className={cn('hover:underline', underline && 'underline', className)}
+			title={title}
+		>
+			{children}
 		</NextLink>
 	)
 }

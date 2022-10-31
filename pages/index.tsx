@@ -2,9 +2,8 @@ import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetStaticProps } from 'next'
 
 import { varlamovClient } from '../lib/varlamovClient'
-import Home from '../routes/Home'
 
-export default Home
+export { default } from '../routes/Home'
 
 export const getStaticProps: GetStaticProps = async () => {
 	const queryClient = new QueryClient()

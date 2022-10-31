@@ -2,9 +2,9 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 
 import { assert } from '../../lib/assert'
 import { varlamovClient } from '../../lib/varlamovClient'
-import Article, { Props } from '../../routes/Article'
+import { Props } from '../../routes/Article'
 
-export default Article
+export { default } from '../../routes/Article'
 
 const NUM_ARTICLES_TO_PRERENDER = 5
 

@@ -1,9 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 
 import { varlamovClient } from '../../../lib/varlamovClient'
-import SearchResults, { Props } from '../../../routes/SearchResults'
+import { Props } from '../../../routes/SearchResults'
 
-export default SearchResults
+export { default } from '../../../routes/SearchResults'
 
 export const getStaticPaths: GetStaticPaths = async () => ({
 	paths: [],

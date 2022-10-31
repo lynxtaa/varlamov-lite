@@ -88,7 +88,6 @@ exports[`shows blog posts 1`] = `
             class="mb-1 text-xl"
           >
             <a
-              class="hover:underline"
               href="/blog/1.html"
             >
               Первая новость
@@ -107,7 +106,6 @@ exports[`shows blog posts 1`] = `
             class="mb-1 text-xl"
           >
             <a
-              class="hover:underline"
               href="/blog/2.html"
             >
               Вторая новость
@@ -126,7 +124,6 @@ exports[`shows blog posts 1`] = `
             class="mb-1 text-xl"
           >
             <a
-              class="hover:underline"
               href="/blog/3.html"
             >
               Третья новость
@@ -230,7 +227,6 @@ exports[`shows blog posts 1`] = `
           class="mb-1 text-xl"
         >
           <a
-            class="hover:underline"
             href="/blog/1.html"
           >
             Первая новость
@@ -249,7 +245,6 @@ exports[`shows blog posts 1`] = `
           class="mb-1 text-xl"
         >
           <a
-            class="hover:underline"
             href="/blog/2.html"
           >
             Вторая новость
@@ -268,7 +263,6 @@ exports[`shows blog posts 1`] = `
           class="mb-1 text-xl"
         >
           <a
-            class="hover:underline"
             href="/blog/3.html"
           >
             Третья новость
