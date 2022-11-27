@@ -74,7 +74,6 @@ class VarlamovClient {
 		return this.queue.add(() =>
 			probeImageSize(encodeURI(url)).catch(err => {
 				if (process.env.NODE_ENV === 'development') {
-					// eslint-disable-next-line no-console
 					console.warn(err)
 				}
 				return null
@@ -224,6 +223,7 @@ class VarlamovClient {
 					const dimensions = await this.getImageSize(src)
 
 					if (dimensions) {
+						// eslint-disable-next-line require-atomic-updates
 						image.attribs = {}
 						img.attr('src', src)
 						img.attr('width', String(dimensions.width))

@@ -4,3 +4,4 @@ build
 src/serviceWorker.ts
 ./.next
 ./out
+pnpm-lock.yaml

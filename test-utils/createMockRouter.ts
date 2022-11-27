@@ -12,6 +12,7 @@ export function createMockRouter(options?: Partial<NextRouter>): NextRouter {
 		reload: vi.fn(),
 		prefetch: vi.fn(() => Promise.resolve()),
 		back: vi.fn(),
+		forward: vi.fn(),
 		beforePopState: vi.fn(),
 		isFallback: false,
 		isLocaleDomain: true,
