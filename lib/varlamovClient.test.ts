@@ -1,7 +1,7 @@
 import { DefaultBodyType, PathParams } from 'msw'
 import { z } from 'zod'
 
-import { server, rest } from '../test-utils/server'
+import { server, rest } from '../jest/server'
 
 import { articleSchema, articlesSchema } from './schemas'
 import { varlamovClient } from './varlamovClient'

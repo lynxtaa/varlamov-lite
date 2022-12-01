@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`shows article 1`] = `
 {
@@ -211,11 +211,13 @@ exports[`shows article 1`] = `
           class="flex flex-wrap"
         >
           <a
+            class="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline mr-3"
             href="/search/%23%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0"
           >
             #Москва
           </a>
           <a
+            class="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline mr-3"
             href="/search/%23%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F"
           >
             #Россия
@@ -431,11 +433,13 @@ exports[`shows article 1`] = `
         class="flex flex-wrap"
       >
         <a
+          class="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline mr-3"
           href="/search/%23%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0"
         >
           #Москва
         </a>
         <a
+          class="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline mr-3"
           href="/search/%23%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F"
         >
           #Россия

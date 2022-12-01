@@ -1,17 +1,17 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { subDays, subHours, subMinutes } from 'date-fns'
+import { advanceTo } from 'jest-date-mock'
 import { DefaultBodyType, PathParams } from 'msw'
 import { NextRouter, useRouter } from 'next/router'
-import { Mock } from 'vitest'
 
+import { createMockRouter } from '../jest/createMockRouter'
+import { renderWithProviders } from '../jest/renderWithProviders'
+import { server, rest } from '../jest/server'
 import { Article } from '../lib/varlamovClient'
 import Home from '../pages/index'
-import { createMockRouter } from '../test-utils/createMockRouter'
-import { renderWithProviders } from '../test-utils/renderWithProviders'
-import { server, rest } from '../test-utils/server'
 
-const useRouterMock = useRouter as Mock<[], NextRouter>
+const useRouterMock = useRouter as jest.Mock<NextRouter>
 
 let mockRouter: NextRouter
 
@@ -22,7 +22,7 @@ beforeEach(() => {
 
 it('shows blog posts', async () => {
 	const now = new Date('2020-03-20')
-	vi.setSystemTime(now)
+	advanceTo(now)
 
 	server.use(
 		rest.get<DefaultBodyType, PathParams, Article[]>('/api/articles', (req, res, ctx) => {
@@ -53,7 +53,7 @@ it('shows blog posts', async () => {
 
 	const container = renderWithProviders(<Home />)
 
-	expect(await screen.findByText('Первая новость')).toBeInTheDocument()
+	await screen.findByText('Первая новость')
 
 	expect(container).toMatchSnapshot()
 })
@@ -67,7 +67,7 @@ it('runs search with entered query', async () => {
 
 	renderWithProviders(<Home />)
 
-	expect(await screen.findByText('Ничего не найдено')).toBeInTheDocument()
+	await screen.findByText('Ничего не найдено')
 
 	await userEvent.click(screen.getByRole('button', { name: 'Поиск' }))
 	await userEvent.type(screen.getByRole('textbox', { name: 'Поиск' }), 'moscow')

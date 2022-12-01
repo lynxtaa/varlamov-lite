@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es2021",
+		"target": "es5",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -16,7 +16,6 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"outDir": ".next",
-		"types": ["vitest/globals"],
 		"plugins": [{ "name": "next" }]
 	},
 	"exclude": ["node_modules"],
