@@ -1,3 +1,5 @@
+'use client'
+
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 
@@ -22,7 +24,7 @@ async function fetchArticles(lastArticleId: number | undefined) {
 const staleTime = 30 * 60 * 1000
 const cacheTime = 30 * 60 * 1000
 
-export default function Home() {
+export default function Home({ initialData }: { initialData: Article[] }) {
 	const queryClient = useQueryClient()
 
 	const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -38,6 +40,10 @@ export default function Home() {
 				getNextPageParam: lastPage => lastPage[lastPage.length - 1]?.id,
 				staleTime,
 				cacheTime,
+				initialData: {
+					pages: [initialData],
+					pageParams: [undefined],
+				},
 			},
 		)
 
@@ -54,7 +60,7 @@ export default function Home() {
 			lastArticleId !== undefined &&
 			!isFetchingNextPage &&
 			isButtonVisible &&
-			hasNextPage !== true
+			hasNextPage === true
 		) {
 			void queryClient.prefetchQuery(
 				['next-articles', lastArticleId],
@@ -65,7 +71,7 @@ export default function Home() {
 	}, [hasNextPage, isButtonVisible, isFetchingNextPage, lastArticleId, queryClient])
 
 	return (
-		<Page className="max-w-xl">
+		<Page className="max-w-xl" isHome>
 			{articles ? (
 				articles.length > 0 ? (
 					articles.map(article => <ArticleListItem key={article.id} {...article} />)

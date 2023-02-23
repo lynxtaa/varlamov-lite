@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "ES2015",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -16,6 +16,7 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"outDir": ".next",
+		"useUnknownInCatchVariables": true,
 		"plugins": [{ "name": "next" }]
 	},
 	"exclude": ["node_modules"],

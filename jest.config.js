@@ -10,13 +10,7 @@ const isCI = process.env.CI !== undefined
 module.exports = createJestConfig({
 	resetMocks: true,
 	testEnvironment: 'jsdom',
-	roots: [
-		'<rootDir>/components',
-		'<rootDir>/hooks',
-		'<rootDir>/lib',
-		'<rootDir>/pages',
-		'<rootDir>/routes',
-	],
+	roots: ['<rootDir>/app', '<rootDir>/components', '<rootDir>/hooks', '<rootDir>/lib'],
 	coverageReporters: isCI
 		? ['html', 'text', 'text-summary', 'cobertura']
 		: ['html', 'text-summary'],

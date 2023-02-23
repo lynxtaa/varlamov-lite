@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react'
 import { advanceTo } from 'jest-date-mock'
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
-import { createMockRouter } from '../jest/createMockRouter'
+import { createMockRouter, AppRouterInstance } from '../../../jest/createMockRouter'
 
 import Article from './Article'
 
-const useRouterMock = useRouter as jest.Mock<NextRouter>
+const useRouterMock = useRouter as jest.Mock<AppRouterInstance>
 
 beforeEach(() => {
 	useRouterMock.mockReturnValue(createMockRouter())

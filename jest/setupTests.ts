@@ -7,25 +7,31 @@ import { clear } from 'jest-date-mock'
 
 import { server } from './server'
 
-jest.mock('next/router', () => ({
+jest.mock('next/navigation', () => ({
 	useRouter: jest.fn(),
 }))
 
-beforeAll(() =>
+beforeAll(() => {
 	server.listen({
 		onUnhandledRequest: 'warn',
-	}),
-)
+	})
+})
 
 afterEach(() => {
-	sessionStorage.clear()
-	localStorage.clear()
+	if (typeof sessionStorage !== 'undefined') {
+		sessionStorage.clear()
+	}
+	if (typeof localStorage !== 'undefined') {
+		localStorage.clear()
+	}
 	clear()
 
 	server.resetHandlers()
 })
 
-afterAll(() => server.close())
+afterAll(() => {
+	server.close()
+})
 
 global.IntersectionObserver = class IntersectionObserver {
 	observe = jest.fn()

@@ -14,11 +14,16 @@ exports[`shows article 1`] = `
           <div
             class="flex items-center"
           >
-            <h1
-              class="text-2xl mr-3 font-bold"
+            <h3
+              class="text-xl mr-3 font-bold"
             >
-              Блог Ильи Варламова
-            </h1>
+              <a
+                class="hover:underline"
+                href="/"
+              >
+                Блог Ильи Варламова
+              </a>
+            </h3>
             <button
               class="ml-auto"
               title="Поиск"
@@ -236,11 +241,16 @@ exports[`shows article 1`] = `
         <div
           class="flex items-center"
         >
-          <h1
-            class="text-2xl mr-3 font-bold"
+          <h3
+            class="text-xl mr-3 font-bold"
           >
-            Блог Ильи Варламова
-          </h1>
+            <a
+              class="hover:underline"
+              href="/"
+            >
+              Блог Ильи Варламова
+            </a>
+          </h3>
           <button
             class="ml-auto"
             title="Поиск"

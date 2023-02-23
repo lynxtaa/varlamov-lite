@@ -1,12 +1,10 @@
-import { useRouter } from 'next/router'
 import { ArrowLeft, ArrowRight } from 'react-feather'
 
-import ArticleListItem from '../components/ArticleListItem'
-import Icon from '../components/Icon'
-import Link from '../components/Link'
-import Spinner from '../components/Spinner'
-import Page from '../components/layouts/Page'
-import { Article } from '../lib/varlamovClient'
+import ArticleListItem from '../../components/ArticleListItem'
+import Icon from '../../components/Icon'
+import Link from '../../components/Link'
+import Page from '../../components/layouts/Page'
+import { Article } from '../../lib/varlamovClient'
 
 export type Props = {
 	initialData: Article[]
@@ -15,12 +13,6 @@ export type Props = {
 }
 
 export default function SearchResults({ initialData, pageNum, query }: Props) {
-	const router = useRouter()
-
-	if (router.isFallback) {
-		return <Spinner />
-	}
-
 	const pathname = `/search/${encodeURIComponent(query)}/`
 
 	const prevPage = initialData.length > 0 ? `${pathname}page/${pageNum + 1}` : null
@@ -32,7 +24,7 @@ export default function SearchResults({ initialData, pageNum, query }: Props) {
 	const leftIcon = <Icon icon={<ArrowLeft />} className="w-7 h-7" />
 
 	return (
-		<Page title={query} className="max-w-xl pb-0">
+		<Page className="max-w-xl pb-0">
 			<h1 className="text-3xl mb-8">{query}</h1>
 			{initialData.length > 0 ? (
 				initialData.map(article => <ArticleListItem key={article.id} {...article} />)

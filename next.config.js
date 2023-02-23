@@ -8,6 +8,7 @@ const config = {
 	swcMinify: true,
 	experimental: {
 		enableUndici: true,
+		appDir: true,
 	},
 	images: {
 		remotePatterns: [
@@ -20,9 +21,6 @@ const config = {
 			{ hostname: 'img*.teletype.in' },
 			{ hostname: 'telegra.ph' },
 		],
-	},
-	async rewrites() {
-		return [{ source: '/feed.xml', destination: '/api/feed.xml' }]
 	},
 }
 

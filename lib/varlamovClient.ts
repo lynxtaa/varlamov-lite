@@ -1,29 +1,19 @@
-import http from 'node:http'
-import https from 'node:https'
+// TODO: it fails when requiring `varlamovClient` inside pages/app
+// enable it, when this is fixed
+// import 'server-only'
 
 import * as cheerio from 'cheerio'
-import got from 'got'
 import pick from 'lodash/pick'
 import truncate from 'lodash/truncate'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
 
+import { createFetch, FetchFunction } from './createFetch'
 import { getYoutubeVideoId } from './getYoutubeVideoId'
 import { articleSchema, articlesSchema } from './schemas'
 
 const BLOG_ID = 500000
 const PAGE_SIZE = 7
-
-const teletypeClient = got.extend({
-	prefixUrl: 'https://teletype.in',
-	headers: { Accept: 'application/json' },
-	timeout: { request: 20_000 },
-	retry: { limit: 3 },
-	agent: {
-		http: new http.Agent({ keepAlive: true }),
-		https: new https.Agent({ keepAlive: true }),
-	},
-})
 
 export interface Article {
 	id: number
@@ -41,10 +31,13 @@ export interface ArticleFull extends Article {
 	topics: { name: string }[]
 }
 
+type CacheOptions = Pick<RequestInit, 'cache' | 'next'>
+
 class VarlamovClient {
 	pageSize: number
 	queue: PQueue
 	supportTagsWithAttrs: Record<string, string[]>
+	#fetchTeletype: FetchFunction
 
 	constructor({ pageSize = 19 }: { pageSize?: number } = {}) {
 		this.pageSize = pageSize
@@ -68,6 +61,12 @@ class VarlamovClient {
 			'ul': [],
 			'section': [],
 		}
+
+		this.#fetchTeletype = createFetch({
+			timeout: 20_000,
+			headers: { accept: 'application/json' },
+			prefixUrl: 'https://teletype.in/',
+		})
 	}
 
 	private getImageSize(url: string) {
@@ -84,50 +83,54 @@ class VarlamovClient {
 	async getArticles({
 		lastArticle,
 		limit = PAGE_SIZE,
+		...options
 	}: {
 		lastArticle?: number
 		limit?: number
-	} = {}): Promise<Article[]> {
-		const json = await teletypeClient(`api/blogs/id/${BLOG_ID}/articles`, {
-			searchParams: {
-				limit: String(limit),
-				last_article: lastArticle !== undefined ? String(lastArticle) : undefined,
-			},
-		}).json()
+	} & CacheOptions = {}): Promise<Article[]> {
+		const searchParams = new URLSearchParams({ limit: String(limit) })
+		if (lastArticle !== undefined) {
+			searchParams.set('last_article', String(lastArticle))
+		}
 
-		const { articles } = articlesSchema.parse(json)
+		const { articles } = await this.#fetchTeletype(
+			`api/blogs/id/${BLOG_ID}/articles?${searchParams.toString()}`,
+			{ ...options, schema: articlesSchema },
+		)
 
 		return articles
 	}
 
 	async searchArticles(
 		query: string,
-		{ limit = PAGE_SIZE, pageNum = 1 }: { limit?: number; pageNum?: number } = {},
+		{
+			limit = PAGE_SIZE,
+			pageNum = 1,
+			...options
+		}: { limit?: number; pageNum?: number } & CacheOptions = {},
 	): Promise<Article[]> {
-		const json = await teletypeClient
-			.post('api/search', {
-				json: {
-					query,
-					blogs: false,
-					articles: true,
-					blog_id: BLOG_ID,
-					limit,
-					offset: limit * (pageNum - 1),
-				},
-			})
-			.json()
-
-		const { articles } = articlesSchema.parse(json)
+		const { articles } = await this.#fetchTeletype('api/search', {
+			method: 'POST',
+			json: {
+				query,
+				blogs: false,
+				articles: true,
+				blog_id: BLOG_ID,
+				limit,
+				offset: limit * (pageNum - 1),
+			},
+			...options,
+			schema: articlesSchema,
+		})
 
 		return articles
 	}
 
-	async getArticle(uri: string): Promise<ArticleFull> {
-		const json = await teletypeClient(
+	async getArticle(uri: string, options?: CacheOptions): Promise<ArticleFull> {
+		const article = await this.#fetchTeletype(
 			`api/blogs/domain/varlamov.ru/articles/${encodeURIComponent(uri)}`,
-		).json()
-
-		const article = articleSchema.parse(json)
+			{ ...options, schema: articleSchema },
+		)
 
 		const $ = cheerio.load(article.text, { xmlMode: true, decodeEntities: false })
 

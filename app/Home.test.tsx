@@ -3,17 +3,18 @@ import userEvent from '@testing-library/user-event'
 import { subDays, subHours, subMinutes } from 'date-fns'
 import { advanceTo } from 'jest-date-mock'
 import { DefaultBodyType, PathParams } from 'msw'
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
-import { createMockRouter } from '../jest/createMockRouter'
+import { AppRouterInstance, createMockRouter } from '../jest/createMockRouter'
 import { renderWithProviders } from '../jest/renderWithProviders'
-import { server, rest } from '../jest/server'
+import { rest, server } from '../jest/server'
 import { Article } from '../lib/varlamovClient'
-import Home from '../pages/index'
 
-const useRouterMock = useRouter as jest.Mock<NextRouter>
+import Home from './Home'
 
-let mockRouter: NextRouter
+const useRouterMock = useRouter as jest.Mock<AppRouterInstance>
+
+let mockRouter: AppRouterInstance
 
 beforeEach(() => {
 	mockRouter = createMockRouter()
@@ -24,34 +25,34 @@ it('shows blog posts', async () => {
 	const now = new Date('2020-03-20')
 	advanceTo(now)
 
-	server.use(
-		rest.get<DefaultBodyType, PathParams, Article[]>('/api/articles', (req, res, ctx) => {
-			const articles: Article[] = [
-				{
-					id: 1,
-					uri: '1.html',
-					title: 'Первая новость',
-					published_at: subMinutes(now, 2).toISOString(),
-				},
-				{
-					id: 2,
-					uri: '2.html',
-					title: 'Вторая новость',
-					published_at: subHours(now, 2).toISOString(),
-				},
-				{
-					id: 3,
-					uri: '3.html',
-					title: 'Третья новость',
-					published_at: subDays(now, 2).toISOString(),
-				},
-			]
+	const articles: Article[] = [
+		{
+			id: 1,
+			uri: '1.html',
+			title: 'Первая новость',
+			published_at: subMinutes(now, 2).toISOString(),
+		},
+		{
+			id: 2,
+			uri: '2.html',
+			title: 'Вторая новость',
+			published_at: subHours(now, 2).toISOString(),
+		},
+		{
+			id: 3,
+			uri: '3.html',
+			title: 'Третья новость',
+			published_at: subDays(now, 2).toISOString(),
+		},
+	]
 
-			return res(ctx.json(articles))
-		}),
+	server.use(
+		rest.get<DefaultBodyType, PathParams, Article[]>('/api/articles', (req, res, ctx) =>
+			res(ctx.json(articles)),
+		),
 	)
 
-	const container = renderWithProviders(<Home />)
+	const { container } = renderWithProviders(<Home initialData={articles} />)
 
 	await screen.findByText('Первая новость')
 
@@ -59,13 +60,15 @@ it('shows blog posts', async () => {
 })
 
 it('runs search with entered query', async () => {
+	const articles: Article[] = []
+
 	server.use(
 		rest.get<DefaultBodyType, PathParams, Article[]>('/api/articles', (req, res, ctx) =>
-			res(ctx.json([])),
+			res(ctx.json(articles)),
 		),
 	)
 
-	renderWithProviders(<Home />)
+	renderWithProviders(<Home initialData={articles} />)
 
 	await screen.findByText('Ничего не найдено')
 
@@ -74,6 +77,7 @@ it('runs search with entered query', async () => {
 	await userEvent.click(screen.getByRole('button', { name: 'Отправить' }))
 
 	await waitFor(() => {
+		// eslint-disable-next-line @typescript-eslint/unbound-method
 		expect(mockRouter.push).toHaveBeenCalledWith('/search/moscow')
 	})
 })

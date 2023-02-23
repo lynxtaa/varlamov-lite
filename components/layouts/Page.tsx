@@ -1,6 +1,7 @@
-import { DefaultSeo } from 'next-seo'
+'use client'
+
 import { useTheme } from 'next-themes'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Sun, Moon, Search, ChevronRight } from 'react-feather'
 
@@ -12,19 +13,11 @@ import Link from '../Link'
 
 type Props = {
 	children?: React.ReactNode
-	description?: string
-	ogImage?: string
-	title?: string
 	className?: string
+	isHome?: boolean
 }
 
-export default function Page({
-	children,
-	description = 'Быстрая и лёгкая версия блога Ильи Варламова',
-	ogImage = '/android-chrome-512x512.png',
-	title,
-	className,
-}: Props) {
+export default function Page({ isHome = false, children, className }: Props) {
 	const [searchBarVisible, setSearchBarVisible] = useState(false)
 	const [searchQuery, setSearchQuery] = useState('')
 
@@ -34,23 +27,11 @@ export default function Page({
 
 	const router = useRouter()
 
-	const fullTitle =
-		title !== undefined ? `${title} • Блог Ильи Варламова` : 'Блог Ильи Варламова'
-
 	return (
 		<div className={cn('my-0 mx-auto p-4 max-w-3xl', className)}>
-			<DefaultSeo
-				title={fullTitle}
-				description={description}
-				openGraph={{
-					title,
-					description,
-					images: [{ url: ogImage }],
-				}}
-			/>
 			<header className="flex flex-col mt-4 mb-8">
 				<div className="flex items-center">
-					{router.pathname === '/' ? (
+					{isHome ? (
 						<h1 className="text-2xl mr-3 font-bold">Блог Ильи Варламова</h1>
 					) : (
 						<h3 className="text-xl mr-3 font-bold">

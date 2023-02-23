@@ -12,21 +12,6 @@ body,
 	outline: none;
 }
 
-#nprogress {
-	pointer-events: none;
-}
-
-#nprogress .bar {
-	@apply fixed top-0 left-0 z-50 w-full bg-gray-500 dark:bg-gray-300;
-	height: 3px;
-}
-
-#nprogress::after {
-	content: '';
-	height: 3px;
-	@apply fixed top-0 left-0 z-50 w-full bg-transparent;
-}
-
 h1,
 h2,
 h3,

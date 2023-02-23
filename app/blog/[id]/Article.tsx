@@ -1,37 +1,27 @@
 import cn from 'classnames'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { useRouter } from 'next/router'
 import { Clock } from 'react-feather'
 
-import ArticleBody from '../components/ArticleBody'
-import Icon from '../components/Icon'
-import Link from '../components/Link'
-import Spinner from '../components/Spinner'
-import Page from '../components/layouts/Page'
-import { formatDate } from '../lib/formatDate'
-import { ArticleFull } from '../lib/varlamovClient'
+import ArticleBody from '../../../components/ArticleBody'
+import Icon from '../../../components/Icon'
+import Link from '../../../components/Link'
+import Page from '../../../components/layouts/Page'
+import { formatDate } from '../../../lib/formatDate'
+import { ArticleFull } from '../../../lib/varlamovClient'
 
 export type Props = ArticleFull
 
 export default function Article({
 	published_at,
-	excerpt,
 	tags,
 	title,
 	text,
-	previewImageUrl,
 	readingTime,
 	topics,
 }: Props) {
-	const router = useRouter()
-
-	if (router.isFallback) {
-		return <Spinner />
-	}
-
 	return (
-		<Page title={title} description={excerpt} ogImage={previewImageUrl ?? undefined}>
+		<Page>
 			{topics.length > 0 && (
 				<div className="flex flex-wrap">
 					{topics.map(({ name }, i) => (
