@@ -60,3 +60,5 @@ export default async function BlogPage({ params }: { params: { id: string } }) {
 
 	return <Article {...article} />
 }
+
+export const revalidate = 3600
