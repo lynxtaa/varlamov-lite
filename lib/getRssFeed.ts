@@ -10,7 +10,11 @@ export async function getRssFeed(): Promise<string> {
 		language: 'ru',
 	})
 
-	const articles = await varlamovClient.getArticles()
+	const articles = await varlamovClient.getArticles({
+		next: {
+			revalidate: 30 * 60,
+		},
+	})
 
 	for (const article of articles) {
 		const url = `https://varlamov-lite.vercel.app/blog/${encodeURIComponent(article.uri)}`
