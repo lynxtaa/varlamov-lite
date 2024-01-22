@@ -8,7 +8,7 @@ export const articleSchema = z.object({
 	text: z.string(),
 	sharing_text: z.string().optional(),
 	sharing_image: z.string().nullish(),
-	cut: z.string(),
+	cut: z.string().nullish(),
 	topics: z
 		.array(
 			z.object({
@@ -28,7 +28,7 @@ export const articlesSchema = z.object({
 			uri: z.string(),
 			published_at: z.string(),
 			title: z.string(),
-			cut: z.string(),
+			cut: z.string().nullish(),
 			sharing_text: z.string().optional(),
 			sharing_image: z.string().nullish(),
 		}),
