@@ -149,6 +149,7 @@ exports[`shows article 1`] = `
 					
           <img
             alt=""
+            class="mt-3 mb-3"
             data-nimg="1"
             decoding="async"
             height="720"
@@ -376,6 +377,7 @@ exports[`shows article 1`] = `
 					
         <img
           alt=""
+          class="mt-3 mb-3"
           data-nimg="1"
           decoding="async"
           height="720"

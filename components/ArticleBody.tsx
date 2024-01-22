@@ -25,6 +25,7 @@ export default function Article({ className, text }: Props) {
 								alt={node.attribs.alt ?? ''}
 								width={Number(node.attribs.width!)}
 								height={Number(node.attribs.height!)}
+								className="mt-3 mb-3"
 							/>
 						)
 					case 'a': {
