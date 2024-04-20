@@ -51,8 +51,8 @@ importers:
         specifier: 8.4.38
         version: 8.4.38
       postcss-focus-visible:
-        specifier: 7.1.0
-        version: 7.1.0(postcss@8.4.38)
+        specifier: 9.0.1
+        version: 9.0.1(postcss@8.4.38)
       probe-image-size:
         specifier: 7.2.3
         version: 7.2.3
@@ -2846,11 +2846,11 @@ packages:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
 
-  postcss-focus-visible@7.1.0:
-    resolution: {integrity: sha512-OGxO+eCXVkF94us4uOVLHDPaoJuV8HQhaqmVPo2DtECdjqzWNkmwhFRSRRDT5Sg04JQsAECzgIhpyX0JRTgwlQ==}
-    engines: {node: ^12 || ^14 || >=16}
+  postcss-focus-visible@9.0.1:
+    resolution: {integrity: sha512-N2VQ5uPz3Z9ZcqI5tmeholn4d+1H14fKXszpjogZIrFbhaq0zNAtq8sAnw6VLiqGbL8YBzsnu7K9bBkTqaRimQ==}
+    engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
-      postcss: ^8.2
+      postcss: ^8.4
 
   postcss-import@15.1.0:
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
@@ -6849,7 +6849,7 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-focus-visible@7.1.0(postcss@8.4.38):
+  postcss-focus-visible@9.0.1(postcss@8.4.38):
     dependencies:
       postcss: 8.4.38
       postcss-selector-parser: 6.0.16

@@ -8,18 +8,7 @@ import Page from '../components/layouts/Page'
 import { useIsOnScreen } from '../hooks/useIsOnScreen'
 import { Article } from '../lib/varlamovClient'
 
-async function fetchArticles(lastArticleId: number | undefined) {
-	const qs =
-		lastArticleId !== undefined
-			? new URLSearchParams({ lastArticle: String(lastArticleId) })
-			: null
-	const response = await fetch(`/api/articles${qs ? `?${qs.toString()}` : ''}`)
-	if (!response.ok) {
-		throw new Error(`Error requesting ${response.url}: ${response.status}`)
-	}
-	const articles = (await response.json()) as Article[]
-	return articles
-}
+import { getArticles } from './actions/getArticles'
 
 const staleTime = 30 * 60 * 1000
 const cacheTime = 30 * 60 * 1000
@@ -33,7 +22,7 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 			async ({ pageParam }: { pageParam?: number }) =>
 				queryClient.fetchQuery(
 					['next-articles', pageParam],
-					async () => fetchArticles(pageParam),
+					async () => getArticles({ lastArticle: pageParam }),
 					{ staleTime, cacheTime },
 				),
 			{
@@ -64,7 +53,7 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 		) {
 			void queryClient.prefetchQuery(
 				['next-articles', lastArticleId],
-				async () => fetchArticles(lastArticleId),
+				async () => getArticles({ lastArticle: lastArticleId }),
 				{ staleTime, cacheTime },
 			)
 		}
