@@ -69,8 +69,8 @@ class VarlamovClient {
 		})
 	}
 
-	private getImageSize(url: string) {
-		return this.queue.add(() =>
+	private async getImageSize(url: string) {
+		return this.queue.add(async () =>
 			probeImageSize(encodeURI(url)).catch(err => {
 				if (process.env.NODE_ENV === 'development') {
 					console.warn(err)
@@ -201,8 +201,8 @@ class VarlamovClient {
 			article.sharing_image !== undefined
 				? article.sharing_image
 				: firstImage
-				? $(firstImage).attr('src')
-				: undefined
+					? $(firstImage).attr('src')
+					: undefined
 
 		await Promise.all(
 			images.map(async image => {

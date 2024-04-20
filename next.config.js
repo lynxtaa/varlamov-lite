@@ -6,10 +6,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const config = {
 	reactStrictMode: true,
 	swcMinify: true,
-	experimental: {
-		enableUndici: true,
-		appDir: true,
-	},
 	images: {
 		remotePatterns: [
 			{ hostname: 'varlamov.me' },

@@ -8,44 +8,39 @@ import Page from '../components/layouts/Page'
 import { useIsOnScreen } from '../hooks/useIsOnScreen'
 import { Article } from '../lib/varlamovClient'
 
-async function fetchArticles(lastArticleId: number | undefined) {
-	const qs =
-		lastArticleId !== undefined
-			? new URLSearchParams({ lastArticle: String(lastArticleId) })
-			: null
-	const response = await fetch(`/api/articles${qs ? `?${qs.toString()}` : ''}`)
-	if (!response.ok) {
-		throw new Error(`Error requesting ${response.url}: ${response.status}`)
-	}
-	const articles = (await response.json()) as Article[]
-	return articles
-}
+import { getArticles } from './actions/getArticles'
 
 const staleTime = 30 * 60 * 1000
-const cacheTime = 30 * 60 * 1000
+const gcTime = 30 * 60 * 1000
 
 export default function Home({ initialData }: { initialData: Article[] }) {
 	const queryClient = useQueryClient()
 
 	const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		useInfiniteQuery<Article[], Error>(
-			['articles'],
-			({ pageParam }: { pageParam?: number }) =>
-				queryClient.fetchQuery(
-					['next-articles', pageParam],
-					() => fetchArticles(pageParam),
-					{ staleTime, cacheTime },
-				),
-			{
-				getNextPageParam: lastPage => lastPage[lastPage.length - 1]?.id,
-				staleTime,
-				cacheTime,
-				initialData: {
-					pages: [initialData],
-					pageParams: [undefined],
-				},
+		useInfiniteQuery<
+			Article[],
+			Error,
+			{ pages: Article[][] } | undefined,
+			ReadonlyArray<unknown>,
+			number | undefined
+		>({
+			queryKey: ['articles'],
+			initialPageParam: undefined,
+			queryFn: async ({ pageParam }) =>
+				queryClient.fetchQuery({
+					queryKey: ['next-articles', pageParam],
+					queryFn: async () => getArticles({ lastArticle: pageParam }),
+					staleTime,
+					gcTime,
+				}),
+			getNextPageParam: lastPage => lastPage.at(-1)?.id,
+			staleTime,
+			gcTime,
+			initialData: {
+				pages: [initialData],
+				pageParams: [undefined],
 			},
-		)
+		})
 
 	const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -62,11 +57,12 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 			isButtonVisible &&
 			hasNextPage === true
 		) {
-			void queryClient.prefetchQuery(
-				['next-articles', lastArticleId],
-				() => fetchArticles(lastArticleId),
-				{ staleTime, cacheTime },
-			)
+			void queryClient.prefetchQuery({
+				queryKey: ['next-articles', lastArticleId],
+				queryFn: async () => getArticles({ lastArticle: lastArticleId }),
+				staleTime,
+				gcTime,
+			})
 		}
 	}, [hasNextPage, isButtonVisible, isFetchingNextPage, lastArticleId, queryClient])
 
