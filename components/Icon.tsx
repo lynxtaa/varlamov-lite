@@ -13,7 +13,7 @@ export default function Icon({ className, icon }: Props) {
 				? null
 				: cloneElement(icon, {
 						style: { width: '100%', height: '100%' },
-				  })}
+					})}
 		</div>
 	)
 }

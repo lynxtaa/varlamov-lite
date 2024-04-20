@@ -49,7 +49,7 @@ export async function generateMetadata({
 								// TODO: add width and height
 								url: article.previewImageUrl,
 							},
-					  ]
+						]
 					: [],
 		},
 	}

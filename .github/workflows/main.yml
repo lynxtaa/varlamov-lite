@@ -26,7 +26,7 @@ jobs:
         run: pnpm install
 
       - name: Check code
-        run: pnpm run lint && pnpm run check-types
+        run: pnpm run check-format && pnpm run lint && pnpm run check-types
 
       - name: Run the tests and generate coverage report
         run: pnpm test
