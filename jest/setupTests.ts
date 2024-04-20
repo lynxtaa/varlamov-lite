@@ -2,7 +2,7 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import { clear } from 'jest-date-mock'
 
 import { server } from './server'
@@ -32,13 +32,3 @@ afterEach(() => {
 afterAll(() => {
 	server.close()
 })
-
-global.IntersectionObserver = class IntersectionObserver {
-	observe = jest.fn()
-	root = null
-	rootMargin = ''
-	disconnect = jest.fn()
-	thresholds = []
-	takeRecords = jest.fn()
-	unobserve = jest.fn()
-}

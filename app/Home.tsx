@@ -20,7 +20,7 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 		useInfiniteQuery<
 			Article[],
 			Error,
-			{ pages: Article[][] },
+			{ pages: Article[][] } | undefined,
 			ReadonlyArray<unknown>,
 			number | undefined
 		>({

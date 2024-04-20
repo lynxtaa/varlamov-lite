@@ -8,7 +8,7 @@ import Providers from './Providers'
 const description = 'Быстрая и лёгкая версия блога Ильи Варламова'
 const title = 'Блог Ильи Варламова'
 
-export const viewPort: Viewport = {
+export const viewport: Viewport = {
 	themeColor: '#ffffff',
 }
 
