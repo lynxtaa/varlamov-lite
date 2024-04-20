@@ -13,6 +13,11 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+	metadataBase: new URL(
+		process.env.VERCEL_URL !== undefined
+			? `https://${process.env.VERCEL_URL}`
+			: `http://localhost:${process.env.PORT ?? 3000}`,
+	),
 	description,
 	title,
 	robots: 'index,follow',
