@@ -10,7 +10,7 @@ it('loads articles', async () => {
 	server.use(
 		rest.get<DefaultBodyType, PathParams, z.infer<typeof articlesSchema>>(
 			'https://teletype.in/api/blogs/id/500000/articles',
-			(req, res, ctx) =>
+			async (req, res, ctx) =>
 				res(
 					ctx.json({
 						articles: [
@@ -42,7 +42,7 @@ it('loads articles', async () => {
 
 it('loads single article', async () => {
 	server.use(
-		rest.get('https://varlamov.me/2021/suec/03.jpg', (req, res, ctx) => {
+		rest.get('https://varlamov.me/2021/suec/03.jpg', async (req, res, ctx) => {
 			ctx.set('Content-Type', 'image/png')
 
 			return res(
@@ -58,7 +58,7 @@ it('loads single article', async () => {
 
 		rest.get<DefaultBodyType, PathParams, z.infer<typeof articleSchema>>(
 			'https://teletype.in/api/blogs/domain/varlamov.ru/articles/:id',
-			(req, res, ctx) => {
+			async (req, res, ctx) => {
 				expect(req.params.id).toBe('12345.html')
 
 				return res(
@@ -83,7 +83,7 @@ it('loads single article', async () => {
 								<a href="https://varlamov.ru/4220678.html" target="_blank">застряло в Суэцком канале</a> утром 23 марта.
 								<tags><tag>Китай</tag><tag>Пекин</tag></tags>
 							<document>
-						`.replace(/\t+/g, '  '),
+						`.replaceAll(/\t+/g, '  '),
 					}),
 				)
 			},
@@ -124,7 +124,7 @@ it('loads single article in new format', async () => {
 	server.use(
 		rest.get<DefaultBodyType, PathParams, z.infer<typeof articleSchema>>(
 			'https://teletype.in/api/blogs/domain/varlamov.ru/articles/:id',
-			(req, res, ctx) => {
+			async (req, res, ctx) => {
 				expect(req.params.id).toBe('fESnpvxundQ')
 
 				return res(
@@ -152,7 +152,7 @@ it('loads single article in new format', async () => {
 								<tag>волгоградская_область</tag>
 								</tags>
 							</document>
-						`.replace(/\t+/g, '  '),
+						`.replaceAll(/\t+/g, '  '),
 					}),
 				)
 			},

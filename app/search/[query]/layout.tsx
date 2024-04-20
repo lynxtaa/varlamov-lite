@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
 import { Metadata } from 'next'
 
 export async function generateMetadata({

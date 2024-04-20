@@ -30,14 +30,14 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 	const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery<Article[], Error>(
 			['articles'],
-			({ pageParam }: { pageParam?: number }) =>
+			async ({ pageParam }: { pageParam?: number }) =>
 				queryClient.fetchQuery(
 					['next-articles', pageParam],
-					() => fetchArticles(pageParam),
+					async () => fetchArticles(pageParam),
 					{ staleTime, cacheTime },
 				),
 			{
-				getNextPageParam: lastPage => lastPage[lastPage.length - 1]?.id,
+				getNextPageParam: lastPage => lastPage.at(-1)?.id,
 				staleTime,
 				cacheTime,
 				initialData: {
@@ -64,7 +64,7 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 		) {
 			void queryClient.prefetchQuery(
 				['next-articles', lastArticleId],
-				() => fetchArticles(lastArticleId),
+				async () => fetchArticles(lastArticleId),
 				{ staleTime, cacheTime },
 			)
 		}

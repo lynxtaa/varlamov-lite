@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { subDays, subHours, subMinutes } from 'date-fns'
 import { advanceTo } from 'jest-date-mock'
 import { DefaultBodyType, PathParams } from 'msw'
@@ -47,8 +47,9 @@ it('shows blog posts', async () => {
 	]
 
 	server.use(
-		rest.get<DefaultBodyType, PathParams, Article[]>('/api/articles', (req, res, ctx) =>
-			res(ctx.json(articles)),
+		rest.get<DefaultBodyType, PathParams, Article[]>(
+			'/api/articles',
+			async (req, res, ctx) => res(ctx.json(articles)),
 		),
 	)
 
@@ -63,8 +64,9 @@ it('runs search with entered query', async () => {
 	const articles: Article[] = []
 
 	server.use(
-		rest.get<DefaultBodyType, PathParams, Article[]>('/api/articles', (req, res, ctx) =>
-			res(ctx.json(articles)),
+		rest.get<DefaultBodyType, PathParams, Article[]>(
+			'/api/articles',
+			async (req, res, ctx) => res(ctx.json(articles)),
 		),
 	)
 

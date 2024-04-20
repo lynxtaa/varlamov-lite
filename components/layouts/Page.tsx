@@ -1,7 +1,7 @@
 'use client'
 
-import { useTheme } from 'next-themes'
 import { useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import { useState } from 'react'
 import { Sun, Moon, Search, ChevronRight } from 'react-feather'
 
