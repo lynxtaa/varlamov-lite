@@ -1,16 +1,21 @@
 import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
 
+import { Metadata, Viewport } from 'next'
+
 import Providers from './Providers'
 
 const description = 'Быстрая и лёгкая версия блога Ильи Варламова'
 const title = 'Блог Ильи Варламова'
 
-export const metadata = {
+export const viewPort: Viewport = {
+	themeColor: '#ffffff',
+}
+
+export const metadata: Metadata = {
 	description,
 	title,
 	robots: 'index,follow',
-	themeColor: '#ffffff',
 	icons: {
 		icon: '/favicon-32x32.png',
 		apple: '/apple-touch-icon.png',

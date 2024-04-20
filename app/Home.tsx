@@ -11,30 +11,36 @@ import { Article } from '../lib/varlamovClient'
 import { getArticles } from './actions/getArticles'
 
 const staleTime = 30 * 60 * 1000
-const cacheTime = 30 * 60 * 1000
+const gcTime = 30 * 60 * 1000
 
 export default function Home({ initialData }: { initialData: Article[] }) {
 	const queryClient = useQueryClient()
 
 	const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		useInfiniteQuery<Article[], Error>(
-			['articles'],
-			async ({ pageParam }: { pageParam?: number }) =>
-				queryClient.fetchQuery(
-					['next-articles', pageParam],
-					async () => getArticles({ lastArticle: pageParam }),
-					{ staleTime, cacheTime },
-				),
-			{
-				getNextPageParam: lastPage => lastPage.at(-1)?.id,
-				staleTime,
-				cacheTime,
-				initialData: {
-					pages: [initialData],
-					pageParams: [undefined],
-				},
+		useInfiniteQuery<
+			Article[],
+			Error,
+			{ pages: Article[][] },
+			ReadonlyArray<unknown>,
+			number | undefined
+		>({
+			queryKey: ['articles'],
+			initialPageParam: undefined,
+			queryFn: async ({ pageParam }) =>
+				queryClient.fetchQuery({
+					queryKey: ['next-articles', pageParam],
+					queryFn: async () => getArticles({ lastArticle: pageParam }),
+					staleTime,
+					gcTime,
+				}),
+			getNextPageParam: lastPage => lastPage.at(-1)?.id,
+			staleTime,
+			gcTime,
+			initialData: {
+				pages: [initialData],
+				pageParams: [undefined],
 			},
-		)
+		})
 
 	const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -51,11 +57,12 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 			isButtonVisible &&
 			hasNextPage === true
 		) {
-			void queryClient.prefetchQuery(
-				['next-articles', lastArticleId],
-				async () => getArticles({ lastArticle: lastArticleId }),
-				{ staleTime, cacheTime },
-			)
+			void queryClient.prefetchQuery({
+				queryKey: ['next-articles', lastArticleId],
+				queryFn: async () => getArticles({ lastArticle: lastArticleId }),
+				staleTime,
+				gcTime,
+			})
 		}
 	}, [hasNextPage, isButtonVisible, isFetchingNextPage, lastArticleId, queryClient])
 
