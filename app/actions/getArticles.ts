@@ -9,6 +9,8 @@ export async function getArticles({
 }): Promise<Article[]> {
 	const thirtyMinutes = 30 * 60
 
+	await new Promise(resolve => setTimeout(resolve, 7000))
+
 	const articles = await varlamovClient.getArticles({
 		lastArticle,
 		next: {

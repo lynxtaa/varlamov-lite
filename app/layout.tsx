@@ -46,12 +46,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="ru">
-			<Providers>
-				<body className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-					{children}
-				</body>
-			</Providers>
+		<html lang="ru" suppressHydrationWarning>
+			<body className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	)
 }
