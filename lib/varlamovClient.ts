@@ -1,6 +1,4 @@
-// TODO: it fails when requiring `varlamovClient` inside pages/app
-// enable it, when this is fixed
-// import 'server-only'
+import 'server-only'
 
 import * as cheerio from 'cheerio'
 import pick from 'lodash/pick'
