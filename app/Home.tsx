@@ -1,6 +1,6 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState } from 'react'
 import { useFormState } from 'react-dom'
 
 import ArticleListItem from '../components/ArticleListItem'
@@ -10,7 +10,9 @@ import { Article } from '../lib/varlamovClient'
 import { getArticles } from './actions/getArticles'
 
 export default function Home({ initialData }: { initialData: Article[] }) {
-	const [state, formAction] = useFormState<{
+	const [isPending, setIsPending] = useState(false)
+
+	const [state, dispatch] = useFormState<{
 		data: Article[]
 		error: string | undefined
 	}>(
@@ -23,12 +25,12 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 					data: state.data,
 					error: error instanceof Error ? error.message : String(error),
 				}
+			} finally {
+				setIsPending(false)
 			}
 		},
 		{ data: initialData, error: undefined },
 	)
-
-	const [pending, startTransition] = useTransition()
 
 	return (
 		<Page className="max-w-xl" isHome>
@@ -45,10 +47,13 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 
 			<button
 				className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
-				onClick={() => startTransition(() => formAction())}
-				disabled={pending}
+				onClick={() => {
+					setIsPending(true)
+					dispatch()
+				}}
+				disabled={isPending}
 			>
-				Показать больше {pending && '...'}
+				Показать больше {isPending && '...'}
 			</button>
 		</Page>
 	)
