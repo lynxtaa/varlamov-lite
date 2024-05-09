@@ -3,9 +3,15 @@ import Link from '../components/Link'
 import Page from '../components/layouts/Page'
 import { Article } from '../lib/varlamovClient'
 
-export default function Home({ initialData }: { initialData: Article[] }) {
+export default function Home({
+	initialData,
+	isFirstPage = false,
+}: {
+	initialData: Article[]
+	isFirstPage?: boolean
+}) {
 	return (
-		<Page className="max-w-xl" isHome>
+		<Page className="max-w-xl" isHome={isFirstPage}>
 			{initialData.length > 0 ? (
 				initialData.map(article => <ArticleListItem key={article.id} {...article} />)
 			) : (
@@ -15,7 +21,7 @@ export default function Home({ initialData }: { initialData: Article[] }) {
 			)}
 			{initialData.at(-1) && (
 				<Link
-					href={`/?${new URLSearchParams({ lastArticle: String(initialData.at(-1)!.id) }).toString()}`}
+					href={`/last-article/${initialData.at(-1)!.id}`}
 					className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
 				>
 					Назад
