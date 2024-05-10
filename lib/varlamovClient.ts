@@ -11,7 +11,7 @@ import { getYoutubeVideoId } from './getYoutubeVideoId'
 import { articleSchema, articlesSchema } from './schemas'
 
 const BLOG_ID = 500000
-const PAGE_SIZE = 7
+export const PAGE_SIZE = 7
 
 export interface Article {
 	id: number
