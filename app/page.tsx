@@ -1,7 +1,13 @@
+import { varlamovClient } from '../lib/varlamovClient'
+
 import Home from './Home'
-import { getArticles } from './actions/getArticles'
 
 export default async function Page() {
-	const articles = await getArticles({})
+	const articles = await varlamovClient.getArticles({
+		next: {
+			revalidate: 30 * 60,
+		},
+	})
+
 	return <Home initialData={articles} isFirstPage />
 }

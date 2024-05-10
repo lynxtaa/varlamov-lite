@@ -5,7 +5,9 @@ export default async function Page({ params }: { params: { query: string } }) {
 	const query = decodeURIComponent(params.query)
 
 	const initialData = await varlamovClient.searchArticles(query, {
-		cache: 'no-store', // try using ISR in new NextJS versions
+		next: {
+			revalidate: 60 * 60,
+		},
 	})
 
 	return (
