@@ -1,4 +1,7 @@
+import { ArrowLeft } from 'react-feather'
+
 import ArticleListItem from '../components/ArticleListItem'
+import Icon from '../components/Icon'
 import Link from '../components/Link'
 import Page from '../components/layouts/Page'
 import { Article } from '../lib/varlamovClient'
@@ -24,7 +27,7 @@ export default function Home({
 					href={`/last-article/${initialData.at(-1)!.id}`}
 					className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
 				>
-					Предыдущие статьи
+					<Icon icon={<ArrowLeft />} />
 				</Link>
 			)}
 		</Page>
