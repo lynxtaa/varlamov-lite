@@ -1,4 +1,4 @@
-import { varlamovClient } from '../../../lib/varlamovClient'
+import { PAGE_SIZE, varlamovClient } from '../../../lib/varlamovClient'
 import SearchResults from '../SearchResults'
 
 export default async function Page({ params }: { params: { query: string } }) {
@@ -8,5 +8,12 @@ export default async function Page({ params }: { params: { query: string } }) {
 		cache: 'no-store', // try using ISR in new NextJS versions
 	})
 
-	return <SearchResults initialData={initialData} pageNum={1} query={query} />
+	return (
+		<SearchResults
+			initialData={initialData}
+			pageNum={1}
+			query={query}
+			pageSize={PAGE_SIZE}
+		/>
+	)
 }

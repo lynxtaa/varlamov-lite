@@ -10,12 +10,16 @@ export type Props = {
 	initialData: Article[]
 	pageNum: number
 	query: string
+	pageSize: number
 }
 
-export default function SearchResults({ initialData, pageNum, query }: Props) {
+export default function SearchResults({ initialData, pageNum, query, pageSize }: Props) {
 	const pathname = `/search/${encodeURIComponent(query)}/`
 
-	const prevPage = initialData.length > 0 ? `${pathname}page/${pageNum + 1}` : null
+	const prevPage =
+		initialData.length > 0 && initialData.length === pageSize
+			? `${pathname}page/${pageNum + 1}`
+			: null
 
 	const nextPage =
 		pageNum > 1 ? (pageNum > 2 ? `${pathname}page/${pageNum - 1}` : pathname) : null
