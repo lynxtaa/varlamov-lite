@@ -22,14 +22,16 @@ export default function Home({
 					<h2 className="mb-1 text-xl">Ничего не найдено</h2>
 				</header>
 			)}
-			{initialData.at(-1) && (
-				<Link
-					href={`/last-article/${initialData.at(-1)!.id}`}
-					className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
-				>
-					<Icon icon={<ArrowLeft />} />
-				</Link>
-			)}
+			<div className="flex">
+				{initialData.at(-1) && (
+					<Link
+						href={`/last-article/${initialData.at(-1)!.id}`}
+						className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
+					>
+						<Icon icon={<ArrowLeft />} />
+					</Link>
+				)}
+			</div>
 		</Page>
 	)
 }
