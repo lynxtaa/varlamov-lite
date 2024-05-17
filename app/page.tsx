@@ -1,3 +1,4 @@
+import { decimalToBase64url } from '../lib/decimal-base64url'
 import { varlamovClient } from '../lib/varlamovClient'
 
 import Home from './Home'
@@ -14,7 +15,11 @@ export default async function Page() {
 	return (
 		<Home
 			initialData={articles}
-			nextPage={nextPage !== undefined ? `/last-article/${nextPage}` : undefined}
+			nextPage={
+				nextPage !== undefined
+					? `/last-article/${decimalToBase64url(nextPage)}`
+					: undefined
+			}
 			pageNum={1}
 		/>
 	)

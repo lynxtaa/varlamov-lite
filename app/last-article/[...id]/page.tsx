@@ -1,18 +1,12 @@
-import { redirect } from 'next/navigation'
-
-import { isNumber } from '../../../lib/is-number'
+import { base64urlToDecimal, decimalToBase64url } from '../../../lib/decimal-base64url'
 import { PAGE_SIZE, varlamovClient } from '../../../lib/varlamovClient'
 import Home from '../../Home'
 
 export default async function Page({ params }: { params: { id: string[] } }) {
-	const lastArticle = params.id.at(-1)!
-
-	if (!isNumber(lastArticle)) {
-		return redirect('/')
-	}
+	const lastArticleBase64url = params.id.at(-1)!
 
 	const articles = await varlamovClient.getArticles({
-		lastArticle: Number(lastArticle),
+		lastArticle: base64urlToDecimal(lastArticleBase64url),
 		next: {
 			revalidate: 30 * 60,
 		},
@@ -23,7 +17,7 @@ export default async function Page({ params }: { params: { id: string[] } }) {
 			initialData={articles}
 			nextPage={
 				articles.length === PAGE_SIZE
-					? `/last-article/${params.id.join('/')}/${articles.at(-1)!.id}`
+					? `/last-article/${params.id.join('/')}/${decimalToBase64url(articles.at(-1)!.id)}`
 					: undefined
 			}
 			prevPage={
