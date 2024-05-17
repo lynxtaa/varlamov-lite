@@ -1,20 +1,21 @@
-import { ArrowLeft } from 'react-feather'
-
 import ArticleListItem from '../components/ArticleListItem'
-import Icon from '../components/Icon'
-import Link from '../components/Link'
+import { Pagination } from '../components/Pagination'
 import Page from '../components/layouts/Page'
 import { Article } from '../lib/varlamovClient'
 
 export default function Home({
 	initialData,
-	isFirstPage = false,
+	prevPage,
+	nextPage,
+	pageNum,
 }: {
 	initialData: Article[]
-	isFirstPage?: boolean
+	prevPage?: string
+	nextPage?: string
+	pageNum: number
 }) {
 	return (
-		<Page className="max-w-xl" isHome={isFirstPage}>
+		<Page className="max-w-xl" isHome={prevPage === undefined}>
 			{initialData.length > 0 ? (
 				initialData.map(article => <ArticleListItem key={article.id} {...article} />)
 			) : (
@@ -22,16 +23,7 @@ export default function Home({
 					<h2 className="mb-1 text-xl">Ничего не найдено</h2>
 				</header>
 			)}
-			<div className="flex">
-				{initialData.at(-1) && (
-					<Link
-						href={`/last-article/${initialData.at(-1)!.id}`}
-						className="text-sm py-2 px-3 border rounded border-gray-700 border-solid mb-3 hover:no-underline"
-					>
-						<Icon icon={<ArrowLeft />} />
-					</Link>
-				)}
-			</div>
+			<Pagination prevPage={prevPage} nextPage={nextPage} pageNum={pageNum} />
 		</Page>
 	)
 }
