@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import { advanceTo } from 'jest-date-mock'
 import { useRouter } from 'next/navigation'
 
-import { createMockRouter, AppRouterInstance } from '../../../jest/createMockRouter'
+import { createMockRouter, type AppRouterInstance } from '../../../jest/createMockRouter'
 
 import Article from './Article'
 
