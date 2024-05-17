@@ -1,7 +1,7 @@
 import 'tailwindcss/tailwind.css'
 import '../styles/global.css'
 
-import { Metadata, Viewport } from 'next'
+import { type Metadata, type Viewport } from 'next'
 
 import Providers from './Providers'
 

@@ -1,4 +1,4 @@
-import { DefaultBodyType, PathParams } from 'msw'
+import { type DefaultBodyType, type PathParams } from 'msw'
 import { z } from 'zod'
 
 import { server, rest } from '../jest/server'

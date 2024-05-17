@@ -6,7 +6,7 @@ import truncate from 'lodash/truncate'
 import PQueue from 'p-queue'
 import probeImageSize from 'probe-image-size'
 
-import { createFetch, FetchFunction } from './createFetch'
+import { createFetch, type FetchFunction } from './createFetch'
 import { getYoutubeVideoId } from './getYoutubeVideoId'
 import { articleSchema, articlesSchema } from './schemas'
 

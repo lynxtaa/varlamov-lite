@@ -1,4 +1,8 @@
-import parse, { domToReact, HTMLReactParserOptions } from 'html-react-parser'
+import parse, {
+	domToReact,
+	type HTMLReactParserOptions,
+	type DOMNode,
+} from 'html-react-parser'
 import Image from 'next/image'
 import { useMemo } from 'react'
 
@@ -29,7 +33,7 @@ export default function Article({ className, text }: Props) {
 							/>
 						)
 					case 'a': {
-						const children = domToReact(node.children, options)
+						const children = domToReact(node.children as DOMNode[], options)
 
 						const href = node.attribs.href!
 
@@ -53,13 +57,13 @@ export default function Article({ className, text }: Props) {
 					case 'ul':
 						return (
 							<ul {...node.attribs} className="list-disc list-inside">
-								{domToReact(node.children, options)}
+								{domToReact(node.children as DOMNode[], options)}
 							</ul>
 						)
 					case 'pre':
 						return (
 							<pre {...node.attribs} className="whitespace-pre-wrap">
-								{domToReact(node.children, options)}
+								{domToReact(node.children as DOMNode[], options)}
 							</pre>
 						)
 					case 'blockquote':
@@ -68,7 +72,7 @@ export default function Article({ className, text }: Props) {
 								{...node.attribs}
 								className="pl-4 italic border-l-4 border-gray-900 dark:border-gray-200"
 							>
-								{domToReact(node.children, options)}
+								{domToReact(node.children as DOMNode[], options)}
 							</blockquote>
 						)
 					case 'iframe':

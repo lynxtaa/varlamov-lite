@@ -8,7 +8,7 @@ import Icon from '../../../components/Icon'
 import Link from '../../../components/Link'
 import Page from '../../../components/layouts/Page'
 import { formatDate } from '../../../lib/formatDate'
-import { ArticleFull } from '../../../lib/varlamovClient'
+import { type ArticleFull } from '../../../lib/varlamovClient'
 
 export type Props = ArticleFull
 

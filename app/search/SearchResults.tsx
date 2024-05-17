@@ -1,7 +1,7 @@
 import ArticleListItem from '../../components/ArticleListItem'
 import { Pagination } from '../../components/Pagination'
 import Page from '../../components/layouts/Page'
-import { Article } from '../../lib/varlamovClient'
+import { type Article } from '../../lib/varlamovClient'
 
 export type Props = {
 	initialData: Article[]

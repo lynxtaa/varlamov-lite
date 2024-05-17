@@ -1,5 +1,5 @@
 import { cloneElement } from 'react'
-import { IconProps } from 'react-feather'
+import { type IconProps } from 'react-feather'
 
 type Props = {
 	className?: string
