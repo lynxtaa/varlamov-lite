@@ -9,5 +9,13 @@ export default async function Page() {
 		},
 	})
 
-	return <Home initialData={articles} isFirstPage />
+	const nextPage = articles.at(-1)?.id
+
+	return (
+		<Home
+			initialData={articles}
+			nextPage={nextPage !== undefined ? `/last-article/${nextPage}` : undefined}
+			pageNum={1}
+		/>
+	)
 }
