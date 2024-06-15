@@ -4,6 +4,8 @@ import { varlamovClient } from '../../../lib/varlamovClient'
 
 import Article from './Article'
 
+export const dynamic = 'error'
+
 const NUM_ARTICLES_TO_PRERENDER = 5
 
 async function getArticle(slugId: string) {

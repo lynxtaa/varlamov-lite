@@ -2,6 +2,8 @@ import { base64urlToDecimal, decimalToBase64url } from '../../../lib/decimal-bas
 import { PAGE_SIZE, varlamovClient } from '../../../lib/varlamovClient'
 import Home from '../../Home'
 
+export const dynamic = 'error'
+
 export default async function Page({ params }: { params: { id: string[] } }) {
 	const lastArticleBase64url = params.id.at(-1)!
 

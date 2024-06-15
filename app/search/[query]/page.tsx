@@ -1,6 +1,8 @@
 import { PAGE_SIZE, varlamovClient } from '../../../lib/varlamovClient'
 import SearchResults from '../SearchResults'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page({ params }: { params: { query: string } }) {
 	const query = decodeURIComponent(params.query)
 

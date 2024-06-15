@@ -3,6 +3,8 @@ import { varlamovClient } from '../lib/varlamovClient'
 
 import Home from './Home'
 
+export const dynamic = 'error'
+
 export default async function Page() {
 	const articles = await varlamovClient.getArticles({
 		next: {
