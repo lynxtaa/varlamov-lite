@@ -2,10 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
-import { useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { Sun, Moon, Search, ChevronRight } from 'react-feather'
 
-import { useIsMounted } from '../../hooks/useIsMounted'
 import { Theme } from '../../lib/Theme'
 import { cn } from '../../lib/cn'
 import Icon from '../Icon'
@@ -17,15 +16,21 @@ type Props = {
 	isHome?: boolean
 }
 
+const unsubscribe = () => {}
+
 export default function Page({ isHome = false, children, className }: Props) {
 	const [searchBarVisible, setSearchBarVisible] = useState(false)
 	const [searchQuery, setSearchQuery] = useState('')
 
-	const isMounted = useIsMounted()
-
 	const { theme, setTheme } = useTheme()
 
 	const router = useRouter()
+
+	const isDarkTheme = useSyncExternalStore(
+		() => unsubscribe,
+		() => theme === Theme.Dark,
+		() => null,
+	)
 
 	return (
 		<div className={cn('my-0 mx-auto p-4 max-w-3xl', className)}>
@@ -53,7 +58,7 @@ export default function Page({ isHome = false, children, className }: Props) {
 						title="Переключить тему"
 					>
 						<Icon
-							icon={isMounted ? theme === Theme.Light ? <Sun /> : <Moon /> : null}
+							icon={isDarkTheme !== null ? isDarkTheme ? <Moon /> : <Sun /> : null}
 							className="w-7 h-7"
 						/>
 					</button>
