@@ -130,7 +130,9 @@ class VarlamovClient {
 			{ ...options, schema: articleSchema },
 		)
 
-		const $ = cheerio.load(article.text, { xmlMode: true, decodeEntities: false })
+		const $ = cheerio.load(article.text, {
+			xml: { decodeEntities: false },
+		})
 
 		const textEl = $('document')
 

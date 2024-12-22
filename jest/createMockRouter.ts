@@ -1,17 +1,18 @@
 import { useRouter } from 'next/navigation'
+import { vi } from 'vitest'
 
-export type AppRouterInstance = ReturnType<typeof useRouter>
+type AppRouterInstance = ReturnType<typeof useRouter>
 
 export function createMockRouter(
 	options?: Partial<AppRouterInstance>,
 ): AppRouterInstance {
 	return {
-		push: jest.fn(),
-		replace: jest.fn(),
-		refresh: jest.fn(),
-		prefetch: jest.fn(),
-		back: jest.fn(),
-		forward: jest.fn(),
+		push: vi.fn(),
+		replace: vi.fn(),
+		refresh: vi.fn(),
+		prefetch: vi.fn(),
+		back: vi.fn(),
+		forward: vi.fn(),
 		...options,
 	}
 }

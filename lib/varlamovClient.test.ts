@@ -1,3 +1,7 @@
+/**
+ * @vitest-environment node
+ */
+
 import { type DefaultBodyType, type PathParams } from 'msw'
 import { z } from 'zod'
 

@@ -6,10 +6,12 @@ export const dynamic = 'force-dynamic'
 export default async function Page({
 	params,
 }: {
-	params: { query: string; pageNum: string }
+	params: Promise<{ query: string; pageNum: string }>
 }) {
-	const pageNum = Number(params.pageNum)
-	const query = decodeURIComponent(params.query)
+	const { pageNum: pageNumRaw, query: queryRaw } = await params
+
+	const pageNum = Number(pageNumRaw)
+	const query = decodeURIComponent(queryRaw)
 
 	const initialData = await varlamovClient.searchArticles(query, {
 		pageNum,

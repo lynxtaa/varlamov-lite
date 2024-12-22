@@ -3,8 +3,10 @@ import SearchResults from '../SearchResults'
 
 export const dynamic = 'force-dynamic'
 
-export default async function Page({ params }: { params: { query: string } }) {
-	const query = decodeURIComponent(params.query)
+export default async function Page({ params }: { params: Promise<{ query: string }> }) {
+	const { query: queryRaw } = await params
+
+	const query = decodeURIComponent(queryRaw)
 
 	const initialData = await varlamovClient.searchArticles(query, {
 		next: {

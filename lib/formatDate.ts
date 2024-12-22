@@ -1,9 +1,9 @@
+import { tz } from '@date-fns/tz'
 import { format, isToday, isYesterday, parseISO, isThisYear } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { toZonedTime } from 'date-fns-tz'
 
 export function formatDate(dateStr: string): string {
-	const date = toZonedTime(parseISO(dateStr), 'Europe/Moscow')
+	const date = parseISO(dateStr, { in: tz('Europe/Moscow') })
 
 	if (isToday(date)) {
 		return `сегодня в ${format(date, 'H:mm')}`

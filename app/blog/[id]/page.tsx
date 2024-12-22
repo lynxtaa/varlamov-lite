@@ -32,9 +32,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({
 	params,
 }: {
-	params: { id: string }
+	params: Promise<{ id: string }>
 }): Promise<Metadata> {
-	const article = await getArticle(params.id)
+	const { id } = await params
+
+	const article = await getArticle(id)
 
 	const title = `${article.title} • Блог Ильи Варламова`
 
@@ -57,8 +59,10 @@ export async function generateMetadata({
 	}
 }
 
-export default async function BlogPage({ params }: { params: { id: string } }) {
-	const article = await getArticle(params.id)
+export default async function BlogPage({ params }: { params: Promise<{ id: string }> }) {
+	const { id } = await params
+
+	const article = await getArticle(id)
 
 	return <Article {...article} />
 }
