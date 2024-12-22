@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
 	enabled: process.env.ANALYZE === 'true',
 })
@@ -5,7 +6,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const config = {
 	reactStrictMode: true,
-	swcMinify: true,
 	images: {
 		remotePatterns: [
 			{ hostname: 'varlamov.me' },

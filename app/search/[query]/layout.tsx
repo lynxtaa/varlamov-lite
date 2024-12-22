@@ -3,9 +3,10 @@ import { type Metadata } from 'next'
 export async function generateMetadata({
 	params,
 }: {
-	params: { query: string }
+	params: Promise<{ query: string }>
 }): Promise<Metadata> {
-	const title = `${decodeURIComponent(params.query)} • Блог Ильи Варламова`
+	const { query } = await params
+	const title = `${decodeURIComponent(query)} • Блог Ильи Варламова`
 	return { title }
 }
 

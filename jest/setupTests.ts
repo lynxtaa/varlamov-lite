@@ -4,12 +4,15 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
 import { clear } from 'jest-date-mock'
+import { vi } from 'vitest'
 
 import { server } from './server'
 
-jest.mock('next/navigation', () => ({
-	useRouter: jest.fn(),
+vi.mock('next/navigation', () => ({
+	useRouter: vi.fn(),
 }))
+
+vi.mock('server-only', () => ({}))
 
 beforeAll(() => {
 	server.listen({
