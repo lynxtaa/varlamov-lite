@@ -1,13 +1,10 @@
-import { FlatCompat } from '@eslint/eslintrc'
 import eslintConfig from '@lynxtaa/eslint-config'
 import requiresTypechecking from '@lynxtaa/eslint-config/requires-typechecking'
-
-const compat = new FlatCompat({
-	baseDirectory: import.meta.dirname,
-})
+import nextPlugin from '@next/eslint-plugin-next'
+import reactPlugin from 'eslint-plugin-react'
+import hooksPlugin from 'eslint-plugin-react-hooks'
 
 export default [
-	// TODO: support 'next' config
 	...eslintConfig,
 	...requiresTypechecking,
 	{
@@ -20,9 +17,33 @@ export default [
 			},
 		},
 	},
-	...compat.config({
-		extends: ['plugin:react-hooks/recommended'],
-	}),
+	{
+		...reactPlugin.configs.flat.recommended,
+		rules: {
+			...reactPlugin.configs.flat.recommended.rules,
+			'react/react-in-jsx-scope': 'off',
+		},
+		settings: {
+			react: {
+				version: 'detect',
+			},
+		},
+	},
+	{
+		plugins: {
+			'react-hooks': hooksPlugin,
+		},
+		rules: hooksPlugin.configs.recommended.rules,
+	},
+	{
+		plugins: {
+			'@next/next': nextPlugin,
+		},
+		rules: {
+			...nextPlugin.configs.recommended.rules,
+			...nextPlugin.configs['core-web-vitals'].rules,
+		},
+	},
 	{
 		ignores: ['.next', 'coverage'],
 	},

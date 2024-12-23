@@ -87,6 +87,9 @@ importers:
       '@lynxtaa/prettier-config':
         specifier: 0.2.0
         version: 0.2.0(prettier@3.4.2)
+      '@next/eslint-plugin-next':
+        specifier: 15.1.2
+        version: 15.1.2
       '@testing-library/jest-dom':
         specifier: 6.6.3
         version: 6.6.3
@@ -129,6 +132,9 @@ importers:
       eslint-config-next:
         specifier: 15.1.2
         version: 15.1.2(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2)
+      eslint-plugin-react:
+        specifier: 7.37.2
+        version: 7.37.2(eslint@9.17.0(jiti@1.21.7))
       eslint-plugin-react-hooks:
         specifier: 5.1.0
         version: 5.1.0(eslint@9.17.0(jiti@1.21.7))
