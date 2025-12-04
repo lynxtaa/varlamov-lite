@@ -13,6 +13,7 @@ export default [
 				projectService: {
 					allowDefaultProject: ['*.js', '*.mjs', 'vite.config.mts'],
 				},
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				tsconfigRootDir: import.meta.dirname,
 			},
 		},
