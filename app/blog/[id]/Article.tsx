@@ -42,6 +42,7 @@ export default function Article({
 					{formatDate(published_at)}
 					<span className="opacity-70 inline-flex items-center ml-4">
 						<Icon icon={<Clock />} className="mr-2 w-4 h-4" />
+						{/* eslint-disable-next-line react-hooks/purity */}
 						{formatDistanceToNow(Date.now() + readingTime, { locale: ru })}
 					</span>
 				</time>
